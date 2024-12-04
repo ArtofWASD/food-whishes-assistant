@@ -1,6 +1,6 @@
 import React from "react"
 import { promises as fs } from "fs"
-import FoodItem from "@/src/widgets/food_item/food_item"
+import { FoodItem } from "@/src/widgets/food_item/food_item"
 import { FoodItemProps } from "@/src/api/types/foods"
 // todo реализовать вкладки продуктов, деление по принципу фрукты, овощи, мясо, соусы, прочее
 const Fridge = async () => {

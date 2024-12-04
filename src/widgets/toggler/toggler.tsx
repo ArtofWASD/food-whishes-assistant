@@ -1,23 +1,31 @@
 "use client"
 import { motion } from "motion/react"
 import React, { useState } from "react"
-const Toggler = () => {
-  const [isOn, setIsOn] = useState(false)
-  const toggleSwitch = () => setIsOn(!isOn)
-    
-  const spring = {
-    type: "spring",
-    stiffness: 700,
-    damping: 30,
-  }
+export const Toggler = () => {
+  const [isToggled, setIsToggled] = useState(false);
+
+  const handleToggle = () => {
+    setIsToggled((prev) => !prev);
+  };
 
   return (
-    <>
-      <div className="switch" data-ison={isOn} onClick={toggleSwitch}>
-        <motion.div className={`"h-52 w-52 rounded-full" ${isOn ? "bg-black" : "bg-white"}`} layout transition={spring} />
-      </div>
-    </>
-  )
+    <div className="flex items-center justify-center h-screen bg-gray-100">
+      <motion.div
+        className={`w-16 h-8 rounded-full cursor-pointer flex items-center px-1 ${
+          isToggled ? "bg-green-500" : "bg-gray-400"
+        }`}
+        onClick={handleToggle}
+        initial={{ scale: 1 }}
+        whileTap={{ scale: 0.95 }}
+        transition={{ type: "spring", stiffness: 300 }}
+      >
+        <motion.div
+          className="w-6 h-6 bg-white rounded-full shadow-md"
+          layout
+          transition={{ type: "spring", stiffness: 500, damping: 30 }}
+        />
+      </motion.div>
+    </div>
+  );
 }
 
-export default Toggler

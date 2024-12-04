@@ -1,4 +1,4 @@
-import Toggler from '@/src/widgets/toggler/toggler'
+import { Toggler } from '@/src/widgets/toggler/toggler'
 import React from 'react'
 
 const SettingsBar = () => {
@@ -7,8 +7,14 @@ const SettingsBar = () => {
   return (
     <div className="border-gray-600 border-2 border-dashed p-4 rounded-lg bg-slate-300 bg-opacity-35">
       <h2 className='text-center'>Settings bar</h2>
-      <div>
+      <div className='flex gap-2'>
         <Toggler />
+        <Toggler />
+        <Toggler />
+        <Toggler />
+        <Toggler />
+        <Toggler />
+
       </div>
     </div>
   )
