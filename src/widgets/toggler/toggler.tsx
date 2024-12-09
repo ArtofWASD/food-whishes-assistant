@@ -9,7 +9,7 @@ export const Toggler = () => {
   };
 
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-100">
+    <div className="flex items-center justify-center bg-gray-100">
       <motion.div
         className={`w-16 h-8 rounded-full cursor-pointer flex items-center px-1 ${
           isToggled ? "bg-green-500" : "bg-gray-400"
