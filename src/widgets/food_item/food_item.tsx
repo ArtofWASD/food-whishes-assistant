@@ -2,30 +2,52 @@
 import { FoodItemProps } from "@/src/api/types/foods"
 import { motion } from "motion/react"
 // заменить название БЖУ на иконки, решить проблему с оформлением
-export const FoodItem = (item: FoodItemProps) => {
-  const childVariants = {
+
+// Определяем анимации как константы вне компонента для переиспользования
+const ANIMATION_VARIANTS = {
+  child: {
     hidden: { opacity: 0, scale: 0.8 },
     show: { opacity: 1, scale: 1 },
-  };
-  const parentVariants = {
-    hidden: { opacity: 0, scale: 0.8, height:30 },
+  },
+  parent: {
+    hidden: { opacity: 0, scale: 0.8, height: 30 },
     show: { opacity: 1, scale: 1, height: 80 },
-  };
+  },
+} as const;
+
+// Выделяем стили в отдельные константы
+const CONTAINER_STYLES = "grid grid-cols-auto gap-2 border-gray-600 border-2 px-4 py-2 rounded-lg hover:bg-slate-300 cursor-pointer";
+const NUTRITION_INFO_STYLES = "flex gap-2";
+const NUTRITION_TEXT_STYLES = "flex gap-1 text-sm";
+
+export const FoodItem = ({ id, name, callory, proteins, fats, carbs }: FoodItemProps) => {
+  // Выделяем отображение пищевой ценности в отдельный компонент
+  const NutritionInfo = () => (
+    <motion.div 
+      className={NUTRITION_INFO_STYLES} 
+      variants={ANIMATION_VARIANTS.child} 
+      initial="hidden" 
+      whileHover="show"
+    >
+      <div className={NUTRITION_TEXT_STYLES}>Б: {proteins} гр.</div>
+      <div className={NUTRITION_TEXT_STYLES}>Ж: {fats} гр.</div>
+      <div className={NUTRITION_TEXT_STYLES}>У: {carbs} гр.</div>
+    </motion.div>
+  );
 
   return (
     <motion.div
-      className="grid grid-cols-auto gap-2 border-gray-600 border-2 px-4 py-2 rounded-lg hover:bg-slate-300 cursor-pointer"
-      key={item.id}
-    variant={parentVariants} initial="show" whileHover="show">
+      className={CONTAINER_STYLES}
+      key={id}
+      variants={ANIMATION_VARIANTS.parent}
+      initial="show"
+      whileHover="show"
+    >
       <div className="flex gap-2">
-        <h3>{item.name}</h3>
-        <div className="flex gap-1 text-sm">Каллории: {item.callory} ккал.</div>
+        <h3>{name}</h3>
+        <div className={NUTRITION_TEXT_STYLES}>Каллории: {callory} ккал.</div>
       </div>
-      <motion.div className="flex gap-2" variants={childVariants} initial="hidden" whileHover="show">
-        <div className="flex gap-1 text-sm">Б: {item.proteins} гр.</div>
-        <div className="flex gap-1 text-sm">Ж: {item.fats} гр.</div>
-        <div className="flex gap-1 text-sm">У: {item.carbs} гр.</div>
-      </motion.div>
+      <NutritionInfo />
     </motion.div>
-  )
+  );
 }
