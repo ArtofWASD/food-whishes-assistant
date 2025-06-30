@@ -1,4 +1,5 @@
-import CookPlate from "@/src/components/cook_plate/cook_plate"
+"use client"
+
 import Fridge from "@/src/components/fridge/fridge"
 import { OutputResults } from "@/src/components/output_results/output_results"
 import SettingsBar from "@/src/components/settings_bar/settings_bar"
@@ -10,9 +11,8 @@ export default function Home() {
       <div className="py-2 px-4">
         <SettingsBar />
       </div>
-      <div className="grid grid-cols-2 gap-4 px-4">
+      <div className="px-4">
         <Fridge />
-        <CookPlate />
       </div>
       <div className="py-2 px-4">
         <OutputResults/>
