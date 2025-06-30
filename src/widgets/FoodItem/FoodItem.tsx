@@ -1,7 +1,7 @@
 "use client"
-import { FoodItemProps } from "@/src/api/types/foods"
+import { FoodItemComponentProps } from "@/src/api/types/FoodItem"
 import { AnimatePresence, motion } from "framer-motion"
-import { NutritionInfo } from "../nutrition_info/nutrition_info"
+import NutritionInfo from "@/src/widgets/NutritionInfo/NutritionInfo"
 import { useState } from "react"
 import Image from "next/image"
 // заменить название БЖУ на иконки, решить проблему с оформлением
@@ -10,23 +10,8 @@ import Image from "next/image"
 const CONTAINER_STYLES =
   "grid grid-cols-auto gap-2 border-gray-600 border-2 px-2 py-2 rounded-lg hover:bg-slate-300 cursor-pointer relative min-h-[40px]"
 
-export const FoodItem = ({
-  id,
-  name,
-  callory,
-  proteins,
-  fats,
-  carbs,
-  onDragStart,
-  onDragEnd,
-  showDeleteButton,
-  onDelete,
-}: FoodItemProps & {
-  onDragStart?: (e: React.DragEvent) => void
-  onDragEnd?: (e: React.DragEvent) => void
-  showDeleteButton?: boolean
-  onDelete?: () => void
-}) => {
+function FoodItem(props: FoodItemComponentProps) {
+  const { id, name, callory, proteins, fats, carbs, onDragStart, onDragEnd, showDeleteButton, onDelete } = props
   const [showNutrition, setShowNutrition] = useState(false)
 
   return (
@@ -37,8 +22,9 @@ export const FoodItem = ({
       key={id}
       draggable
       onDragStart={onDragStart}
-      onDragEnd={onDragEnd}>
-      <div className="flex justify-items-stre gap-4">
+      onDragEnd={onDragEnd}
+    >
+      <div className="flex items-center gap-2">
         <h3 className="truncate flex-1">{name}</h3>
         <div className="flex gap-1 flex-shrink-0">
           <button
@@ -46,7 +32,8 @@ export const FoodItem = ({
             onClick={(e) => {
               e.stopPropagation()
               setShowNutrition(!showNutrition)
-            }}>
+            }}
+          >
             <Image src="/dots.png" alt="dots" width={16} height={16} />
           </button>
           {showDeleteButton && (
@@ -55,7 +42,8 @@ export const FoodItem = ({
               onClick={(e) => {
                 e.stopPropagation()
                 onDelete?.()
-              }}>
+              }}
+            >
               ✕
             </button>
           )}
@@ -75,3 +63,5 @@ export const FoodItem = ({
     </motion.div>
   )
 }
+
+export { FoodItem }

@@ -1,8 +1,8 @@
 "use client"
 import React, { useState } from "react"
-import { FoodItem } from "@/src/widgets/food_item/food_item"
-import { FoodItemProps } from "@/src/api/types/foods"
-import CookPlate from "@/src/components/cook_plate/CookPlate"
+import { FoodItem } from "@/src/widgets/FoodItem/FoodItem"
+import { FoodItemProps } from "@/src/api/types/Foods"
+import CookPlate from "@/src/components/CookPlate/CookPlate"
 
 const MOCK_FOODS: FoodItemProps[] = [
   {

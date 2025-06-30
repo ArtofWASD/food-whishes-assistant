@@ -1,17 +1,7 @@
 "use client"
 import React from "react"
-import { FoodItem } from "@/src/widgets/food_item/food_item"
-import { FoodItemProps } from "@/src/api/types/foods"
-
-type CookPlateProps = {
-  items: FoodItemProps[]
-  onDrop: (item: FoodItemProps) => void
-  onRemoveItem?: (id: number) => void
-  onRemoveAll?: () => void
-  onGetResult?: () => void
-  className?: string
-  isDragging?: boolean
-}
+import { FoodItem } from "@/src/widgets/FoodItem/FoodItem"
+import { CookPlateProps } from "@/src/api/types/CookPlate"
 
 const CookPlate: React.FC<CookPlateProps> = ({
   items,

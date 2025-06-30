@@ -1,8 +1,8 @@
 "use client"
 
-import Fridge from "@/src/components/fridge/fridge"
-import { OutputResults } from "@/src/components/output_results/output_results"
-import SettingsBar from "@/src/components/settings_bar/settings_bar"
+import Fridge from "@/src/components/Fridge/Fridge"
+import OutputResults from "@/src/components/OutputResults/OutputResults"
+import SettingsBar from "@/src/components/SettingsBar/SettingsBar"
 
 export default function Home() {
   return (

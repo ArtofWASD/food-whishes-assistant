@@ -1,7 +1,8 @@
 "use client"
 import { motion } from "motion/react"
 import React, { useState } from "react"
-export const Toggler = () => {
+
+const Toggler = () => {
   const [isToggled, setIsToggled] = useState(false);
 
   const handleToggle = () => {
@@ -28,4 +29,6 @@ export const Toggler = () => {
     </div>
   );
 }
+
+export default Toggler
 

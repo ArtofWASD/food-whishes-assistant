@@ -1,6 +1,7 @@
 "use client"
 import React from "react"
 import { motion } from "framer-motion"
+import { NutritionInfoProps } from "@/src/api/types/NutritionInfo"
 
 const ANIMATION_VARIANTS = {
   hidden: { opacity: 0, height: 0 },
@@ -11,19 +12,7 @@ const ANIMATION_VARIANTS = {
 const NUTRITION_INFO_STYLES = "flex flex-col gap-1 overflow-hidden"
 const NUTRITION_TEXT_STYLES = "flex gap-1 text-sm"
 
-type NutritionInfoProps = {
-  proteins: number
-  fats: number
-  carbs: number
-  callory: number
-}
-
-export const NutritionInfo = ({
-  proteins,
-  fats,
-  carbs,
-  callory,
-}: NutritionInfoProps) => (
+const NutritionInfo = ({ proteins, fats, carbs, callory }: NutritionInfoProps) => (
   <motion.div
     className={NUTRITION_INFO_STYLES}
     variants={ANIMATION_VARIANTS}
@@ -37,4 +26,6 @@ export const NutritionInfo = ({
     <div className={NUTRITION_TEXT_STYLES}>Ж: {fats} гр.</div>
     <div className={NUTRITION_TEXT_STYLES}>У: {carbs} гр.</div>
   </motion.div>
-) 
+)
+
+export default NutritionInfo 
