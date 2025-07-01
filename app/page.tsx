@@ -6,17 +6,23 @@ import SettingsBar from "@/src/components/SettingsBar/SettingsBar"
 
 export default function Home() {
   return (
-    <div>
-      <h1 className="text-3xl font-bold text-center py-2">Food-whishes-assistant</h1>
-      <div className="py-2 px-4">
+    <main className="min-h-screen bg-[var(--background)]">
+      {/* Header */}
+      <header className="py-4">
+        <h1 className="text-3xl font-bold text-center">Food-whishes-assistant</h1>
+      </header>
+      {/* Settings */}
+      <div className="px-4 py-4">
         <SettingsBar />
       </div>
-      <div className="px-4">
+      {/* Fridge */}
+      <div className="px-4 mb-8">
         <Fridge />
       </div>
-      <div className="py-2 px-4">
-        <OutputResults/>
+      {/* Output Results */}
+      <div className="px-4">
+        <OutputResults />
       </div>
-    </div>
+    </main>
   )
 }

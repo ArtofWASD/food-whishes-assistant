@@ -6,7 +6,8 @@
         "callory": 52,
         "proteins": 0.3,
         "fats": 0.2,
-        "carbs": 14
+        "carbs": 14,
+        "imgUrl": "https://upload.wikimedia.org/wikipedia/commons/1/15/Red_Apple.jpg"
       },
       {
         "id": 2,
@@ -14,7 +15,8 @@
         "callory": 96,
         "proteins": 1.3,
         "fats": 0.3,
-        "carbs": 27
+        "carbs": 27,
+        "imgUrl": "https://www.themealdb.com/images/ingredients/banana.png"
       },
       {
         "id": 3,
@@ -22,7 +24,8 @@
         "callory": 41,
         "proteins": 0.9,
         "fats": 0.2,
-        "carbs": 10
+        "carbs": 10,
+        "imgUrl": "https://www.themealdb.com/images/ingredients/carrot.png"
       },
       {
         "id": 4,
@@ -30,7 +33,8 @@
         "callory": 18,
         "proteins": 0.9,
         "fats": 0.2,
-        "carbs": 4
+        "carbs": 4,
+        "imgUrl": "https://www.themealdb.com/images/ingredients/tomato.png"
       },
       {
         "id": 5,
@@ -38,7 +42,8 @@
         "callory": 34,
         "proteins": 2.8,
         "fats": 0.4,
-        "carbs": 7
+        "carbs": 7,
+        "imgUrl": "https://www.themealdb.com/images/ingredients/broccoli.png"
       },
       {
         "id": 6,
@@ -46,7 +51,8 @@
         "callory": 47,
         "proteins": 0.9,
         "fats": 0.1,
-        "carbs": 12
+        "carbs": 12,
+        "imgUrl": "https://www.themealdb.com/images/ingredients/orange.png"
       },
       {
         "id": 7,
@@ -54,7 +60,8 @@
         "callory": 15,
         "proteins": 0.7,
         "fats": 0.1,
-        "carbs": 3.6
+        "carbs": 3.6,
+        "imgUrl": "https://www.themealdb.com/images/ingredients/cucumber.png"
       },
       {
         "id": 8,
@@ -62,7 +69,8 @@
         "callory": 32,
         "proteins": 0.7,
         "fats": 0.3,
-        "carbs": 8
+        "carbs": 8,
+        "imgUrl": "https://www.themealdb.com/images/ingredients/strawberry.png"
       },
       {
         "id": 9,
@@ -70,7 +78,8 @@
         "callory": 23,
         "proteins": 2.9,
         "fats": 0.4,
-        "carbs": 3.6
+        "carbs": 3.6,
+        "imgUrl": "https://www.themealdb.com/images/ingredients/spinach.png"
       },
       {
         "id": 10,
@@ -78,7 +87,98 @@
         "callory": 50,
         "proteins": 0.5,
         "fats": 0.1,
-        "carbs": 13
+        "carbs": 13,
+        "imgUrl": "https://www.themealdb.com/images/ingredients/pineapple.png"
+      },
+      {
+        "id": 11,
+        "name": "Chicken Breast",
+        "callory": 165,
+        "proteins": 31,
+        "fats": 3.6,
+        "carbs": 0,
+        "imgUrl": "https://www.themealdb.com/images/ingredients/chicken-breast.png"
+      },
+      {
+        "id": 12,
+        "name": "Salmon",
+        "callory": 208,
+        "proteins": 20,
+        "fats": 13,
+        "carbs": 0,
+        "imgUrl": "https://www.themealdb.com/images/ingredients/salmon.png"
+      },
+      {
+        "id": 13,
+        "name": "Egg",
+        "callory": 155,
+        "proteins": 13,
+        "fats": 11,
+        "carbs": 1.1,
+        "imgUrl": "https://www.themealdb.com/images/ingredients/egg.png"
+      },
+      {
+        "id": 14,
+        "name": "Milk",
+        "callory": 42,
+        "proteins": 3.4,
+        "fats": 1,
+        "carbs": 5,
+        "imgUrl": "https://www.themealdb.com/images/ingredients/milk.png"
+      },
+      {
+        "id": 15,
+        "name": "Cheese",
+        "callory": 402,
+        "proteins": 25,
+        "fats": 33,
+        "carbs": 1.3,
+        "imgUrl": "https://www.themealdb.com/images/ingredients/cheese.png"
+      },
+      {
+        "id": 16,
+        "name": "Potato",
+        "callory": 77,
+        "proteins": 2,
+        "fats": 0.1,
+        "carbs": 17,
+        "imgUrl": "https://www.themealdb.com/images/ingredients/potato.png"
+      },
+      {
+        "id": 17,
+        "name": "Rice",
+        "callory": 130,
+        "proteins": 2.7,
+        "fats": 0.3,
+        "carbs": 28,
+        "imgUrl": "https://www.themealdb.com/images/ingredients/rice.png"
+      },
+      {
+        "id": 18,
+        "name": "Beef",
+        "callory": 250,
+        "proteins": 26,
+        "fats": 15,
+        "carbs": 0,
+        "imgUrl": "https://www.themealdb.com/images/ingredients/beef.png"
+      },
+      {
+        "id": 19,
+        "name": "Pasta",
+        "callory": 131,
+        "proteins": 5,
+        "fats": 1.1,
+        "carbs": 25,
+        "imgUrl": "https://www.themealdb.com/images/ingredients/pasta.png"
+      },
+      {
+        "id": 20,
+        "name": "Avocado",
+        "callory": 160,
+        "proteins": 2,
+        "fats": 15,
+        "carbs": 9,
+        "imgUrl": "https://www.themealdb.com/images/ingredients/avocado.png"
       }
   ]
 }

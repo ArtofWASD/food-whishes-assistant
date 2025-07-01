@@ -15,9 +15,7 @@ function FoodItem(props: FoodItemComponentProps) {
   const [showNutrition, setShowNutrition] = useState(false)
 
   return (
-    <motion.div
-      layout
-      transition={{ duration: 0.3 }}
+    <div
       className={CONTAINER_STYLES}
       key={id}
       draggable
@@ -52,15 +50,23 @@ function FoodItem(props: FoodItemComponentProps) {
 
       <AnimatePresence>
         {showNutrition && (
-          <NutritionInfo
-            proteins={proteins}
-            fats={fats}
-            carbs={carbs}
-            callory={callory}
-          />
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            style={{ overflow: 'hidden' }}
+          >
+            <NutritionInfo
+              proteins={proteins}
+              fats={fats}
+              carbs={carbs}
+              callory={callory}
+            />
+          </motion.div>
         )}
       </AnimatePresence>
-    </motion.div>
+    </div>
   )
 }
 

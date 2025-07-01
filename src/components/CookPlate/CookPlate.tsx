@@ -20,13 +20,13 @@ const CookPlate: React.FC<CookPlateProps> = ({
     onDrop(item)
   }
 
-  const baseClasses = "border-2 p-4 rounded-lg min-h-[100px] transition-colors"
+  const baseClasses = "p-4 rounded-lg min-h-[100px] transition-colors"
 
   let dynamicClasses
   if (isDragging && isEmpty) {
-    dynamicClasses = "border-green-800 bg-green-200 border-solid"
+    dynamicClasses = "bg-green-200"
   } else {
-    dynamicClasses = "border-gray-600 bg-slate-300 bg-opacity-35 border-dashed"
+    dynamicClasses = "bg-[var(--pastel-green)] bg-opacity-35 dark:bg-[var(--pastel-blue)] dark:text-white"
   }
 
   return (

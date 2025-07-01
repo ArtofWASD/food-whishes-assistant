@@ -3,56 +3,12 @@ import React, { useState } from "react"
 import { FoodItem } from "@/src/widgets/FoodItem/FoodItem"
 import { FoodItemProps } from "@/src/api/types/Foods"
 import CookPlate from "@/src/components/CookPlate/CookPlate"
-
-const MOCK_FOODS: FoodItemProps[] = [
-  {
-    id: 1,
-    name: "Яблоко",
-    callory: 52,
-    proteins: 0.3,
-    fats: 0.2,
-    carbs: 14,
-    imgUrl: "https://upload.wikimedia.org/wikipedia/commons/1/15/Red_Apple.jpg",
-  },
-  {
-    id: 2,
-    name: "Куриная грудка",
-    callory: 165,
-    proteins: 31,
-    fats: 3.6,
-    carbs: 0,
-    imgUrl: "https://www.themealdb.com/images/ingredients/chicken-breast.png",
-  },
-  {
-    id: 3,
-    name: "Огурец",
-    callory: 16,
-    proteins: 0.7,
-    fats: 0.1,
-    carbs: 3.6,
-    imgUrl: "https://www.themealdb.com/images/ingredients/cucumber.png",
-  },
-  {
-    id: 4,
-    name: "Соус терияки",
-    callory: 89,
-    proteins: 1,
-    fats: 0.2,
-    carbs: 20,
-    imgUrl: "https://www.themealdb.com/images/ingredients/teriyaki-sauce.png",
-  },
-]
+import foodsData from "@/src/api/fake_foods/fake_food_api.json"
 
 const Fridge = () => {
-  const [fridgeItems, setFridgeItems] = useState<FoodItemProps[]>(MOCK_FOODS)
+  const [fridgeItems, setFridgeItems] = useState<FoodItemProps[]>(foodsData.foods)
   const [cookPlateItems, setCookPlateItems] = useState<FoodItemProps[]>([])
   const [isDragging, setIsDragging] = useState(false)
-
-  // useEffect(() => {
-  //   fetch("/src/api/fake_foods/fake_food_api.json")
-  //     .then(res => res.json())
-  //     .then(data => setFridgeItems(data.foods))
-  // }, [])
 
   const handleDragStart = (item: FoodItemProps) => (e: React.DragEvent) => {
     e.dataTransfer.setData("foodItem", JSON.stringify(item))
@@ -88,7 +44,7 @@ const Fridge = () => {
 
   return (
     <div className="flex gap-4">
-      <div className="border-gray-600 border-2 border-dashed p-4 rounded-lg bg-slate-300 bg-opacity-35 flex-1">
+      <div className="p-4 rounded-lg flex-1 bg-[var(--pastel-green)] bg-opacity-35 dark:bg-[var(--pastel-blue)] dark:text-white">
         <h1 className="text-center">Fridge</h1>
         <div className="flex gap-2 py-2 flex-wrap">
           {fridgeItems.map(food => (

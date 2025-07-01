@@ -1,6 +1,8 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@layer utilities {
+  .test-bg { background: red !important; }
+}
 
 :root {
   --background: #f3f4f6;
@@ -17,7 +19,7 @@
 [data-theme="dark"] {
   --background: #23272f;
   --foreground: #ededed;
-  --pastel-blue: #3a506b;
+  --pastel-blue: #1e3a8a;
   --pastel-green: #3b6f5c;
   --pastel-yellow: #bfae5a;
   --pastel-pink: #a16a7b;
