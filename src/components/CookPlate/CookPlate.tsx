@@ -40,7 +40,7 @@ const CookPlate = ({ className }: { className?: string }) => {
               setFridgeItems([...fridgeItems, ...cookPlateItems])
               setCookPlateItems([])
             }}
-            className="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded text-sm"
+            className="px-4 py-2 rounded-lg bg-gradient-to-r from-pink-400 to-pink-600 shadow-md text-white font-semibold hover:from-pink-500 hover:to-pink-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-pink-300"
           >
             Удалить всё
           </button>
@@ -66,7 +66,7 @@ const CookPlate = ({ className }: { className?: string }) => {
         <div className="ml-2 mt-2">
           <button
             onClick={() => setShowResults(true)}
-            className="bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded text-sm"
+            className="px-4 py-2 rounded-lg bg-gradient-to-r from-blue-400 to-blue-600 shadow-md text-white font-semibold hover:from-blue-500 hover:to-blue-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-300"
           >
             Получить результат
           </button>
