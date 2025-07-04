@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { FoodItemProps } from '@/src/api/types/Foods'
+import { FoodItemProps } from '@/src/api/types/foods'
 
 interface AppState {
   fridgeItems: FoodItemProps[]

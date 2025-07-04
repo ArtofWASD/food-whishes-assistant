@@ -1,4 +1,4 @@
-import { FoodItemProps } from "./Foods"
+import { FoodItemProps } from "./foods"
 
 export type CookPlateProps = {
   items: FoodItemProps[]
