@@ -1,10 +1,10 @@
 "use client"
 
 import React from 'react'
-import OutputResults from "@/src/components/OutputResults/OutputResults"
-import SettingsBar from "@/src/components/SettingsBar/SettingsBar"
+import OutputResults from "@/src/components/output-results/output-results"
+import SettingsBar from "@/src/components/settings-bar/settings-bar"
 import { useAppStore } from '@/src/store/appStore'
-import CookPlate from "@/src/components/CookPlate/CookPlate"
+import CookPlate from "@/src/components/cook-plate/cook-plate"
 
 export default function Home() {
   const showResults = useAppStore(s => s.showResults)

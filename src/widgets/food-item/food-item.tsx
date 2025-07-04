@@ -1,7 +1,7 @@
 "use client"
 import { FoodItemComponentProps } from "@/src/api/types/FoodItem"
 import { AnimatePresence, motion } from "framer-motion"
-import NutritionInfo from "@/src/widgets/NutritionInfo/NutritionInfo"
+import NutritionInfo from "@/src/widgets/nutrition-info/nutrition-info"
 import { useState } from "react"
 import Image from "next/image"
 // заменить название БЖУ на иконки, решить проблему с оформлением

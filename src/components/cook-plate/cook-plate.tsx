@@ -1,9 +1,9 @@
 "use client"
 import React, { useState } from "react"
-import { FoodItem } from "@/src/widgets/FoodItem/FoodItem"
+import { FoodItem } from "@/src/widgets/food-item/food-item"
 import { useAppStore } from "@/src/store/appStore"
 import fakeFoods from "@/src/api/fake_foods/fake_food_api.json"
-import CookPlateSummary from "@/src/components/CookPlate/CookPlateSummary"
+import CookPlateSummary from "@/src/components/cook-plate/cook-plate-summary"
 
 const CookPlate = ({ className }: { className?: string }) => {
   // Получаем состояние из глобального стора

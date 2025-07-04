@@ -1,21 +1,14 @@
 import React from 'react'
-import ThemeSwitcher from '../../widgets/ThemeSwitcher/ThemeSwitcher'
-import Toggler from '../../widgets/Toggler/Toggler'
+import ThemeSwitcher from '../../widgets/theme-switcher/theme-switcher'
+import Toggler from '../../widgets/toggler/toggler'
 import { motion } from 'framer-motion'
 import { useAppStore } from '@/src/store/appStore'
-
-const viewModes = [
-  { value: 'list', label: 'Список' },
-  { value: 'grid', label: 'Плитка 4 в ряд' },
-  { value: 'flow', label: 'Все подряд' },
-]
 
 const SettingsBar = () => {
   const {
     minCalories, setMinCalories,
     onlyVegetables, setOnlyVegetables,
     bestMacros, setBestMacros,
-    viewMode, setViewMode
   } = useAppStore()
 
   return (

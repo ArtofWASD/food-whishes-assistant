@@ -62,8 +62,8 @@ const OutputResults = () => {
       const text = data.choices?.[0]?.message?.content || JSON.stringify(data)
       console.log('AI raw result:', text)
       setAiResult(text)
-    } catch (e: any) {
-      setError(e.message || "Ошибка запроса к нейросети")
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : "Ошибка запроса к нейросети")
     } finally {
       setLoading(false)
     }

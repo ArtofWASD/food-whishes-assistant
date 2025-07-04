@@ -1,5 +1,5 @@
 import React from "react"
-import { FoodItem } from "@/src/widgets/FoodItem/FoodItem"
+import { FoodItem } from "@/src/widgets/food-item/food-item"
 import { FoodItemComponentProps } from "@/src/api/types/FoodItem"
 
 type Props = {
