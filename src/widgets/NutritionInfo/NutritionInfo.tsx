@@ -5,7 +5,7 @@ import { NutritionInfoProps } from "@/src/api/types/NutritionInfo"
 
 const ANIMATION_VARIANTS = {
   hidden: { opacity: 0, height: 0 },
-  show: { opacity: 1, height: "auto" },
+  show: { opacity: 1, height: "auto", zIndex: 1000 },
   exit: { opacity: 0, height: 0 },
 } as const
 

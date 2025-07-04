@@ -1,10 +1,10 @@
 "use client"
 
 import React from 'react'
-import Fridge from "@/src/components/Fridge/Fridge"
 import OutputResults from "@/src/components/OutputResults/OutputResults"
 import SettingsBar from "@/src/components/SettingsBar/SettingsBar"
 import { useAppStore } from '@/src/store/appStore'
+import CookPlate from "@/src/components/CookPlate/CookPlate"
 
 export default function Home() {
   const showResults = useAppStore(s => s.showResults)
@@ -18,9 +18,8 @@ export default function Home() {
       <div className="p-4">
         <SettingsBar />
       </div>
-      {/* Fridge */}
-      <div className="p-4 ">
-        <Fridge />
+      <div className="p-4">
+        <CookPlate />
       </div>
       {/* Output Results */}
       <div className="p-4">

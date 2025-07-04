@@ -8,29 +8,33 @@ import Image from "next/image"
 
 // Выделяем стили в отдельные константы
 const CONTAINER_STYLES =
-  "grid grid-cols-auto gap-2 border-gray-600 border-2 px-2 py-2 rounded-lg hover:bg-slate-300 cursor-pointer relative min-h-[40px]"
+  "grid grid-cols-auto border-gray-600 border-2 px-2 py-2 rounded-lg hover:bg-slate-300 cursor-pointer relative min-h-[40px] min-h-0"
 
-function FoodItem(props: FoodItemComponentProps) {
-  const { id, name, callory, proteins, fats, carbs, onDragStart, onDragEnd, showDeleteButton, onDelete } = props
-  const [showNutrition, setShowNutrition] = useState(false)
+function FoodItem(props: FoodItemComponentProps & { showNutrition?: boolean; onToggleNutrition?: () => void }) {
+  const { id, name, callory, proteins, fats, carbs, showDeleteButton, onDelete, showNutrition: showNutritionProp, onToggleNutrition } = props
+  const [localShowNutrition, setLocalShowNutrition] = useState(false)
+  const showNutrition = showNutritionProp !== undefined ? showNutritionProp : localShowNutrition
+  const handleToggleNutrition = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    if (onToggleNutrition) {
+      onToggleNutrition()
+    } else {
+      setLocalShowNutrition(v => !v)
+    }
+  }
 
   return (
     <div
       className={CONTAINER_STYLES}
       key={id}
-      draggable
-      onDragStart={onDragStart}
-      onDragEnd={onDragEnd}
+      style={{ height: showNutrition ? 'auto' : 56, minHeight: 40, transition: 'height 0.2s' }}
     >
       <div className="flex items-center gap-2">
         <h3 className="truncate flex-1">{name}</h3>
         <div className="flex gap-1 flex-shrink-0">
           <button
             className="bg-gray-200 hover:bg-gray-300 rounded-full"
-            onClick={(e) => {
-              e.stopPropagation()
-              setShowNutrition(!showNutrition)
-            }}
+            onClick={handleToggleNutrition}
           >
             <Image src="/dots.png" alt="dots" width={16} height={16} />
           </button>
@@ -55,7 +59,7 @@ function FoodItem(props: FoodItemComponentProps) {
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.2 }}
-            style={{ overflow: 'hidden' }}
+            style={{ overflow: 'hidden', height: showNutrition ? 'auto' : undefined }}
           >
             <NutritionInfo
               proteins={proteins}
