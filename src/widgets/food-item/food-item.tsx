@@ -30,7 +30,7 @@ function FoodItem(props: FoodItemComponentProps & { showNutrition?: boolean; onT
       style={{ height: showNutrition ? 'auto' : 56, minHeight: 40, transition: 'height 0.2s' }}
     >
       <div className="flex items-center gap-2">
-        <h3 className="truncate flex-1">{name}</h3>
+        <h3 className="truncate flex-1 text-sm">{name}</h3>
         <div className="flex gap-1 flex-shrink-0">
           <button
             className="bg-gray-200 hover:bg-gray-300 rounded-full"
