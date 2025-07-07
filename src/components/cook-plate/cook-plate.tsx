@@ -1,5 +1,5 @@
 "use client"
-import React, { useState, useRef } from "react"
+import React, { useState } from "react"
 import { FoodItem } from "@/src/widgets/food-item/food-item"
 import { useAppStore } from "@/src/store/appStore"
 import fakeFoods from "@/src/api/fake_foods/fake_food_api.json"

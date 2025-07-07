@@ -2,43 +2,7 @@ import { create } from 'zustand'
 import { devtools } from 'zustand/middleware'
 import { FoodItemProps } from '@/src/api/types/foods'
 import { fetchAIRecipe } from '@/src/api/fetchAIRecipe'
-
-export function parseRecipes(text: string): Array<{
-  name: string | null,
-  description: string | null,
-  bju: string | null,
-  ingredients: string | null,
-  instruction: string | null,
-  full: string
-}> {
-  const parts = text.split(/===РЕЦЕПТ===/).map(s => s.trim()).filter(Boolean)
-  return parts.map(part => {
-    // Найти все маркеры и их позиции
-    const markerRegex = /===([A-ZА-ЯЁ\s]+?)===/gim
-    const fields: Record<string, string> = {}
-    const markers: { key: string, index: number }[] = []
-    let match
-    while ((match = markerRegex.exec(part)) !== null) {
-      markers.push({ key: match[1].trim().toUpperCase(), index: match.index })
-    }
-    // Для каждого маркера взять содержимое до следующего маркера
-    for (let i = 0; i < markers.length; i++) {
-      const key = markers[i].key
-      const start = markers[i].index + part.slice(markers[i].index).indexOf('===') + (`===${key}===`).length
-      const end = i + 1 < markers.length ? markers[i + 1].index : part.length
-      const value = part.slice(start, end).trim()
-      fields[key] = value
-    }
-    return {
-      name: fields['НАЗВАНИЕ РЕЦЕПТА'] || '',
-      description: fields['ОПИСАНИЕ'] || '',
-      bju: fields['БЖУ'] || '',
-      ingredients: fields['ИНГРЕДИЕНТЫ'] || '',
-      instruction: fields['ИНСТРУКЦИЯ'] || '',
-      full: part.trim()
-    }
-  })
-}
+import { parseRecipes } from '@/src/handlers/parseRecipes'
 
 interface AppState {
   fridgeItems: FoodItemProps[]
@@ -65,7 +29,7 @@ interface AppState {
 }
 
 export const useAppStore = create<AppState>()(
-  devtools((set, get) => ({
+  devtools((set) => ({
     fridgeItems: [],
     cookPlateItems: [],
     isDragging: false,
@@ -93,9 +57,13 @@ export const useAppStore = create<AppState>()(
         const text = await fetchAIRecipe()
         console.log('[fetchAIRecipeToStore] result:', text)
         set({ aiResult: text, parsedRecipes: parseRecipes(text) }, false, 'fetchAIRecipeToStore_success')
-      } catch (e: any) {
+      } catch (e: unknown) {
+        let message = 'Ошибка запроса к нейросети'
+        if (e && typeof e === 'object' && 'message' in e && typeof (e as { message?: unknown }).message === 'string') {
+          message = (e as { message: string }).message
+        }
         console.log('[fetchAIRecipeToStore] error:', e)
-        set({ aiError: e?.message || 'Ошибка запроса к нейросети', parsedRecipes: [] }, false, 'fetchAIRecipeToStore_error')
+        set({ aiError: message, parsedRecipes: [] }, false, 'fetchAIRecipeToStore_error')
       } finally {
         console.log('[fetchAIRecipeToStore] end')
         set({ aiLoading: false }, false, 'fetchAIRecipeToStore_end')

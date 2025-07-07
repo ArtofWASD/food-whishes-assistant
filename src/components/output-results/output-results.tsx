@@ -1,15 +1,15 @@
-import React, { forwardRef } from "react"
+import React from "react"
 import { useAppStore } from "@/src/store/appStore"
 import { FoodItemProps } from "@/src/api/types/foods"
+import type { parseRecipes } from "@/src/handlers/parseRecipes"
 
-const OutputResults = forwardRef<{}, {}>((_, ref) => { 
-  const { cookPlateItems, aiResult, aiLoading, aiError, fetchAIRecipeToStore, parsedRecipes } = useAppStore() as {
+const OutputResults: React.FC = () => { 
+  const { cookPlateItems, aiResult, aiLoading, aiError, parsedRecipes } = useAppStore() as {
     cookPlateItems: FoodItemProps[]
     aiResult: string
     aiLoading: boolean
     aiError: string
-    fetchAIRecipeToStore: () => Promise<void>
-    parsedRecipes: ReturnType<typeof import("@/src/store/appStore").parseRecipes>
+    parsedRecipes: ReturnType<typeof parseRecipes>
   }
   const [modal, setModal] = React.useState<{ open: boolean, content: string }>({ open: false, content: "" })
 
@@ -41,7 +41,7 @@ const OutputResults = forwardRef<{}, {}>((_, ref) => {
       {/* Список рецептов только с названием и кнопкой */}
       {!aiLoading && recipes.length > 0 && (
         <div className="mt-4 flex flex-col gap-2">
-          {recipes.map((r: ReturnType<typeof import("@/src/store/appStore").parseRecipes>[0], i: number) => {
+          {recipes.map((r: ReturnType<typeof parseRecipes>[0], i: number) => {
             const name = r.name || 'Без названия';
             return (
               <div key={i} className="flex items-center bg-white/80 dark:bg-slate-800/80 rounded-lg px-2 py-2 shadow text-base">
@@ -78,6 +78,6 @@ const OutputResults = forwardRef<{}, {}>((_, ref) => {
       )}
     </div>
   )
-})
+}
 
 export default OutputResults

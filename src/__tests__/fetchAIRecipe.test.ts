@@ -14,7 +14,7 @@ describe('fetchAIRecipe', () => {
     global.fetch = jest.fn().mockResolvedValue({
       ok: true,
       json: async () => ({ choices: [{ message: { content: '===РЕЦЕПТ===\nОмлет' } }] })
-    }) as any
+    }) as jest.MockedFunction<typeof fetch>
     process.env.NEXT_PUBLIC_OPENROUTER_TOKEN = 'test-token'
   })
 
