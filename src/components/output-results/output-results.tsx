@@ -14,12 +14,11 @@ const OutputResults: React.FC = () => {
   const [modal, setModal] = React.useState<{ open: boolean, content: string }>({ open: false, content: "" })
 
   React.useEffect(() => {
-    console.log('aiLoading:', aiLoading, 'aiResult:', aiResult, 'aiError:', aiError)
     if (cookPlateItems.length === 0) {
       setModal({ open: false, content: "" })
       return
     }
-  }, [aiLoading, aiError, aiResult, cookPlateItems.length])
+  }, [cookPlateItems.length])
 
   const recipes = parsedRecipes
   const title = recipes.length > 0 ? recipes[0].name : null

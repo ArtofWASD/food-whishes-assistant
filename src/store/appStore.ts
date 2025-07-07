@@ -51,21 +51,17 @@ export const useAppStore = create<AppState>()(
     setOnlyVegetables: (v) => set({ onlyVegetables: v }, false, 'setOnlyVegetables'),
     setBestMacros: (v) => set({ bestMacros: v }, false, 'setBestMacros'),
     fetchAIRecipeToStore: async () => {
-      console.log('[fetchAIRecipeToStore] start')
       set({ aiLoading: true, aiError: '', aiResult: '', parsedRecipes: [] }, false, 'fetchAIRecipeToStore_start')
       try {
         const text = await fetchAIRecipe()
-        console.log('[fetchAIRecipeToStore] result:', text)
         set({ aiResult: text, parsedRecipes: parseRecipes(text) }, false, 'fetchAIRecipeToStore_success')
       } catch (e: unknown) {
         let message = 'Ошибка запроса к нейросети'
         if (e && typeof e === 'object' && 'message' in e && typeof (e as { message?: unknown }).message === 'string') {
           message = (e as { message: string }).message
         }
-        console.log('[fetchAIRecipeToStore] error:', e)
         set({ aiError: message, parsedRecipes: [] }, false, 'fetchAIRecipeToStore_error')
       } finally {
-        console.log('[fetchAIRecipeToStore] end')
         set({ aiLoading: false }, false, 'fetchAIRecipeToStore_end')
       }
     },

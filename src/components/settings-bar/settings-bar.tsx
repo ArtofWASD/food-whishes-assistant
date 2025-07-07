@@ -13,8 +13,8 @@ const SettingsBar = () => {
 
   return (
     <div className="rounded-xl bg-[var(--pastel-blue)] bg-opacity-35 flex flex-col gap-2">
-      <div className="flex flex-row items-center gap-2 justify-between w-full">
-        <div className="flex flex-row items-center gap-2">
+      <div className="flex flex-row flex-wrap items-center gap-2 justify-between w-full max-[425px]:flex-col max-[425px]:items-stretch">
+        <div className="flex flex-row flex-wrap items-center gap-2 max-[425px]:flex-col max-[425px]:items-stretch">
           <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1, type: 'spring', stiffness: 150, damping: 20 }}>
             <Toggler label="Мин. калорийность" value={minCalories} onChange={setMinCalories} />
           </motion.div>

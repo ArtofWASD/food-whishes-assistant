@@ -27,7 +27,6 @@ export async function fetchAIRecipe() {
 [Пошаговая инструкция по приготовлению блюда]
 
 Все поля должны быть на русском языке. Не добавляй ничего лишнего, кроме указанных маркеров и содержимого между ними. Каждый новый рецепт начинай с маркера ===РЕЦЕПТ===.`
-  console.log('[fetchAIRecipe] prompt:', prompt)
 
   const OPENROUTER_TOKEN = process.env.NEXT_PUBLIC_OPENROUTER_TOKEN
   if (!OPENROUTER_TOKEN) throw new Error("OpenRouter API key is not set in environment variables")
