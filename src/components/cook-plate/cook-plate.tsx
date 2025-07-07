@@ -1,15 +1,16 @@
 "use client"
-import React, { useState } from "react"
+import React, { useState, useRef } from "react"
 import { FoodItem } from "@/src/widgets/food-item/food-item"
 import { useAppStore } from "@/src/store/appStore"
 import fakeFoods from "@/src/api/fake_foods/fake_food_api.json"
 import CookPlateSummary from "@/src/components/cook-plate/cook-plate-summary"
+import { Button } from "@/src/ui/button"  
 
 const CookPlate = ({ className }: { className?: string }) => {
   // Получаем состояние из глобального стора
   const {
     cookPlateItems, setCookPlateItems,
-    setShowResults
+    setShowResults, fetchAIRecipeToStore
   } = useAppStore()
   const isEmpty = cookPlateItems.length === 0
 
@@ -86,19 +87,19 @@ const CookPlate = ({ className }: { className?: string }) => {
             <option key={f.id} value={f.id}>{f.name}</option>
           ))}
         </select>
-        <button
+        <Button
           onClick={handleAddProduct}
-          className="px-4 py-2 rounded-lg bg-gradient-to-r from-green-400 to-green-600 shadow-md text-white font-semibold hover:from-green-500 hover:to-green-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green-300"
+          className="bg-gradient-to-r from-green-400 to-green-600 shadow-md text-white hover:from-green-500 hover:to-green-700 focus:ring-2 focus:ring-green-300"
         >
           Добавить продукт
-        </button>
+        </Button>
         {search.trim() && filteredFoods.length === 0 && !showCustomForm && (
-          <button
+          <Button
             onClick={() => setShowCustomForm(true)}
-            className="px-4 py-2 rounded-lg bg-gradient-to-r from-yellow-400 to-yellow-600 shadow-md text-white font-semibold hover:from-yellow-500 hover:to-yellow-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-yellow-300"
+            className="bg-gradient-to-r from-yellow-400 to-yellow-600 shadow-md text-white hover:from-yellow-500 hover:to-yellow-700 focus:ring-2 focus:ring-yellow-300"
           >
             Добавить свой продукт
-          </button>
+          </Button>
         )}
       </div>
       {/* Форма для пользовательского продукта */}
@@ -142,18 +143,18 @@ const CookPlate = ({ className }: { className?: string }) => {
             />
           </div>
           <div className="flex gap-2 mt-2">
-            <button
+            <Button
               onClick={handleAddCustomProduct}
-              className="px-4 py-2 rounded-lg bg-gradient-to-r from-green-400 to-green-600 shadow-md text-white font-semibold hover:from-green-500 hover:to-green-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green-300"
+              className="bg-gradient-to-r from-green-400 to-green-600 shadow-md text-white hover:from-green-500 hover:to-green-700 focus:ring-2 focus:ring-green-300"
             >
               Добавить
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={() => setShowCustomForm(false)}
-              className="px-4 py-2 rounded-lg bg-gray-300 text-gray-800 font-semibold hover:bg-gray-400 transition-all duration-200 focus:outline-none"
+              className="bg-gray-300 text-gray-800 hover:bg-gray-400"
             >
               Отмена
-            </button>
+            </Button>
           </div>
         </div>
       )}
@@ -173,20 +174,23 @@ const CookPlate = ({ className }: { className?: string }) => {
       </div>
       {/* Кнопки действий */}
       {cookPlateItems.length >= 2 && (
-        <button
+        <Button
           onClick={() => setCookPlateItems([])}
-          className="absolute left-4 bottom-4 px-4 py-2 rounded-lg bg-gradient-to-r from-red-400 to-red-600 shadow-md text-white font-semibold hover:from-red-500 hover:to-red-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-red-300 z-20"
+          className="absolute left-4 bottom-4 bg-gradient-to-r from-red-400 to-red-600 shadow-md text-white hover:from-red-500 hover:to-red-700 focus:ring-2 focus:ring-red-300 z-20"
         >
           Удалить все
-        </button>
+        </Button>
       )}
       {!isEmpty && (
-        <button
-          onClick={() => setShowResults(true)}
-          className="fixed md:absolute right-4 bottom-4 px-4 py-2 rounded-lg bg-gradient-to-r from-blue-400 to-blue-600 shadow-md text-white font-semibold hover:from-blue-500 hover:to-blue-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-300 z-20"
+        <Button
+          onClick={() => {
+            setShowResults(true)
+            if (cookPlateItems.length > 0) fetchAIRecipeToStore()
+          }}
+          className="fixed md:absolute right-4 bottom-4 bg-gradient-to-r from-blue-400 to-blue-600 shadow-md text-white hover:from-blue-500 hover:to-blue-700 focus:ring-2 focus:ring-blue-300 z-20"
         >
           Получить результат
-        </button>
+        </Button>
       )}
     </div>
   )

@@ -1,101 +1,60 @@
-import React, { useState } from "react"
+import React, { forwardRef } from "react"
 import { useAppStore } from "@/src/store/appStore"
+import { FoodItemProps } from "@/src/api/types/foods"
 
-const OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"
-const OPENROUTER_MODEL = "mistralai/mixtral-8x7b-instruct"
-const OPENROUTER_TOKEN = "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"
-
-// Парсинг ответа нейросети на массив рецептов
-function parseRecipes(text: string): { line: string, full: string }[] {
-  // Разделяем по спецсимволу ===РЕЦЕПТ===
-  const parts = text.split(/===РЕЦЕПТ===/).map(s => s.trim()).filter(Boolean)
-  if (parts.length > 1) {
-    return parts.map(part => {
-      const oneLine = part.replace(/\s*\n\s*/g, ' ').replace(/\s+/g, ' ').trim()
-      return {
-        line: oneLine,
-        full: part.trim()
-      }
-    })
+const OutputResults = forwardRef<{}, {}>((_, ref) => { 
+  const { cookPlateItems, aiResult, aiLoading, aiError, fetchAIRecipeToStore, parsedRecipes } = useAppStore() as {
+    cookPlateItems: FoodItemProps[]
+    aiResult: string
+    aiLoading: boolean
+    aiError: string
+    fetchAIRecipeToStore: () => Promise<void>
+    parsedRecipes: ReturnType<typeof import("@/src/store/appStore").parseRecipes>
   }
-  // Fallback: старое деление
-  const fallback = text.split(/(?:\n\s*\n|Рецепт\s*\d*\:)/).map(s => s.trim()).filter(Boolean)
-  return fallback.map(part => {
-    const oneLine = part.replace(/\s*\n\s*/g, ' ').replace(/\s+/g, ' ').trim()
-    return {
-      line: oneLine,
-      full: part.trim()
+  const [modal, setModal] = React.useState<{ open: boolean, content: string }>({ open: false, content: "" })
+
+  React.useEffect(() => {
+    console.log('aiLoading:', aiLoading, 'aiResult:', aiResult, 'aiError:', aiError)
+    if (cookPlateItems.length === 0) {
+      setModal({ open: false, content: "" })
+      return
     }
-  })
-}
+  }, [aiLoading, aiError, aiResult, cookPlateItems.length])
 
-const OutputResults = () => {
-  const { cookPlateItems } = useAppStore()
-  const [aiResult, setAiResult] = useState<string>("")
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState("")
-  const [modal, setModal] = useState<{ open: boolean, content: string }>({ open: false, content: "" })
-
-  // Промпт на русском
-  const prompt = `Предложи несколько простых рецептов из этих продуктов: ${cookPlateItems.map(i => i.name).join(", ")}. Каждый рецепт отделяй строкой ===РЕЦЕПТ===. В каждом рецепте укажи название, краткое описание, БЖУ, ингредиенты и пошаговую инструкцию на русском языке.`
-
-  const handleGetAIRecipe = async () => {
-    setLoading(true)
-    setError("")
-    setAiResult("")
-    try {
-      const response = await fetch(OPENROUTER_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${OPENROUTER_TOKEN}`
-        },
-        body: JSON.stringify({
-          model: OPENROUTER_MODEL,
-          messages: [
-            { role: "user", content: prompt }
-          ]
-        })
-      })
-      if (!response.ok) throw new Error("Ошибка OpenRouter API")
-      const data = await response.json()
-      const text = data.choices?.[0]?.message?.content || JSON.stringify(data)
-      console.log('AI raw result:', text)
-      setAiResult(text)
-    } catch (e: unknown) {
-      setError(e instanceof Error ? e.message : "Ошибка запроса к нейросети")
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  // Парсим рецепты
-  const recipes = aiResult ? parseRecipes(aiResult) : []
+  const recipes = parsedRecipes
+  const title = recipes.length > 0 ? recipes[0].name : null
 
   return (
     <div className="p-4 rounded-lg bg-[var(--pastel-green)] bg-opacity-35 min-h-72 dark:bg-[var(--pastel-blue)] dark:text-white overflow-y-auto relative">
-      <button
-        className="absolute top-2 right-2 px-4 py-2 rounded-lg bg-gradient-to-r from-blue-400 to-blue-600 shadow-md text-white font-semibold hover:from-blue-500 hover:to-blue-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-300"
-        onClick={handleGetAIRecipe}
-        disabled={loading || cookPlateItems.length === 0}
-      >
-        {loading ? "Генерация..." : "Получить рецепт от Mixtral (OpenRouter)"}
-      </button>
-      {error && <div className="text-red-600 mt-4">{error}</div>}
-      {/* Список рецептов одной строкой */}
-      {recipes.length > 0 && (
-        <div className="mt-8 flex flex-col gap-2">
-          {recipes.map((r, i) => (
-            <div key={i} className="flex items-center bg-white/80 dark:bg-slate-800/80 rounded-lg px-2 py-2 shadow text-base">
-              <button
-                className="mr-4 px-3 py-1 rounded-lg bg-gradient-to-r from-green-400 to-green-600 shadow text-white font-semibold hover:from-green-500 hover:to-green-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green-300"
-                onClick={() => setModal({ open: true, content: r.full })}
-              >
-                Подробнее
-              </button>
-              <span className="truncate">{r.line}</span>
-            </div>
-          ))}
+      {/* Лоадер теперь в основном компоненте */}
+      {aiLoading && (
+        <div className="flex flex-col items-center justify-center gap-2 mt-8">
+          <div className="w-8 h-8 border-4 border-blue-400 border-t-transparent rounded-full animate-spin mb-2"></div>
+          <span>Генерация...</span>
+        </div>
+      )}
+      {aiError && <div className="text-red-600 mt-4">{aiError}</div>}
+      {/* Заголовок ответа */}
+      {!aiLoading && title && (
+        <div className="mt-8 text-2xl font-bold text-center mb-4">{title}</div>
+      )}
+      {/* Список рецептов только с названием и кнопкой */}
+      {!aiLoading && recipes.length > 0 && (
+        <div className="mt-4 flex flex-col gap-2">
+          {recipes.map((r: ReturnType<typeof import("@/src/store/appStore").parseRecipes>[0], i: number) => {
+            const name = r.name || 'Без названия';
+            return (
+              <div key={i} className="flex items-center bg-white/80 dark:bg-slate-800/80 rounded-lg px-2 py-2 shadow text-base">
+                <button
+                  className="mr-4 px-3 py-1 rounded-lg bg-gradient-to-r from-green-400 to-green-600 shadow text-white font-semibold hover:from-green-500 hover:to-green-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green-300"
+                  onClick={() => setModal({ open: true, content: r.full })}
+                >
+                  Подробнее
+                </button>
+                <span className="truncate font-semibold">{name}</span>
+              </div>
+            )
+          })}
         </div>
       )}
       {/* Модальное окно */}
@@ -108,17 +67,17 @@ const OutputResults = () => {
             >
               ×
             </button>
-            <div className="whitespace-pre-line text-base">
+            <div className="whitespace-pre-line text-base min-h-12 flex items-center justify-center">
               {modal.content}
             </div>
           </div>
         </div>
       )}
-      {!aiResult && !loading && !error && (
+      {!aiResult && !aiLoading && !aiError && (
         <div className="mt-8 text-gray-500 text-center">Нажмите кнопку, чтобы получить рецепт на основе выбранных продуктов.</div>
       )}
     </div>
   )
-}
+})
 
 export default OutputResults
