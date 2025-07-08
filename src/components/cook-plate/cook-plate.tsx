@@ -6,6 +6,7 @@ import fakeFoods from "@/src/api/fake_foods/fake_food_api.json"
 import CookPlateSummary from "@/src/components/cook-plate/cook-plate-summary"
 import { Button } from "@/src/ui/button"
 import CustomProductForm from "./custom-product-form"
+import type { FoodItemProps } from "@/src/api/types/foods"
 
 const CookPlate = ({ className }: { className?: string }) => {
   // Получаем состояние из глобального стора
@@ -75,7 +76,7 @@ const CookPlate = ({ className }: { className?: string }) => {
               ×
             </button>
             <CustomProductForm
-              onAdd={(product: any) => {
+              onAdd={(product: FoodItemProps) => {
                 setCookPlateItems([...cookPlateItems, product])
                 setShowCustomForm(false)
               }}
