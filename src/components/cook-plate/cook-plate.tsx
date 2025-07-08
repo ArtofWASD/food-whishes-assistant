@@ -7,6 +7,7 @@ import CookPlateSummary from "@/src/components/cook-plate/cook-plate-summary"
 import { Button } from "@/src/ui/button"
 import CustomProductForm from "./custom-product-form"
 import type { FoodItemProps } from "@/src/api/types/foods"
+import { XMarkIcon } from '@heroicons/react/24/solid'
 
 const CookPlate = ({ className }: { className?: string }) => {
   // Получаем состояние из глобального стора
@@ -69,14 +70,14 @@ const CookPlate = ({ className }: { className?: string }) => {
       </div>
       {/* Форма для пользовательского продукта */}
       {showCustomForm && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 animate-fade-in">
+        <div className="fixed inset-0 px-4 z-50 flex items-center justify-center bg-black/60 animate-fade-in">
           <div className="bg-white dark:bg-gray-900 rounded-xl shadow-lg w-full max-w-2xl h-[250px] max-h-[250px] relative animate-fade-in-up flex flex-col">
             <button
-              className="absolute top-2 right-2 z-10 text-gray-500 hover:text-gray-800 dark:hover:text-white text-2xl font-bold focus:outline-none focus:ring-2 focus:ring-blue-300 bg-gradient-to-r from-gray-200 to-gray-400 rounded-full w-8 h-8 flex items-center justify-center shadow"
+              className="absolute top-3 right-3 text-gray-500 hover:text-gray-800 dark:hover:text-white"
               onClick={() => setShowCustomForm(false)}
               aria-label="Закрыть"
             >
-              ×
+              <XMarkIcon className="w-7 h-7" /> 
             </button>
             <CustomProductForm
               onAdd={(product: FoodItemProps) => {
@@ -119,7 +120,7 @@ const CookPlate = ({ className }: { className?: string }) => {
             setShowResults(true)
             if (cookPlateItems.length > 0) fetchAIRecipeToStore()
           }}
-          className="fixed md:absolute right-4 bottom-4 bg-gradient-to-r from-blue-400 to-blue-600 shadow-md text-white hover:from-blue-500 hover:to-blue-700 focus:ring-2 focus:ring-blue-300 z-20"
+          className="absolute right-4 bottom-4 bg-gradient-to-r from-blue-400 to-blue-600 shadow-md text-white hover:from-blue-500 hover:to-blue-700 focus:ring-2 focus:ring-blue-300 z-20"
         >
           Получить результат
         </Button>

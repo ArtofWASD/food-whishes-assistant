@@ -11,18 +11,18 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-[var(--background)]">
       {/* Header */}
-      <header className="py-4">
-        <h1 className="text-3xl font-bold text-center">Food-whishes-assistant</h1>
+      <header className="py-2">
+        <h1 className="text-3xl font-bold text-center">Из чего?</h1>
       </header>
       {/* Settings */}
-      <div className="p-4">
+      <div className="p-2">
         <SettingsBar />
       </div>
-      <div className="p-4">
+      <div className="p-2">
         <CookPlate />
       </div>
       {/* Output Results */}
-      <div className="p-4">
+      <div className="p-2">
         {showResults && <OutputResults />}
       </div>
     </main>

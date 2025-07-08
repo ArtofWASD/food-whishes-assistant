@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
 import { Button } from "@/src/ui/button"
+import { XMarkIcon } from '@heroicons/react/24/solid'
 
 const schema = yup.object({
   name: yup.string().required("Название обязательно"),
@@ -57,6 +58,15 @@ const CustomProductForm: React.FC<Props> = ({ onAdd, onCancel, showLabels, style
       autoComplete="off"
       style={style}
     >
+      {/* Кнопка закрытия в правом верхнем углу */}
+      <button
+        type="button"
+        className="absolute top-3 right-3 text-gray-500 hover:text-gray-800 dark:hover:text-white z-10"
+        onClick={onCancel}
+        aria-label="Закрыть форму"
+      >
+        <XMarkIcon className="w-7 h-7" />
+      </button>
       <div className="flex flex-col w-full">
         <input
           type="text"
@@ -66,7 +76,7 @@ const CustomProductForm: React.FC<Props> = ({ onAdd, onCancel, showLabels, style
             register("name").ref(e)
             nameRef.current = e
           }}
-          className={`border rounded-md px-2 py-1 mt-10 text-sm focus:ring-2 focus:ring-yellow-400 outline-none ${errors.name ? "border-red-400" : "border-gray-300"}`}
+          className={`border rounded-md px-2 py-1 mt-4 text-sm focus:ring-2 focus:ring-yellow-400 outline-none ${errors.name ? "border-red-400" : "border-gray-300"}`}
           aria-invalid={!!errors.name}
         />
         {errors.name && <span className="text-xs text-red-500 mt-0.5" role="alert">{errors.name.message}</span>}
@@ -76,13 +86,13 @@ const CustomProductForm: React.FC<Props> = ({ onAdd, onCancel, showLabels, style
           
         </div>
       )}
-      <div className="flex flex-wrap gap-4 w-full items-center">
+      <div className="flex flex-wrap gap-2 justify-start md:justify-center w-full items-center">
       <span className="text-center">Ккал:</span>
         <input
           type="number"
           placeholder="Ккал"
           {...register("callory")}
-          className={`border rounded-md px-2 py-1 text-sm w-20 text-center focus:ring-2 focus:ring-yellow-400 outline-none ${errors.callory ? "border-red-400" : "border-gray-300"}`}
+          className={`border rounded-md px-2 py-1 text-sm w-10 text-center focus:ring-2 focus:ring-yellow-400 outline-none font-semibold ${errors.callory ? "border-red-400" : "border-gray-300"} max-[425px]:w-14 max-[425px]:text-xs max-[425px]:font-semibold`}
           aria-invalid={!!errors.callory}
           min={0}
         />
@@ -91,7 +101,7 @@ const CustomProductForm: React.FC<Props> = ({ onAdd, onCancel, showLabels, style
           type="number"
           placeholder="Б"
           {...register("proteins")}
-          className={`border rounded-md px-2 py-1 text-sm w-16 text-center focus:ring-2 focus:ring-yellow-400 outline-none ${errors.proteins ? "border-red-400" : "border-gray-300"}`}
+          className={`border rounded-md px-2 py-1 text-sm w-10 text-center focus:ring-2 focus:ring-yellow-400 outline-none font-semibold ${errors.proteins ? "border-red-400" : "border-gray-300"} max-[425px]:w-12 max-[425px]:text-xs max-[425px]:font-semibold`}
           aria-invalid={!!errors.proteins}
           min={0}
         />
@@ -100,7 +110,7 @@ const CustomProductForm: React.FC<Props> = ({ onAdd, onCancel, showLabels, style
           type="number"
           placeholder="Ж"
           {...register("fats")}
-          className={`border rounded-md px-2 py-1 text-sm w-16 text-center focus:ring-2 focus:ring-yellow-400 outline-none ${errors.fats ? "border-red-400" : "border-gray-300"}`}
+          className={`border rounded-md px-2 py-1 text-sm w-10 text-center focus:ring-2 focus:ring-yellow-400 outline-none font-semibold ${errors.fats ? "border-red-400" : "border-gray-300"} max-[425px]:w-12 max-[425px]:text-xs max-[425px]:font-semibold`}
           aria-invalid={!!errors.fats}
           min={0}
         />
@@ -109,7 +119,7 @@ const CustomProductForm: React.FC<Props> = ({ onAdd, onCancel, showLabels, style
           type="number"
           placeholder="У"
           {...register("carbs")}
-          className={`border rounded-md px-2 py-1 text-sm w-16 text-center focus:ring-2 focus:ring-yellow-400 outline-none ${errors.carbs ? "border-red-400" : "border-gray-300"}`}
+          className={`border rounded-md px-2 py-1 text-sm w-10 text-center focus:ring-2 focus:ring-yellow-400 outline-none font-semibold ${errors.carbs ? "border-red-400" : "border-gray-300"} max-[425px]:w-12 max-[425px]:text-xs max-[425px]:font-semibold`}
           aria-invalid={!!errors.carbs}
           min={0}
         />
