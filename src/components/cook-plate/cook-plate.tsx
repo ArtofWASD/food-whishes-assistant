@@ -37,32 +37,35 @@ const CookPlate = ({ className }: { className?: string }) => {
   return (
     // Корневой контейнер CookPlate
     <div className={`relative p-4 rounded-lg min-h-[400px] transition-colors ${className || ""} flex flex-col bg-[var(--pastel-green)] bg-opacity-35 dark:bg-[var(--pastel-blue)] dark:text-white`}>
-      {/* Сумма БЖУ и калорий в правом верхнем углу */}
-      <CookPlateSummary items={cookPlateItems} />
-      {/* Блок выбора и добавления продукта */}
-      <div className="flex flex-col md:flex-row gap-2 items-center mb-4">
-        <select
-          value={selectedId ?? ""}
-          onChange={e => setSelectedId(Number(e.target.value))}
-          className="border rounded-lg px-3 py-2 w-full md:w-64"
-        >
-          <option value="">Выберите продукт</option>
-          {foods.map(f => (
-            <option key={f.id} value={f.id}>{f.name}</option>
-          ))}
-        </select>
-        <Button
-          onClick={handleAddProduct}
-          className="bg-gradient-to-r from-green-400 to-green-600 shadow-md text-white hover:from-green-500 hover:to-green-700 focus:ring-2 focus:ring-green-300"
-        >
-          Добавить продукт
-        </Button>
-        <Button
-          onClick={() => setShowCustomForm(v => !v)}
-          className="bg-gradient-to-r from-yellow-400 to-yellow-600 shadow-md text-white hover:from-yellow-500 hover:to-yellow-700 focus:ring-2 focus:ring-yellow-300"
-        >
-          Добавить свой продукт
-        </Button>
+      <div className="flex flex-col items-center w-full mb-4 gap-2 sm:gap-4 pt-6 md:pt-0">
+        <div className="order-1 w-full flex justify-center mb-2 sm:mb-0">
+          <CookPlateSummary items={cookPlateItems} />
+        </div>
+        {/* Блок выбора и добавления продукта */}
+        <div className="order-2 w-full flex flex-col md:flex-row gap-2 items-center">
+          <select
+            value={selectedId ?? ""}
+            onChange={e => setSelectedId(Number(e.target.value))}
+            className="border rounded-lg px-3 py-2 w-full md:w-64"
+          >
+            <option value="">Выберите продукт</option>
+            {foods.map(f => (
+              <option key={f.id} value={f.id}>{f.name}</option>
+            ))}
+          </select>
+          <Button
+            onClick={handleAddProduct}
+            className="bg-gradient-to-r from-green-400 to-green-600 shadow-md text-white hover:from-green-500 hover:to-green-700 focus:ring-2 focus:ring-green-300"
+          >
+            Добавить продукт
+          </Button>
+          <Button
+            onClick={() => setShowCustomForm(v => !v)}
+            className="bg-gradient-to-r from-yellow-400 to-yellow-600 shadow-md text-white hover:from-yellow-500 hover:to-yellow-700 focus:ring-2 focus:ring-yellow-300"
+          >
+            Добавить свой продукт
+          </Button>
+        </div>
       </div>
       {/* Форма для пользовательского продукта */}
       {showCustomForm && (

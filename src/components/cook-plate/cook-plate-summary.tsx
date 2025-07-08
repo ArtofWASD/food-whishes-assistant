@@ -19,7 +19,7 @@ const CookPlateSummary: React.FC<Props> = ({ items }) => {
   const round = (v: number) => Math.round(v * 10) / 10
 
   return (
-    <div className="absolute top-2 right-4 bg-white/80 dark:bg-slate-800/80 rounded-lg px-4 py-2 shadow-md flex flex-wrap gap-4 text-base font-semibold z-10">
+    <div className="absolute left-1/2 -translate-x-1/2 top-2 md:left-auto md:translate-x-0 md:right-4 bg-white/80 dark:bg-slate-800/80 rounded-lg px-4 py-2 shadow-md flex flex-nowrap gap-4 text-base font-semibold z-10 overflow-x-auto whitespace-nowrap">
       <span>Калории: {round(total.callory)}</span>
       <span>Б: {round(total.proteins)} г</span>
       <span>Ж: {round(total.fats)} г</span>
