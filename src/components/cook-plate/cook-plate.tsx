@@ -4,7 +4,8 @@ import { FoodItem } from "@/src/widgets/food-item/food-item"
 import { useAppStore } from "@/src/store/appStore"
 import fakeFoods from "@/src/api/fake_foods/fake_food_api.json"
 import CookPlateSummary from "@/src/components/cook-plate/cook-plate-summary"
-import { Button } from "@/src/ui/button"  
+import { Button } from "@/src/ui/button"
+import CustomProductForm from "./custom-product-form"
 
 const CookPlate = ({ className }: { className?: string }) => {
   // Получаем состояние из глобального стора
@@ -15,21 +16,12 @@ const CookPlate = ({ className }: { className?: string }) => {
   const isEmpty = cookPlateItems.length === 0
 
   // Локальные состояния для поиска, выбора, пользовательского продукта и раскрытия NutritionInfo
-  const [search, setSearch] = useState("")
   const [selectedId, setSelectedId] = useState<number | null>(null)
   const [showCustomForm, setShowCustomForm] = useState(false)
-  const [customProduct, setCustomProduct] = useState({
-    name: "",
-    callory: "",
-    proteins: "",
-    fats: "",
-    carbs: ""
-  })
   const [openedNutritionId, setOpenedNutritionId] = useState<number | null>(null)
 
   // Получаем список продуктов из базы
   const foods = (fakeFoods.foods || [])
-  const filteredFoods = foods.filter(f => f.name.toLowerCase().includes(search.toLowerCase()))
 
   // Добавление продукта из базы
   const handleAddProduct = () => {
@@ -39,25 +31,6 @@ const CookPlate = ({ className }: { className?: string }) => {
     if (cookPlateItems.some(i => i.id === product.id)) return
     setCookPlateItems([...cookPlateItems, product])
     setSelectedId(null)
-    setSearch("")
-  }
-
-  // Добавление пользовательского продукта
-  const handleAddCustomProduct = () => {
-    if (!customProduct.name.trim()) return
-    const newProduct = {
-      id: Date.now(),
-      name: customProduct.name,
-      callory: Number(customProduct.callory) || 0,
-      proteins: Number(customProduct.proteins) || 0,
-      fats: Number(customProduct.fats) || 0,
-      carbs: Number(customProduct.carbs) || 0,
-      imgUrl: ""
-    }
-    setCookPlateItems([...cookPlateItems, newProduct])
-    setShowCustomForm(false)
-    setCustomProduct({ name: "", callory: "", proteins: "", fats: "", carbs: "" })
-    setSearch("")
   }
 
   return (
@@ -65,25 +38,15 @@ const CookPlate = ({ className }: { className?: string }) => {
     <div className={`relative p-4 rounded-lg min-h-[400px] transition-colors ${className || ""} flex flex-col bg-[var(--pastel-green)] bg-opacity-35 dark:bg-[var(--pastel-blue)] dark:text-white`}>
       {/* Сумма БЖУ и калорий в правом верхнем углу */}
       <CookPlateSummary items={cookPlateItems} />
-      {/* Блок поиска, выбора и добавления продукта */}
+      {/* Блок выбора и добавления продукта */}
       <div className="flex flex-col md:flex-row gap-2 items-center mb-4">
-        <input
-          type="text"
-          placeholder="Поиск продукта..."
-          value={search}
-          onChange={e => {
-            setSearch(e.target.value)
-            setShowCustomForm(false)
-          }}
-          className="border rounded-lg px-3 py-2 w-full md:w-64"
-        />
         <select
           value={selectedId ?? ""}
           onChange={e => setSelectedId(Number(e.target.value))}
           className="border rounded-lg px-3 py-2 w-full md:w-64"
         >
           <option value="">Выберите продукт</option>
-          {filteredFoods.map(f => (
+          {foods.map(f => (
             <option key={f.id} value={f.id}>{f.name}</option>
           ))}
         </select>
@@ -93,68 +56,33 @@ const CookPlate = ({ className }: { className?: string }) => {
         >
           Добавить продукт
         </Button>
-        {search.trim() && filteredFoods.length === 0 && !showCustomForm && (
-          <Button
-            onClick={() => setShowCustomForm(true)}
-            className="bg-gradient-to-r from-yellow-400 to-yellow-600 shadow-md text-white hover:from-yellow-500 hover:to-yellow-700 focus:ring-2 focus:ring-yellow-300"
-          >
-            Добавить свой продукт
-          </Button>
-        )}
+        <Button
+          onClick={() => setShowCustomForm(v => !v)}
+          className="bg-gradient-to-r from-yellow-400 to-yellow-600 shadow-md text-white hover:from-yellow-500 hover:to-yellow-700 focus:ring-2 focus:ring-yellow-300"
+        >
+          Добавить свой продукт
+        </Button>
       </div>
       {/* Форма для пользовательского продукта */}
       {showCustomForm && (
-        <div className="mb-4 p-4 rounded-lg bg-yellow-50 dark:bg-yellow-900 flex flex-col gap-2">
-          <input
-            type="text"
-            placeholder="Название продукта"
-            value={customProduct.name}
-            onChange={e => setCustomProduct({ ...customProduct, name: e.target.value })}
-            className="border rounded-lg px-3 py-2"
-          />
-          <div className="flex gap-2">
-            <input
-              type="number"
-              placeholder="Калории"
-              value={customProduct.callory}
-              onChange={e => setCustomProduct({ ...customProduct, callory: e.target.value })}
-              className="border rounded-lg px-3 py-2 w-1/4"
-            />
-            <input
-              type="number"
-              placeholder="Белки"
-              value={customProduct.proteins}
-              onChange={e => setCustomProduct({ ...customProduct, proteins: e.target.value })}
-              className="border rounded-lg px-3 py-2 w-1/4"
-            />
-            <input
-              type="number"
-              placeholder="Жиры"
-              value={customProduct.fats}
-              onChange={e => setCustomProduct({ ...customProduct, fats: e.target.value })}
-              className="border rounded-lg px-3 py-2 w-1/4"
-            />
-            <input
-              type="number"
-              placeholder="Углеводы"
-              value={customProduct.carbs}
-              onChange={e => setCustomProduct({ ...customProduct, carbs: e.target.value })}
-              className="border rounded-lg px-3 py-2 w-1/4"
-            />
-          </div>
-          <div className="flex gap-2 mt-2">
-            <Button
-              onClick={handleAddCustomProduct}
-              className="bg-gradient-to-r from-green-400 to-green-600 shadow-md text-white hover:from-green-500 hover:to-green-700 focus:ring-2 focus:ring-green-300"
-            >
-              Добавить
-            </Button>
-            <Button
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 animate-fade-in">
+          <div className="bg-white dark:bg-gray-900 rounded-xl shadow-lg w-full max-w-2xl h-[250px] max-h-[250px] relative animate-fade-in-up flex flex-col">
+            <button
+              className="absolute top-2 right-2 z-10 text-gray-500 hover:text-gray-800 dark:hover:text-white text-2xl font-bold focus:outline-none focus:ring-2 focus:ring-blue-300 bg-gradient-to-r from-gray-200 to-gray-400 rounded-full w-8 h-8 flex items-center justify-center shadow"
               onClick={() => setShowCustomForm(false)}
-              className="bg-gray-300 text-gray-800 hover:bg-gray-400"
+              aria-label="Закрыть"
             >
-              Отмена
-            </Button>
+              ×
+            </button>
+            <CustomProductForm
+              onAdd={(product: any) => {
+                setCookPlateItems([...cookPlateItems, product])
+                setShowCustomForm(false)
+              }}
+              onCancel={() => setShowCustomForm(false)}
+              showLabels
+              style={{ height: '100%' }}
+            />
           </div>
         </div>
       )}

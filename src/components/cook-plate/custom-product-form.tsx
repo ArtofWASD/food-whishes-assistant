@@ -1,0 +1,144 @@
+import React, { useRef, useEffect } from "react"
+import { useForm } from "react-hook-form"
+import { yupResolver } from "@hookform/resolvers/yup"
+import * as yup from "yup"
+import { Button } from "@/src/ui/button"
+
+const schema = yup.object({
+  name: yup.string().required("Название обязательно"),
+  callory: yup.number().typeError("Введите число").min(0, "Не может быть меньше 0").required("Обязательно"),
+  proteins: yup.number().typeError("Введите число").min(0, "Не может быть меньше 0").required("Обязательно"),
+  fats: yup.number().typeError("Введите число").min(0, "Не может быть меньше 0").required("Обязательно"),
+  carbs: yup.number().typeError("Введите число").min(0, "Не может быть меньше 0").required("Обязательно"),
+})
+
+type FormValues = {
+  name: string
+  callory: number
+  proteins: number
+  fats: number
+  carbs: number
+}
+
+type Props = {
+  onAdd: (product: FormValues & { id: number; imgUrl: string }) => void
+  onCancel: () => void
+  showLabels?: boolean
+  style?: React.CSSProperties
+}
+
+const CustomProductForm: React.FC<Props> = ({ onAdd, onCancel, showLabels, style }) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    reset,
+  } = useForm<FormValues>({
+    resolver: yupResolver(schema),
+    defaultValues: { name: "", callory: 0, proteins: 0, fats: 0, carbs: 0 },
+    mode: "onChange",
+  })
+
+  // Автофокус на первом поле
+  const nameRef = useRef<HTMLInputElement>(null)
+  useEffect(() => {
+    nameRef.current?.focus()
+  }, [])
+
+  const onSubmit = (data: FormValues) => {
+    onAdd({ ...data, id: Date.now(), imgUrl: "" })
+    reset()
+  }
+
+  return (
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="flex flex-col gap-2 p-8 rounded-lg bg-yellow-50 dark:bg-yellow-900 border border-yellow-200 dark:border-yellow-800 w-full max-w-2xl relative h-full"
+      autoComplete="off"
+      style={style}
+    >
+      <div className="flex flex-col w-full">
+        <input
+          type="text"
+          placeholder="Название"
+          {...register("name")}
+          ref={e => {
+            register("name").ref(e)
+            nameRef.current = e
+          }}
+          className={`border rounded-md px-2 py-1 mt-10 text-sm focus:ring-2 focus:ring-yellow-400 outline-none ${errors.name ? "border-red-400" : "border-gray-300"}`}
+          aria-invalid={!!errors.name}
+        />
+        {errors.name && <span className="text-xs text-red-500 mt-0.5" role="alert">{errors.name.message}</span>}
+      </div>
+      {showLabels && (
+        <div className="flex gap-2 w-full justify-between text-xs text-gray-600 dark:text-gray-300 mb-1">
+          
+        </div>
+      )}
+      <div className="flex flex-wrap gap-4 w-full items-center">
+      <span className="text-center">Ккал:</span>
+        <input
+          type="number"
+          placeholder="Ккал"
+          {...register("callory")}
+          className={`border rounded-md px-2 py-1 text-sm w-20 text-center focus:ring-2 focus:ring-yellow-400 outline-none ${errors.callory ? "border-red-400" : "border-gray-300"}`}
+          aria-invalid={!!errors.callory}
+          min={0}
+        />
+        <span className="text-center">Б:</span>
+        <input
+          type="number"
+          placeholder="Б"
+          {...register("proteins")}
+          className={`border rounded-md px-2 py-1 text-sm w-16 text-center focus:ring-2 focus:ring-yellow-400 outline-none ${errors.proteins ? "border-red-400" : "border-gray-300"}`}
+          aria-invalid={!!errors.proteins}
+          min={0}
+        />
+        <span className="ext-center">Ж:</span>
+        <input
+          type="number"
+          placeholder="Ж"
+          {...register("fats")}
+          className={`border rounded-md px-2 py-1 text-sm w-16 text-center focus:ring-2 focus:ring-yellow-400 outline-none ${errors.fats ? "border-red-400" : "border-gray-300"}`}
+          aria-invalid={!!errors.fats}
+          min={0}
+        />
+        <span className="text-center">У:</span>
+        <input
+          type="number"
+          placeholder="У"
+          {...register("carbs")}
+          className={`border rounded-md px-2 py-1 text-sm w-16 text-center focus:ring-2 focus:ring-yellow-400 outline-none ${errors.carbs ? "border-red-400" : "border-gray-300"}`}
+          aria-invalid={!!errors.carbs}
+          min={0}
+        />
+      </div>
+      <div className="absolute right-4 bottom-4 flex flex-row-reverse gap-2">
+        <Button
+          type="submit"
+          disabled={isSubmitting}
+          className="h-8 px-3 py-1 text-xs bg-gradient-to-r from-green-400 to-green-600 text-white shadow-md hover:from-green-500 hover:to-green-700 focus:ring-2 focus:ring-green-300"
+        >
+          Добавить
+        </Button>
+        <Button
+          type="button"
+          onClick={onCancel}
+          className="h-8 px-3 py-1 text-xs bg-gray-200 text-gray-800 hover:bg-gray-300"
+        >
+          Отмена
+        </Button>
+      </div>
+      {/* Компактные ошибки для числовых полей */}
+      <div className="flex flex-col md:flex-row md:items-center gap-1 md:gap-2 w-full">
+        {errors.callory && <span className="text-xs text-red-500" role="alert">Ккал: {errors.callory.message}</span>}
+        {errors.proteins && <span className="text-xs text-red-500" role="alert">Б: {errors.proteins.message}</span>}
+        {errors.fats && <span className="text-xs text-red-500" role="alert">Ж: {errors.fats.message}</span>}
+        {errors.carbs && <span className="text-xs text-red-500" role="alert">У: {errors.carbs.message}</span>}
+      </div>
+    </form>
+  )
+}
+
+export default CustomProductForm 
