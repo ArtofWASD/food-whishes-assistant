@@ -2,6 +2,17 @@ import React from "react"
 import { useAppStore } from "@/src/store/appStore"
 import { FoodItemProps } from "@/src/api/types/foods"
 import type { parseRecipes } from "@/src/handlers/parseRecipes"
+import { motion, AnimatePresence } from "framer-motion"
+
+const loadingMessages = [
+  "Ищем рецепты...",
+  "Генерируем вкусные идеи...",
+  "Собираем ингредиенты...",
+  "Пробуем разные комбинации...",
+  "Проверяем лучшие варианты...",
+  "Почти готово!",
+  "Добавляем щепотку вдохновения..."
+]
 
 const OutputResults: React.FC = () => { 
   const { cookPlateItems, aiResult, aiLoading, aiError, parsedRecipes } = useAppStore() as {
@@ -12,6 +23,28 @@ const OutputResults: React.FC = () => {
     parsedRecipes: ReturnType<typeof parseRecipes>
   }
   const [modal, setModal] = React.useState<{ open: boolean, content: string }>({ open: false, content: "" })
+  const [loadingIdx, setLoadingIdx] = React.useState(0)
+  const loadingTimer = React.useRef<NodeJS.Timeout | null>(null)
+  const loadingStart = React.useRef<number | null>(null)
+
+  React.useEffect(() => {
+    if (aiLoading) {
+      loadingStart.current = Date.now()
+      setLoadingIdx(0)
+      if (loadingTimer.current) clearInterval(loadingTimer.current)
+      loadingTimer.current = setInterval(() => {
+        if (loadingStart.current && Date.now() - loadingStart.current > 3000) {
+          setLoadingIdx(idx => (idx + 1) % loadingMessages.length)
+        }
+      }, 3000)
+    } else {
+      setLoadingIdx(0)
+      if (loadingTimer.current) clearInterval(loadingTimer.current)
+    }
+    return () => {
+      if (loadingTimer.current) clearInterval(loadingTimer.current)
+    }
+  }, [aiLoading])
 
   React.useEffect(() => {
     if (cookPlateItems.length === 0) {
@@ -29,7 +62,18 @@ const OutputResults: React.FC = () => {
       {aiLoading && (
         <div className="flex flex-col items-center justify-center gap-2 mt-8">
           <div className="w-8 h-8 border-4 border-blue-400 border-t-transparent rounded-full animate-spin mb-2"></div>
-          <span>Генерация...</span>
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.span
+              key={loadingIdx}
+              className="font-semibold"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.4 }}
+            >
+              {loadingMessages[loadingIdx]}
+            </motion.span>
+          </AnimatePresence>
         </div>
       )}
       {aiError && <div className="text-red-600 mt-4">{aiError}</div>}

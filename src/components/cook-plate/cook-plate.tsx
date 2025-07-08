@@ -111,7 +111,7 @@ const CookPlate = ({ className }: { className?: string }) => {
           onClick={() => setCookPlateItems([])}
           className="absolute left-4 bottom-4 bg-gradient-to-r from-red-400 to-red-600 shadow-md text-white hover:from-red-500 hover:to-red-700 focus:ring-2 focus:ring-red-300 z-20"
         >
-          Удалить все
+          Удалить ингридиенты
         </Button>
       )}
       {!isEmpty && (
@@ -122,7 +122,7 @@ const CookPlate = ({ className }: { className?: string }) => {
           }}
           className="absolute right-4 bottom-4 bg-gradient-to-r from-blue-400 to-blue-600 shadow-md text-white hover:from-blue-500 hover:to-blue-700 focus:ring-2 focus:ring-blue-300 z-20"
         >
-          Получить результат
+          Найти рецепты
         </Button>
       )}
     </div>
