@@ -30,7 +30,7 @@ function FoodItem(props: FoodItemProps & FoodItemExtraProps) {
   return (
     <div
       className={
-        `${CONTAINER_STYLES} w-64 h-30 lg:w-72 lg:h-38 flex flex-col justify-between relative bg-white dark:bg-gray-800 shadow-xl`
+        `${CONTAINER_STYLES} w-96 h-30 lg:w-72 lg:h-38 flex flex-col justify-between relative bg-white dark:bg-gray-800 shadow-xl`
       }
       key={id}
     >
