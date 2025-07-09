@@ -11,6 +11,7 @@ const schema = yup.object({
   proteins: yup.number().typeError("Введите число").min(0, "Не может быть меньше 0").required("Обязательно"),
   fats: yup.number().typeError("Введите число").min(0, "Не может быть меньше 0").required("Обязательно"),
   carbs: yup.number().typeError("Введите число").min(0, "Не может быть меньше 0").required("Обязательно"),
+  type: yup.mixed<'meat' | 'milk' | 'vegetable' | 'grain' | 'fruit'>().oneOf(['meat', 'milk', 'vegetable', 'grain', 'fruit']).required('Тип обязателен'),
 })
 
 type FormValues = {
@@ -19,6 +20,7 @@ type FormValues = {
   proteins: number
   fats: number
   carbs: number
+  type: 'meat' | 'milk' | 'vegetable' | 'grain' | 'fruit'
 }
 
 type Props = {
@@ -36,7 +38,7 @@ const CustomProductForm: React.FC<Props> = ({ onAdd, onCancel, showLabels, style
     reset,
   } = useForm<FormValues>({
     resolver: yupResolver(schema),
-    defaultValues: { name: "", callory: 0, proteins: 0, fats: 0, carbs: 0 },
+    defaultValues: { name: "", callory: 0, proteins: 0, fats: 0, carbs: 0, type: undefined },
     mode: "onChange",
   })
 
@@ -80,6 +82,23 @@ const CustomProductForm: React.FC<Props> = ({ onAdd, onCancel, showLabels, style
           aria-invalid={!!errors.name}
         />
         {errors.name && <span className="text-xs text-red-500 mt-0.5" role="alert">{errors.name.message}</span>}
+      </div>
+      <div className="flex flex-col w-full mt-2">
+        <label htmlFor="type" className="text-xs text-gray-600 dark:text-gray-300 mb-1">Тип продукта</label>
+        <select
+          id="type"
+          {...register("type")}
+          className={`border rounded-md px-2 py-1 text-sm focus:ring-2 focus:ring-yellow-400 outline-none ${errors.type ? "border-red-400" : "border-gray-300"}`}
+          aria-invalid={!!errors.type}
+        >
+          <option value="">Выберите тип</option>
+          <option value="meat">Мясо</option>
+          <option value="milk">Молоко/яйцо/сыр</option>
+          <option value="vegetable">Овощи</option>
+          <option value="grain">Злаки/крупы/макароны</option>
+          <option value="fruit">Фрукты/ягоды</option>
+        </select>
+        {errors.type && <span className="text-xs text-red-500 mt-0.5" role="alert">{errors.type.message}</span>}
       </div>
       {showLabels && (
         <div className="flex gap-2 w-full justify-between text-xs text-gray-600 dark:text-gray-300 mb-1">

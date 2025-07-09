@@ -1,3 +1,5 @@
+// Zustand store для управления состоянием приложения (продукты, режимы, результаты AI и т.д.)
+// TODO: Добавить тесты для логики состояния и асинхронных экшенов
 import { create } from 'zustand'
 import { devtools } from 'zustand/middleware'
 import { FoodItemProps } from '@/src/api/types/foods'

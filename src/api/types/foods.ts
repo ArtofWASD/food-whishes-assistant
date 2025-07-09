@@ -6,4 +6,5 @@ export interface FoodItemProps {
     fats: number
     carbs: number
     proteins: number
-  }
+    type: 'meat' | 'milk' | 'vegetable' | 'grain' | 'fruit'
+}

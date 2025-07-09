@@ -1,4 +1,5 @@
 // Функция для парсинга AI-ответа с рецептами по маркерам ===...===
+// TODO: Добавить тесты для граничных случаев парсинга
 export function parseRecipes(text: string): Array<{
   name: string | null,
   description: string | null,

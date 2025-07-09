@@ -4,6 +4,8 @@ import { useAppStore } from "@/src/store/appStore"
 const OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"
 const OPENROUTER_MODEL = "deepseek/deepseek-r1-0528-qwen3-8b:free"
 
+// Функция для получения рецепта от AI через OpenRouter API
+// TODO: Добавить тесты для обработки ошибок и интеграции с API
 export async function fetchAIRecipe() {
   // Получаем продукты из стора
   const cookPlateItems: FoodItemProps[] = useAppStore.getState().cookPlateItems

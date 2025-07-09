@@ -31,7 +31,10 @@ const CookPlate = ({ className }: { className?: string }) => {
     const product = foods.find(f => f.id === selectedId)
     if (!product) return
     if (cookPlateItems.some(i => i.id === product.id)) return
-    setCookPlateItems([...cookPlateItems, product])
+    setCookPlateItems([
+      ...cookPlateItems,
+      product as FoodItemProps // Приведение типа для строгой типизации
+    ])
     setSelectedId(null)
   }
 
@@ -92,39 +95,44 @@ const CookPlate = ({ className }: { className?: string }) => {
         </div>
       )}
 
-      {/* Список продуктов на тарелке */}
-      <div className="flex gap-2 flex-wrap mt-2 justify-center flex-grow">
-        {cookPlateItems.map(item => (
-          <FoodItem
-            {...item}
-            key={item.id}
-            showDeleteButton
-            onDelete={() => setCookPlateItems(cookPlateItems.filter(i => i.id !== item.id))}
-            showNutrition={openedNutritionId === item.id}
-            onToggleNutrition={() => setOpenedNutritionId(openedNutritionId === item.id ? null : item.id)}
-          />
-        ))}
+      {/* Список продуктов на тарелке и кнопки действий */}
+      <div className="flex flex-col-reverse md:flex-col flex-grow w-full">
+        {/* Кнопки действий */}
+        <div className="flex flex-col md:flex-row gap-2 w-full mt-2 md:mt-0">
+          {cookPlateItems.length >= 2 && (
+            <Button
+              onClick={() => setCookPlateItems([])}
+              className="bg-gradient-to-r from-red-400 to-red-600 shadow-md text-white hover:from-red-500 hover:to-red-700 focus:ring-2 focus:ring-red-300 z-20 w-full md:w-auto"
+            >
+              Удалить ингридиенты
+            </Button>
+          )}
+          {!isEmpty && (
+            <Button
+              onClick={() => {
+                setShowResults(true)
+                if (cookPlateItems.length > 0) fetchAIRecipeToStore()
+              }}
+              className="bg-gradient-to-r from-blue-400 to-blue-600 shadow-md text-white hover:from-blue-500 hover:to-blue-700 focus:ring-2 focus:ring-blue-300 z-20 w-full md:w-auto"
+            >
+              Найти рецепты
+            </Button>
+          )}
+        </div>
+        {/* Список продуктов на тарелке */}
+        <div className="flex gap-2 flex-wrap mt-2 justify-center flex-grow">
+          {cookPlateItems.map(item => (
+            <FoodItem
+              {...item}
+              key={item.id}
+              showDeleteButton
+              onDelete={() => setCookPlateItems(cookPlateItems.filter(i => i.id !== item.id))}
+              showNutrition={openedNutritionId === item.id}
+              onToggleNutrition={() => setOpenedNutritionId(openedNutritionId === item.id ? null : item.id)}
+            />
+          ))}
+        </div>
       </div>
-      {/* Кнопки действий */}
-      {cookPlateItems.length >= 2 && (
-        <Button
-          onClick={() => setCookPlateItems([])}
-          className="absolute left-4 bottom-4 bg-gradient-to-r from-red-400 to-red-600 shadow-md text-white hover:from-red-500 hover:to-red-700 focus:ring-2 focus:ring-red-300 z-20"
-        >
-          Удалить ингридиенты
-        </Button>
-      )}
-      {!isEmpty && (
-        <Button
-          onClick={() => {
-            setShowResults(true)
-            if (cookPlateItems.length > 0) fetchAIRecipeToStore()
-          }}
-          className="absolute right-4 bottom-4 bg-gradient-to-r from-blue-400 to-blue-600 shadow-md text-white hover:from-blue-500 hover:to-blue-700 focus:ring-2 focus:ring-blue-300 z-20"
-        >
-          Найти рецепты
-        </Button>
-      )}
     </div>
   )
 }

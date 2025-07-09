@@ -1,8 +1,8 @@
 import React from "react"
-import { FoodItemComponentProps } from "@/src/api/types/FoodItem"
+import type { FoodItemProps } from "@/src/api/types/foods"
 
 type Props = {
-  items: Array<Pick<FoodItemComponentProps, 'callory' | 'proteins' | 'fats' | 'carbs'>>
+  items: Array<Pick<FoodItemProps, 'callory' | 'proteins' | 'fats' | 'carbs'>>
 }
 
 const CookPlateSummary: React.FC<Props> = ({ items }) => {
