@@ -10,6 +10,17 @@ interface AuthDrawerProps {
   onClose: () => void
 }
 
+interface LoginForm {
+  email: string;
+  password: string;
+}
+
+interface RegisterForm {
+  email: string;
+  password: string;
+  confirm: string;
+}
+
 const loginSchema = yup.object({
   email: yup.string().email("Некорректный email").required("Email обязателен"),
   password: yup.string().min(5, "Минимум 5 символов").required("Пароль обязателен"),
@@ -35,7 +46,7 @@ export default function AuthDrawer({ open, onClose }: AuthDrawerProps) {
     formState: { errors: loginErrors },
     reset: resetLogin,
     setValue: setLoginValue,
-  } = useForm({ resolver: yupResolver(loginSchema) })
+  } = useForm<LoginForm>({ resolver: yupResolver(loginSchema) })
 
   // Register form
   const {
@@ -43,7 +54,7 @@ export default function AuthDrawer({ open, onClose }: AuthDrawerProps) {
     handleSubmit: handleRegSubmit,
     formState: { errors: regErrors },
     reset: resetReg,
-  } = useForm({ resolver: yupResolver(registerSchema) })
+  } = useForm<RegisterForm>({ resolver: yupResolver(registerSchema) })
 
   // Автоматически подставлять тестовые данные при открытии панели
   useEffect(() => {
@@ -53,7 +64,7 @@ export default function AuthDrawer({ open, onClose }: AuthDrawerProps) {
     }
   }, [open, mode, setLoginValue])
 
-  const onLogin = (data: any) => {
+  const onLogin = (data: LoginForm) => {
     // Проверка на тестовые данные
     if (data.email === MOCK_EMAIL && data.password === MOCK_PASSWORD) {
       resetLogin()
@@ -65,7 +76,7 @@ export default function AuthDrawer({ open, onClose }: AuthDrawerProps) {
     resetLogin()
     onClose()
   }
-  const onRegister = (data: any) => {
+  const onRegister = () => {
     // TODO: handle register
     resetReg()
     onClose()

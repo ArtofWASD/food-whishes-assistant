@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import ThemeSwitcher from '../../widgets/theme-switcher/theme-switcher'
+import Image from 'next/image'
 import Toggler from '../../widgets/toggler/toggler'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useAppStore } from '@/src/store/appStore'
@@ -32,7 +32,7 @@ const SettingsBar = () => {
           aria-label="Личный кабинет"
           onClick={() => setAuthOpen(true)}
         >
-          <img src="/login.png" alt="Войти" className="w-8 h-8 transition-transform group-hover:scale-110" />
+          <Image src="/login.png" alt="Войти" width={32} height={32} className="w-8 h-8 transition-transform group-hover:scale-110" />
         </button>
       </div>
       {/* Модальное окно с тогглерами */}
