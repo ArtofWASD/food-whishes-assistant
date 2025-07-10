@@ -16,7 +16,7 @@ const SettingsBar = () => {
   const [authOpen, setAuthOpen] = useState(false)
 
   return (
-    <div className="rounded-xl bg-[var(--pastel-blue)] bg-opacity-35 flex flex-col gap-2">
+    <div className="rounded-xl bg-[var(--pastel-blue)] bg-opacity-35 flex flex-col gap-2 py-2">
       <div className="flex flex-row justify-end items-center w-full relative">
         {/* Menu icon for mobile */}
         <button
