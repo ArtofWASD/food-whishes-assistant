@@ -4,6 +4,7 @@ import Toggler from '../../widgets/toggler/toggler'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useAppStore } from '@/src/store/appStore'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/solid'
+import AuthDrawer from "../../widgets/auth-drawer/auth-drawer"
 
 const SettingsBar = () => {
   const {
@@ -12,6 +13,7 @@ const SettingsBar = () => {
     bestMacros, setBestMacros,
   } = useAppStore()
   const [open, setOpen] = useState(false)
+  const [authOpen, setAuthOpen] = useState(false)
 
   return (
     <div className="rounded-xl bg-[var(--pastel-blue)] bg-opacity-35 flex flex-col gap-2">
@@ -24,9 +26,14 @@ const SettingsBar = () => {
         >
           <Bars3Icon className="w-7 h-7 text-blue-700" />
         </button>
-        <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ type: 'spring', stiffness: 150, damping: 20 }}>
-          <ThemeSwitcher />
-        </motion.div>
+        {/* Кнопка входа в личный кабинет */}
+        <button
+          className="mr-2 flex items-center group"
+          aria-label="Личный кабинет"
+          onClick={() => setAuthOpen(true)}
+        >
+          <img src="/login.png" alt="Войти" className="w-8 h-8 transition-transform group-hover:scale-110" />
+        </button>
       </div>
       {/* Модальное окно с тогглерами */}
       <AnimatePresence>
@@ -58,6 +65,8 @@ const SettingsBar = () => {
           </motion.div>
         )}
       </AnimatePresence>
+      {/* Sllide секция для авторизации */}
+      <AuthDrawer open={authOpen} onClose={() => setAuthOpen(false)} />
     </div>
   )
 }
