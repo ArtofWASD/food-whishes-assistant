@@ -5,7 +5,6 @@ import { devtools } from 'zustand/middleware'
 import { FoodItemProps } from '@/src/api/types/foods'
 import { fetchAIRecipe } from '@/src/api/fetchAIRecipe'
 import { parseRecipes } from '@/src/handlers/parseRecipes'
-import { useEffect } from 'react'
 
 interface AppState {
   fridgeItems: FoodItemProps[]
