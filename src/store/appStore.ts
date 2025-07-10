@@ -31,7 +31,7 @@ interface AppState {
 }
 
 export const useAppStore = create<AppState>()(
-  devtools((set, get) => ({
+  devtools((set) => ({
     fridgeItems: [],
     cookPlateItems: [],
     isDragging: false,
