@@ -41,8 +41,8 @@ const CookPlate = ({ className }: { className?: string }) => {
   return (
     // Корневой контейнер CookPlate
     <div className={`relative p-4 rounded-lg min-h-[400px] transition-colors ${className || ""} flex flex-col bg-[var(--pastel-green)] bg-opacity-35 dark:bg-[var(--pastel-blue)] dark:text-white`}>
-      <div className="flex flex-col items-center w-full mb-4 gap-2 sm:gap-4 pt-6 md:pt-0">
-        <div className="order-1 w-full flex justify-center mb-2 sm:mb-0">
+      <div className="flex flex-col items-center w-full">
+        <div className="order-1 w-full flex justify-center">
           <CookPlateSummary items={cookPlateItems} />
         </div>
         {/* Блок выбора и добавления продукта */}
@@ -50,7 +50,7 @@ const CookPlate = ({ className }: { className?: string }) => {
           <select
             value={selectedId ?? ""}
             onChange={e => setSelectedId(Number(e.target.value))}
-            className="border rounded-lg px-3 py-2 w-full md:w-64"
+            className="border rounded-full px-3 py-2 mb w-full md:w-64 focus:ring-2 focus:ring-pastelBlue/60 bg-white/80 backdrop-blur-sm shadow-sm"
           >
             <option value="">Выберите продукт</option>
             {foods.map(f => (
@@ -96,9 +96,9 @@ const CookPlate = ({ className }: { className?: string }) => {
       )}
 
       {/* Список продуктов на тарелке и кнопки действий */}
-      <div className="flex flex-col-reverse md:flex-col flex-grow w-full">
-        {/* Кнопки действий */}
-        <div className="flex flex-col md:flex-row gap-2 w-full mt-2 md:mt-0">
+      <div className="flex flex-col flex-grow w-full">
+        {/* Кнопки действий: mobile сверху, md+ снизу */}
+        <div className="flex flex-col md:flex-row gap-2 w-full mt-2 md:mt-0 order-1 md:order-2 md:justify-end">
           {cookPlateItems.length >= 2 && (
             <Button
               onClick={() => setCookPlateItems([])}
@@ -120,8 +120,8 @@ const CookPlate = ({ className }: { className?: string }) => {
           )}
         </div>
         {/* Список продуктов на тарелке */}
-        <div className="flex gap-2 flex-wrap mt-2 justify-center flex-grow">
-          {cookPlateItems.map(item => (
+        <div className="flex gap-2 flex-wrap mt-2 justify-center items-center flex-grow order-2 md:order-1 lg:flex-row lg:flex-nowrap">
+          {cookPlateItems.map((item, idx) => (
             <FoodItem
               {...item}
               key={item.id}
@@ -129,6 +129,10 @@ const CookPlate = ({ className }: { className?: string }) => {
               onDelete={() => setCookPlateItems(cookPlateItems.filter(i => i.id !== item.id))}
               showNutrition={openedNutritionId === item.id}
               onToggleNutrition={() => setOpenedNutritionId(openedNutritionId === item.id ? null : item.id)}
+              className={`
+                ${idx === 0 ? 'sm:mt-4 lg:mt-0' : ''}
+                ${idx === cookPlateItems.length - 1 ? 'sm:mb-4 lg:mb-0' : ''}
+              `}
             />
           ))}
         </div>
@@ -137,4 +141,4 @@ const CookPlate = ({ className }: { className?: string }) => {
   )
 }
 
-export default CookPlate 
+export default CookPlate

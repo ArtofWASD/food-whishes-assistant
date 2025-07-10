@@ -9,7 +9,7 @@ const ANIMATION_VARIANTS = {
   exit: { opacity: 0, height: 0 },
 } as const
 
-const NUTRITION_INFO_STYLES = "flex flex-col gap-1 overflow-hidden"
+const NUTRITION_INFO_STYLES = "flex flex-col gap-1 overflow-hidden rounded-full"
 const NUTRITION_TEXT_STYLES = "flex gap-1 text-sm"
 
 const NutritionInfo = ({ proteins, fats, carbs, callory }: NutritionInfoProps) => (

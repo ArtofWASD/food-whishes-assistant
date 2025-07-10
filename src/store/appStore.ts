@@ -5,6 +5,7 @@ import { devtools } from 'zustand/middleware'
 import { FoodItemProps } from '@/src/api/types/foods'
 import { fetchAIRecipe } from '@/src/api/fetchAIRecipe'
 import { parseRecipes } from '@/src/handlers/parseRecipes'
+import { useEffect } from 'react'
 
 interface AppState {
   fridgeItems: FoodItemProps[]
@@ -31,7 +32,7 @@ interface AppState {
 }
 
 export const useAppStore = create<AppState>()(
-  devtools((set) => ({
+  devtools((set, get) => ({
     fridgeItems: [],
     cookPlateItems: [],
     isDragging: false,
@@ -68,4 +69,27 @@ export const useAppStore = create<AppState>()(
       }
     },
   }), { name: 'AppStore' })
-) 
+)
+
+// Синхронизация с sessionStorage для выбранных ингредиентов и настроек
+if (typeof window !== 'undefined') {
+  const store = useAppStore
+  // Восстановление при инициализации
+  const saved = sessionStorage.getItem('appStore')
+  if (saved) {
+    const parsed = JSON.parse(saved)
+    if (parsed.cookPlateItems) store.setState({ cookPlateItems: parsed.cookPlateItems })
+    if (parsed.minCalories !== undefined) store.setState({ minCalories: parsed.minCalories })
+    if (parsed.onlyVegetables !== undefined) store.setState({ onlyVegetables: parsed.onlyVegetables })
+    if (parsed.bestMacros !== undefined) store.setState({ bestMacros: parsed.bestMacros })
+  }
+  // Подписка на изменения
+  store.subscribe((state) => {
+    sessionStorage.setItem('appStore', JSON.stringify({
+      cookPlateItems: state.cookPlateItems,
+      minCalories: state.minCalories,
+      onlyVegetables: state.onlyVegetables,
+      bestMacros: state.bestMacros,
+    }))
+  })
+} 

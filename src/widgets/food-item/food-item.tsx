@@ -5,7 +5,7 @@ import Image from "next/image"
 
 // Выделяем стили в отдельные константы
 const CONTAINER_STYLES =
-  "grid grid-cols-auto border-gray-600 border-2 px-2 py-2 rounded-lg hover:bg-slate-300 cursor-pointer relative min-h-[40px] min-h-0"
+  "flex flex-col border-gray-600 border-2 px-2 py-2 rounded-lg hover:bg-slate-300 cursor-pointer relative min-h-[120px]"
 
 interface FoodItemExtraProps {
   showDeleteButton?: boolean;
@@ -24,18 +24,18 @@ const TYPE_ICONS: Record<string, string> = {
 
 // Компонент FoodItem отображает продукт с возможностью раскрытия информации о питательных веществах и удаления
 // TODO: Добавить тесты для UI, событий удаления и раскрытия NutritionInfo
-function FoodItem(props: FoodItemProps & FoodItemExtraProps) {
-  const { id, name, callory, proteins, fats, carbs, showDeleteButton, onDelete, type } = props
+function FoodItem(props: FoodItemProps & FoodItemExtraProps & { className?: string }) {
+  const { id, name, callory, proteins, fats, carbs, showDeleteButton, onDelete, type, className } = props
 
   return (
     <div
       className={
-        `${CONTAINER_STYLES} w-96 h-30 lg:w-72 lg:h-38 flex flex-col justify-between relative bg-white dark:bg-gray-800 shadow-xl`
+        `${CONTAINER_STYLES} w-96 h-36 lg:w-72 lg:h-38 flex-col justify-between relative bg-white dark:bg-gray-800 shadow-xl ${className || ''}`
       }
       key={id}
     >
       {/* Верхняя панель: иконка + название */}
-      <div className="flex items-end absolute top-3 left-4 right-12 gap-2 z-10">
+      <div className="flex items-end absolute lg:static top-3 left-4 right-12 gap-2 z-10">
         <Image src={TYPE_ICONS[type] || "/file.svg"} alt={type} width={24} height={24} className="block md:hidden" />
         <Image src={TYPE_ICONS[type] || "/file.svg"} alt={type} width={36} height={36} className="hidden md:block" />
         <span className="text-[24px] md:text-[36px] font-bold text-gray-800 dark:text-white leading-none truncate max-w-[120px] md:max-w-[220px]">{name}</span>
@@ -56,7 +56,7 @@ function FoodItem(props: FoodItemProps & FoodItemExtraProps) {
         </button>
       )}
       {/* Калории и БЖУ внизу карточки */}
-      <div className="absolute left-4 right-4 bottom-3 flex flex-col gap-0.5 text-sm text-gray-700 dark:text-gray-200">
+      <div className="absolute lg:static left-4 right-4 bottom-3 flex flex-col gap-0.5 text-sm text-gray-700 dark:text-gray-200">
         <div>
           <span className="font-bold">Калории:</span> {callory} ккал. <span className="font-bold">Белки:</span> {proteins} г.
         </div>
