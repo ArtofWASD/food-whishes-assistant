@@ -26,8 +26,17 @@ export function parseRecipes(text: string): Array<{
       const value = part.slice(start, end).trim()
       fields[key] = value
     }
+    // Новый блок: если нет поля НАЗВАНИЕ РЕЦЕПТА, пробуем взять из ===РЕЦЕПТ=== [Название]
+    let name = fields['НАЗВАНИЕ РЕЦЕПТА'] || ''
+    if (!name) {
+      // Попробуем найти [Название] после ===РЕЦЕПТ===
+      const matchTitle = part.match(/^\[([^\]]+)\]/)
+      if (matchTitle && matchTitle[1]) {
+        name = matchTitle[1].trim()
+      }
+    }
     return {
-      name: fields['НАЗВАНИЕ РЕЦЕПТА'] || '',
+      name,
       description: fields['ОПИСАНИЕ'] || '',
       bju: fields['БЖУ'] || '',
       ingredients: fields['ИНГРЕДИЕНТЫ'] || '',

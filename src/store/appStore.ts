@@ -7,18 +7,12 @@ import { fetchAIRecipe } from '@/src/api/fetchAIRecipe'
 import { parseRecipes } from '@/src/handlers/parseRecipes'
 
 interface AppState {
-  fridgeItems: FoodItemProps[]
   cookPlateItems: FoodItemProps[]
-  isDragging: boolean
-  viewMode: string
   showResults: boolean
   minCalories: boolean
   onlyVegetables: boolean
   bestMacros: boolean
-  setFridgeItems: (items: FoodItemProps[]) => void
   setCookPlateItems: (items: FoodItemProps[]) => void
-  setIsDragging: (drag: boolean) => void
-  setViewMode: (mode: string) => void
   setShowResults: (show: boolean) => void
   setMinCalories: (v: boolean) => void
   setOnlyVegetables: (v: boolean) => void
@@ -28,14 +22,15 @@ interface AppState {
   aiError: string
   parsedRecipes: ReturnType<typeof parseRecipes>
   fetchAIRecipeToStore: () => Promise<void>
+  resetRecipes: () => void
+  favoriteRecipes: ReturnType<typeof parseRecipes>
+  addFavoriteRecipe: (recipe: ReturnType<typeof parseRecipes>[0]) => void
+  removeFavoriteRecipe: (recipe: ReturnType<typeof parseRecipes>[0]) => void
 }
 
 export const useAppStore = create<AppState>()(
-  devtools((set) => ({
-    fridgeItems: [],
+  devtools((set, get) => ({
     cookPlateItems: [],
-    isDragging: false,
-    viewMode: 'list',
     showResults: false,
     minCalories: false,
     onlyVegetables: false,
@@ -44,10 +39,8 @@ export const useAppStore = create<AppState>()(
     aiLoading: false,
     aiError: '',
     parsedRecipes: [],
-    setFridgeItems: (items) => set({ fridgeItems: items }, false, 'setFridgeItems'),
+    favoriteRecipes: [],
     setCookPlateItems: (items) => set({ cookPlateItems: items }, false, 'setCookPlateItems'),
-    setIsDragging: (drag) => set({ isDragging: drag }, false, 'setIsDragging'),
-    setViewMode: (mode) => set({ viewMode: mode }, false, 'setViewMode'),
     setShowResults: (show) => set({ showResults: show }, false, 'setShowResults'),
     setMinCalories: (v) => set({ minCalories: v }, false, 'setMinCalories'),
     setOnlyVegetables: (v) => set({ onlyVegetables: v }, false, 'setOnlyVegetables'),
@@ -67,6 +60,15 @@ export const useAppStore = create<AppState>()(
         set({ aiLoading: false }, false, 'fetchAIRecipeToStore_end')
       }
     },
+    // Новый метод для сброса рецептов
+    resetRecipes: () => set({ aiResult: '', parsedRecipes: [] }, false, 'resetRecipes'),
+    addFavoriteRecipe: (recipe) => {
+      const exists = get().favoriteRecipes.some(r => r.full === recipe.full)
+      if (!exists) set({ favoriteRecipes: [...get().favoriteRecipes, recipe] }, false, 'addFavoriteRecipe')
+    },
+    removeFavoriteRecipe: (recipe) => {
+      set({ favoriteRecipes: get().favoriteRecipes.filter(r => r.full !== recipe.full) }, false, 'removeFavoriteRecipe')
+    },
   }), { name: 'AppStore' })
 )
 
@@ -81,6 +83,9 @@ if (typeof window !== 'undefined') {
     if (parsed.minCalories !== undefined) store.setState({ minCalories: parsed.minCalories })
     if (parsed.onlyVegetables !== undefined) store.setState({ onlyVegetables: parsed.onlyVegetables })
     if (parsed.bestMacros !== undefined) store.setState({ bestMacros: parsed.bestMacros })
+    if (parsed.aiResult !== undefined) store.setState({ aiResult: parsed.aiResult })
+    if (parsed.parsedRecipes !== undefined) store.setState({ parsedRecipes: parsed.parsedRecipes })
+    if (parsed.favoriteRecipes !== undefined) store.setState({ favoriteRecipes: parsed.favoriteRecipes })
   }
   // Подписка на изменения
   store.subscribe((state) => {
@@ -89,6 +94,9 @@ if (typeof window !== 'undefined') {
       minCalories: state.minCalories,
       onlyVegetables: state.onlyVegetables,
       bestMacros: state.bestMacros,
+      aiResult: state.aiResult,
+      parsedRecipes: state.parsedRecipes,
+      favoriteRecipes: state.favoriteRecipes,
     }))
   })
 } 

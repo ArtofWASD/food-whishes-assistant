@@ -97,12 +97,26 @@ const CookPlate = ({ className }: { className?: string }) => {
 
       {/* Список продуктов на тарелке и кнопки действий */}
       <div className="flex flex-col flex-grow w-full">
-        {/* Кнопки действий: mobile сверху, md+ снизу */}
-        <div className="flex flex-col md:flex-row gap-2 w-full mt-2 md:mt-0 order-1 md:order-2 md:justify-end">
+        {/* Список продуктов на тарелке */}
+        <div className="flex gap-1 flex-wrap mt-2 justify-center items-center flex-grow order-1 md:order-1 lg:flex-row lg:flex-nowrap">
+          {cookPlateItems.map((item, idx) => (
+            <FoodItem
+              {...item}
+              key={item.id}
+              showDeleteButton
+              onDelete={() => setCookPlateItems(cookPlateItems.filter(i => i.id !== item.id))}
+              showNutrition={openedNutritionId === item.id}
+              onToggleNutrition={() => setOpenedNutritionId(openedNutritionId === item.id ? null : item.id)}
+              className={`min-h-[48px] h-auto px-2 py-1 text-xs md:text-sm ${idx === 0 ? 'sm:mt-2 md:mt-0' : ''} ${idx === cookPlateItems.length - 1 ? 'sm:mb-2 md:mb-0' : ''}`}
+            />
+          ))}
+        </div>
+        {/* Кнопки действий: mobile под списком, md+ справа */}
+        <div className="flex flex-row gap-2 mt-3 md:mt-0 order-2 md:order-2 md:justify-end justify-center">
           {cookPlateItems.length >= 2 && (
             <Button
               onClick={() => setCookPlateItems([])}
-              className="bg-gradient-to-r from-red-400 to-red-600 shadow-md text-white hover:from-red-500 hover:to-red-700 focus:ring-2 focus:ring-red-300 z-20 w-full md:w-auto"
+              className="bg-gradient-to-r from-red-400 to-red-600 shadow-md text-white hover:from-red-500 hover:to-red-700 focus:ring-2 focus:ring-red-300 z-20 w-auto px-4 py-1 text-sm"
             >
               Удалить ингридиенты
             </Button>
@@ -113,28 +127,11 @@ const CookPlate = ({ className }: { className?: string }) => {
                 setShowResults(true)
                 if (cookPlateItems.length > 0) fetchAIRecipeToStore()
               }}
-              className="bg-gradient-to-r from-blue-400 to-blue-600 shadow-md text-white hover:from-blue-500 hover:to-blue-700 focus:ring-2 focus:ring-blue-300 z-20 w-full md:w-auto"
+              className="bg-gradient-to-r from-blue-400 to-blue-600 shadow-md text-white hover:from-blue-500 hover:to-blue-700 focus:ring-2 focus:ring-blue-300 z-20 w-auto px-4 py-1 text-sm"
             >
               Найти рецепты
             </Button>
           )}
-        </div>
-        {/* Список продуктов на тарелке */}
-        <div className="flex gap-2 flex-wrap mt-2 justify-center items-center flex-grow order-2 md:order-1 lg:flex-row lg:flex-nowrap">
-          {cookPlateItems.map((item, idx) => (
-            <FoodItem
-              {...item}
-              key={item.id}
-              showDeleteButton
-              onDelete={() => setCookPlateItems(cookPlateItems.filter(i => i.id !== item.id))}
-              showNutrition={openedNutritionId === item.id}
-              onToggleNutrition={() => setOpenedNutritionId(openedNutritionId === item.id ? null : item.id)}
-              className={`
-                ${idx === 0 ? 'sm:mt-4 lg:mt-0' : ''}
-                ${idx === cookPlateItems.length - 1 ? 'sm:mb-4 lg:mb-0' : ''}
-              `}
-            />
-          ))}
         </div>
       </div>
     </div>
