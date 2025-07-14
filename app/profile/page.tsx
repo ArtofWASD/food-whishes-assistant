@@ -19,7 +19,7 @@ export default function ProfilePage() {
     phone: "+7 999 123-45-67"
   }
   return (
-    <div className="relative min-h-[60vh] py-8 flex flex-col items-center justify-center">
+    <div className="relative min-h-[20vh] py-4 flex flex-col items-center justify-center">
       {/* Верхняя панель */}
       <div className="absolute top-4 left-0 w-full flex flex-row justify-between items-center px-2 z-10">
         <ThemeSwitcher />
@@ -32,10 +32,10 @@ export default function ProfilePage() {
           </button>
         </div>
       </div>
-      {/* Аватар и имя */}
+      {/* Аватар и имя — всегда на одной строке, выравнивание по нижней линии */}
       <div className="flex flex-row items-end gap-6 mt-24 mb-6 w-full max-w-xl px-4 justify-start">
         <Image src="/avatar.png" alt="Аватар" width={96} height={96} className="rounded-full border-2 border-blue-400" />
-        <span className="hidden md:inline text-3xl font-bold text-gray-900 dark:text-white pb-1">{userMock.name}</span>
+        <span className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white pb-1 align-bottom">Привет, {userMock.name.split(' ')[0]}</span>
       </div>
       {/* Вкладки */}
       <div className="flex flex-row gap-2 mb-6 w-full max-w-xl px-4">
@@ -70,7 +70,7 @@ export default function ProfilePage() {
           )}
           {favoriteRecipes.map((r, i) => (
             <div key={i} className="flex items-center justify-between bg-white/80 dark:bg-slate-800/80 rounded-lg px-2 py-2 shadow text-base">
-              <span className="truncate font-semibold max-w-[60%]">{r.name || 'Без названия'}</span>
+              <span className="truncate font-semibold max-w-[60%] text-sm md:text-base">{r.name || 'Без названия'}</span>
               <div className="flex items-center gap-2">
                 <button
                   className="focus:outline-none"
@@ -79,8 +79,16 @@ export default function ProfilePage() {
                 >
                   <Image src="/favorite.png" alt="Удалить из избранного" width={28} height={28} />
                 </button>
+                {/* Мобильная версия: иконка-лупа, десктоп: кнопка */}
                 <button
-                  className="ml-2 px-3 py-1 rounded-lg bg-gradient-to-r from-green-400 to-green-600 shadow text-white font-semibold hover:from-green-500 hover:to-green-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green-300"
+                  className="ml-2 rounded-lg bg-transparent shadow-none text-white font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green-300 block md:hidden"
+                  aria-label="Подробнее"
+                  onClick={() => setModal({ open: true, content: r.full })}
+                >
+                  <Image src="/loupe.png" alt="Подробнее" width={24} height={24} />
+                </button>
+                <button
+                  className="ml-2 px-3 py-1 rounded-lg bg-gradient-to-r from-green-400 to-green-600 shadow text-white font-semibold hover:from-green-500 hover:to-green-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green-300 hidden md:block"
                   onClick={() => setModal({ open: true, content: r.full })}
                 >
                   Подробнее

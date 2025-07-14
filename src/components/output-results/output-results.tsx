@@ -95,7 +95,7 @@ const OutputResults: React.FC = () => {
               const name = r.name || 'Без названия';
               return (
                 <div key={i} className="flex items-center justify-between bg-white/80 dark:bg-slate-800/80 rounded-lg px-2 py-2 shadow text-base">
-                  <span className="truncate font-semibold">{name}</span>
+                  <span className="truncate font-semibold text-sm md:text-base">{name}</span>
                   <div className="flex items-center gap-2">
                     <button
                       className="focus:outline-none"
@@ -116,8 +116,16 @@ const OutputResults: React.FC = () => {
                         className="transition-transform duration-150 hover:scale-110"
                       />
                     </button>
+                    {/* Мобильная версия: иконка-лупа, десктоп: кнопка */}
                     <button
-                      className="ml-2 px-3 py-1 rounded-lg bg-gradient-to-r from-green-400 to-green-600 shadow text-white font-semibold hover:from-green-500 hover:to-green-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green-300"
+                      className="ml-2 rounded-lg bg-transparent shadow-none text-white font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green-300 block md:hidden"
+                      aria-label="Подробнее"
+                      onClick={() => setModal({ open: true, content: r.full })}
+                    >
+                      <Image src="/loupe.png" alt="Подробнее" width={24} height={24} />
+                    </button>
+                    <button
+                      className="ml-2 px-3 py-1 rounded-lg bg-gradient-to-r from-green-400 to-green-600 shadow text-white font-semibold hover:from-green-500 hover:to-green-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green-300 hidden md:block"
                       onClick={() => setModal({ open: true, content: r.full })}
                     >
                       Подробнее
