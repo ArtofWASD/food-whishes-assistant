@@ -15,7 +15,7 @@ const SettingsBar = () => {
 
   return (
     <div className="rounded-xl bg-[var(--pastel-blue)] bg-opacity-35 flex flex-col gap-2 py-2">
-      <div className="flex flex-row justify-between items-center w-full relative">
+      <div className="flex flex-row justify-between items-center w-full relative min-h-12 h-12">
         {/* Тогглеры для выбора приёма пищи на md+ */}
         <div className="hidden md:flex flex-row gap-4">
           <Toggler label="Завтрак" value={selectedMeal === 'breakfast'} onChange={() => setSelectedMeal('breakfast')} />
@@ -32,7 +32,7 @@ const SettingsBar = () => {
         </button>
         {/* Кнопка входа в личный кабинет */}
         <button
-          className="mr-2 flex items-center group"
+          className="flex items-center group md:mr-2 md:static md:translate-y-0 absolute right-2 top-1/2 -translate-y-1/2"
           aria-label="Личный кабинет"
           onClick={() => setAuthOpen(true)}
         >

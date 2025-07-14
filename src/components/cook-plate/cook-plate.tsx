@@ -97,9 +97,17 @@ const CookPlate = ({ className }: { className?: string }) => {
 
       {/* Список продуктов на тарелке и кнопки действий */}
       <div className="flex flex-col flex-grow w-full">
+        {/* Дисклеймер, если нет ингредиентов */}
+        {isEmpty && (
+          <div className="flex justify-center items-center flex-grow">
+            <div className="border-2 border-dashed border-gray-400 text-gray-500 rounded-lg mt-2 p-2 py-4 text-center text-lg lg:text-2xl max-w-md mx-auto font-pacifico">
+              Добавьте хотя бы один ингредиент.<br />Вы можете выбрать из готового списка или добавить свой собственный.
+            </div>
+          </div>
+        )}
         {/* Список продуктов на тарелке */}
         <div className="flex gap-1 flex-wrap mt-2 justify-center items-center flex-grow order-1 md:order-1 lg:flex-row lg:flex-nowrap">
-          {cookPlateItems.map((item, idx) => (
+          {!isEmpty && cookPlateItems.map((item, idx) => (
             <FoodItem
               {...item}
               key={item.id}
