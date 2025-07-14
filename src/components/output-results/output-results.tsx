@@ -95,7 +95,12 @@ const OutputResults: React.FC = () => {
               const name = r.name || 'Без названия';
               return (
                 <div key={i} className="flex items-center justify-between bg-white/80 dark:bg-slate-800/80 rounded-lg px-2 py-2 shadow text-base">
-                  <span className="truncate font-semibold text-sm md:text-base">{name}</span>
+                  <span className="truncate font-semibold text-sm md:text-base">
+                    <span className="block md:hidden">
+                      {name.length > 25 ? name.slice(0, 25) + '…' : name}
+                    </span>
+                    <span className="hidden md:block">{name}</span>
+                  </span>
                   <div className="flex items-center gap-2">
                     <button
                       className="focus:outline-none"

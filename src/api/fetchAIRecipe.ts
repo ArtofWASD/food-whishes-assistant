@@ -9,8 +9,14 @@ const OPENROUTER_MODEL = "deepseek/deepseek-r1-0528-qwen3-8b:free"
 export async function fetchAIRecipe() {
   // Получаем продукты из стора
   const cookPlateItems: FoodItemProps[] = useAppStore.getState().cookPlateItems
+  const selectedMeal = useAppStore.getState().selectedMeal
+  let mealText = ''
+  if (selectedMeal === 'breakfast') mealText = 'Тип приёма пищи: Завтрак.'
+  if (selectedMeal === 'lunch') mealText = 'Тип приёма пищи: Обед.'
+  if (selectedMeal === 'dinner') mealText = 'Тип приёма пищи: Ужин.'
   const prompt = `Предложи несколько простых рецептов из этих продуктов: ${cookPlateItems.map(i => i.name).join(", ")}. Каждый рецепт отделяй строкой ===РЕЦЕПТ===.
 
+${mealText ? mealText + '\n' : ''}
 В каждом рецепте обязательно используй следующие маркеры для структурирования ответа:
 
 ===НАЗВАНИЕ РЕЦЕПТА===

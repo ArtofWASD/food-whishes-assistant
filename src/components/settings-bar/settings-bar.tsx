@@ -8,16 +8,20 @@ import AuthDrawer from "../../widgets/auth-drawer/auth-drawer"
 
 const SettingsBar = () => {
   const {
-    minCalories, setMinCalories,
-    onlyVegetables, setOnlyVegetables,
-    bestMacros, setBestMacros,
+    selectedMeal, setSelectedMeal,
   } = useAppStore()
   const [open, setOpen] = useState(false)
   const [authOpen, setAuthOpen] = useState(false)
 
   return (
     <div className="rounded-xl bg-[var(--pastel-blue)] bg-opacity-35 flex flex-col gap-2 py-2">
-      <div className="flex flex-row justify-end items-center w-full relative">
+      <div className="flex flex-row justify-between items-center w-full relative">
+        {/* Тогглеры для выбора приёма пищи на md+ */}
+        <div className="hidden md:flex flex-row gap-4">
+          <Toggler label="Завтрак" value={selectedMeal === 'breakfast'} onChange={() => setSelectedMeal('breakfast')} />
+          <Toggler label="Обед" value={selectedMeal === 'lunch'} onChange={() => setSelectedMeal('lunch')} />
+          <Toggler label="Ужин" value={selectedMeal === 'dinner'} onChange={() => setSelectedMeal('dinner')} />
+        </div>
         {/* Menu icon for mobile */}
         <button
           className="md:hidden absolute left-2 top-1/2 -translate-y-1/2 p-1"
@@ -58,9 +62,10 @@ const SettingsBar = () => {
               >
                 <XMarkIcon className="w-7 h-7" />
               </button>
-              <Toggler label="Мин. калорийность" value={minCalories} onChange={setMinCalories} />
-              <Toggler label="Только овощи" value={onlyVegetables} onChange={setOnlyVegetables} />
-              <Toggler label="Лучшее БЖУ" value={bestMacros} onChange={setBestMacros} />
+              {/* Тогглеры для выбора приёма пищи */}
+              <Toggler label="Завтрак" value={selectedMeal === 'breakfast'} onChange={() => setSelectedMeal('breakfast')} />
+              <Toggler label="Обед" value={selectedMeal === 'lunch'} onChange={() => setSelectedMeal('lunch')} />
+              <Toggler label="Ужин" value={selectedMeal === 'dinner'} onChange={() => setSelectedMeal('dinner')} />
             </motion.div>
           </motion.div>
         )}

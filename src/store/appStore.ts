@@ -26,6 +26,8 @@ interface AppState {
   favoriteRecipes: ReturnType<typeof parseRecipes>
   addFavoriteRecipe: (recipe: ReturnType<typeof parseRecipes>[0]) => void
   removeFavoriteRecipe: (recipe: ReturnType<typeof parseRecipes>[0]) => void
+  selectedMeal: 'breakfast' | 'lunch' | 'dinner' | null
+  setSelectedMeal: (meal: 'breakfast' | 'lunch' | 'dinner' | null) => void
 }
 
 export const useAppStore = create<AppState>()(
@@ -40,6 +42,7 @@ export const useAppStore = create<AppState>()(
     aiError: '',
     parsedRecipes: [],
     favoriteRecipes: [],
+    selectedMeal: null,
     setCookPlateItems: (items) => set({ cookPlateItems: items }, false, 'setCookPlateItems'),
     setShowResults: (show) => set({ showResults: show }, false, 'setShowResults'),
     setMinCalories: (v) => set({ minCalories: v }, false, 'setMinCalories'),
@@ -69,6 +72,7 @@ export const useAppStore = create<AppState>()(
     removeFavoriteRecipe: (recipe) => {
       set({ favoriteRecipes: get().favoriteRecipes.filter(r => r.full !== recipe.full) }, false, 'removeFavoriteRecipe')
     },
+    setSelectedMeal: (meal) => set({ selectedMeal: meal }, false, 'setSelectedMeal'),
   }), { name: 'AppStore' })
 )
 
@@ -86,6 +90,7 @@ if (typeof window !== 'undefined') {
     if (parsed.aiResult !== undefined) store.setState({ aiResult: parsed.aiResult })
     if (parsed.parsedRecipes !== undefined) store.setState({ parsedRecipes: parsed.parsedRecipes })
     if (parsed.favoriteRecipes !== undefined) store.setState({ favoriteRecipes: parsed.favoriteRecipes })
+    if (parsed.selectedMeal !== undefined) store.setState({ selectedMeal: parsed.selectedMeal })
   }
   // Подписка на изменения
   store.subscribe((state) => {
@@ -97,6 +102,7 @@ if (typeof window !== 'undefined') {
       aiResult: state.aiResult,
       parsedRecipes: state.parsedRecipes,
       favoriteRecipes: state.favoriteRecipes,
+      selectedMeal: state.selectedMeal,
     }))
   })
 } 

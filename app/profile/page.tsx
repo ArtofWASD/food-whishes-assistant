@@ -70,7 +70,10 @@ export default function ProfilePage() {
           )}
           {favoriteRecipes.map((r, i) => (
             <div key={i} className="flex items-center justify-between bg-white/80 dark:bg-slate-800/80 rounded-lg px-2 py-2 shadow text-base">
-              <span className="truncate font-semibold max-w-[60%] text-sm md:text-base">{r.name || 'Без названия'}</span>
+              <span className="truncate font-semibold max-w-[60%] text-sm md:text-base">
+                <span className="block md:hidden">{(r.name || 'Без названия').length > 25 ? (r.name || 'Без названия').slice(0, 25) + '…' : (r.name || 'Без названия')}</span>
+                <span className="hidden md:block">{r.name || 'Без названия'}</span>
+              </span>
               <div className="flex items-center gap-2">
                 <button
                   className="focus:outline-none"
