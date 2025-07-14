@@ -10,7 +10,6 @@ export default function ProfilePage() {
   const { favoriteRecipes, removeFavoriteRecipe } = useAppStore()
   const [tab, setTab] = useState<'profile' | 'favorites'>('profile')
   const [modal, setModal] = useState<{ open: boolean, content: string }>({ open: false, content: "" })
-  const userName = "Иван Иванов"
   const userMock = {
     name: "Иван Иванов",
     email: "ivan.ivanov@example.com",
