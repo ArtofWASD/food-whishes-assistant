@@ -112,7 +112,7 @@ export default function ProfilePage() {
           {favoriteProducts.length === 0 && (
             <div className="text-gray-500 text-center py-8">Нет избранных продуктов</div>
           )}
-          {favoriteProducts.map((p, i) => (
+          {favoriteProducts.map((p) => (
             <div key={p.id} className="flex items-center justify-between bg-white/80 dark:bg-slate-800/80 rounded-lg px-2 py-2 shadow text-base">
               <span className="truncate font-semibold max-w-[60%] text-sm md:text-base flex items-center gap-2">
                 <Image src={p.imgUrl} alt={p.name} width={32} height={32} className="rounded-full border border-gray-200 dark:border-gray-700" />
