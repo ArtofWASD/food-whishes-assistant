@@ -15,7 +15,7 @@ const SettingsBar = () => {
   const [authOpen, setAuthOpen] = useState(false)
 
   return (
-    <div className="rounded-xl bg-[var(--pastel-blue)] bg-opacity-35 flex flex-col gap-2 py-2">
+    <div className="rounded-xl bg-[var(--pastel-blue)] bg-opacity-35 flex flex-col gap-2">
       <div className="flex flex-row justify-between items-center w-full relative min-h-12 h-12">
         {/* Тогглеры для выбора приёма пищи на md+ */}
         <div className="hidden md:flex flex-row gap-4">
