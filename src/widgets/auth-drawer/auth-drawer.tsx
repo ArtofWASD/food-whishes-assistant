@@ -4,6 +4,8 @@ import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
 import { useRouter } from "next/navigation"
+import { IconButton } from "@/src/ui/icon-button"
+import { Button } from "@/src/ui/button"
 
 interface AuthDrawerProps {
   open: boolean
@@ -115,23 +117,23 @@ export default function AuthDrawer({ open, onClose }: AuthDrawerProps) {
             `}</style>
             <div className="auth-drawer-width" style={{ height: '100vh' }}>
               {/* Кнопка закрытия */}
-              <button
+              <IconButton
                 className="absolute top-4 right-4 text-gray-500 hover:text-gray-800 dark:hover:text-white text-2xl"
                 onClick={onClose}
                 aria-label="Закрыть"
               >
                 ×
-              </button>
+              </IconButton>
               {/* Переключатель режимов */}
               <div className="flex justify-center gap-4 mb-8 mt-2">
-                <button
+                <Button
                   className={`px-4 py-2 rounded-lg font-semibold transition-colors ${mode === 'login' ? 'bg-blue-600 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200'}`}
                   onClick={() => setMode('login')}
-                >Вход</button>
-                <button
+                >Вход</Button>
+                <Button
                   className={`px-4 py-2 rounded-lg font-semibold transition-colors ${mode === 'register' ? 'bg-blue-600 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200'}`}
                   onClick={() => setMode('register')}
-                >Регистрация</button>
+                >Регистрация</Button>
               </div>
               {/* Форма входа */}
               {mode === 'login' && (
@@ -150,7 +152,7 @@ export default function AuthDrawer({ open, onClose }: AuthDrawerProps) {
                     className="border rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-400 outline-none"
                   />
                   {loginErrors.password && <span className="text-red-500 text-sm">{loginErrors.password.message as string}</span>}
-                  <button type="submit" className="bg-blue-600 text-white rounded-lg py-2 font-bold hover:bg-blue-700 transition">Войти</button>
+                  <Button type="submit" className="bg-blue-600 text-white rounded-lg py-2 font-bold hover:bg-blue-700 transition">Войти</Button>
                 </form>
               )}
               {/* Форма регистрации */}
@@ -177,7 +179,7 @@ export default function AuthDrawer({ open, onClose }: AuthDrawerProps) {
                     className="border rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-400 outline-none"
                   />
                   {regErrors.confirm && <span className="text-red-500 text-sm">{regErrors.confirm.message as string}</span>}
-                  <button type="submit" className="bg-blue-600 text-white rounded-lg py-2 font-bold hover:bg-blue-700 transition">Зарегистрироваться</button>
+                  <Button type="submit" className="bg-blue-600 text-white rounded-lg py-2 font-bold hover:bg-blue-700 transition">Зарегистрироваться</Button>
                 </form>
               )}
             </div>

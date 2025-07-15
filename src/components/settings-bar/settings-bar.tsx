@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useAppStore } from '@/src/store/appStore'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/solid'
 import AuthDrawer from "../../widgets/auth-drawer/auth-drawer"
+import { IconButton } from "@/src/ui/icon-button"
 
 const SettingsBar = () => {
   const {
@@ -23,21 +24,21 @@ const SettingsBar = () => {
           <Toggler label="Ужин" value={selectedMeal === 'dinner'} onChange={() => setSelectedMeal('dinner')} />
         </div>
         {/* Menu icon for mobile */}
-        <button
+        <IconButton
           className="md:hidden absolute left-2 top-1/2 -translate-y-1/2 p-1"
           onClick={() => setOpen(true)}
           aria-label="Открыть меню настроек"
         >
           <Bars3Icon className="w-7 h-7 text-blue-700" />
-        </button>
+        </IconButton>
         {/* Кнопка входа в личный кабинет */}
-        <button
+        <IconButton
           className="flex items-center group md:mr-2 md:static md:translate-y-0 absolute right-2 top-1/2 -translate-y-1/2"
           aria-label="Личный кабинет"
           onClick={() => setAuthOpen(true)}
         >
           <Image src="/login.png" alt="Войти" width={32} height={32} className="w-8 h-8 transition-transform group-hover:scale-110" />
-        </button>
+        </IconButton>
       </div>
       {/* Модальное окно с тогглерами */}
       <AnimatePresence>
@@ -55,13 +56,13 @@ const SettingsBar = () => {
               exit={{ scale: 0.9, y: 40, opacity: 0 }}
               transition={{ type: 'spring', stiffness: 200, damping: 22 }}
             >
-              <button
+              <IconButton
                 className="absolute top-3 right-3 text-gray-500 hover:text-gray-800 dark:hover:text-white"
                 onClick={() => setOpen(false)}
                 aria-label="Закрыть меню"
               >
                 <XMarkIcon className="w-7 h-7" />
-              </button>
+              </IconButton>
               {/* Тогглеры для выбора приёма пищи */}
               <Toggler label="Завтрак" value={selectedMeal === 'breakfast'} onChange={() => setSelectedMeal('breakfast')} />
               <Toggler label="Обед" value={selectedMeal === 'lunch'} onChange={() => setSelectedMeal('lunch')} />

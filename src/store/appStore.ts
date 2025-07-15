@@ -28,6 +28,9 @@ interface AppState {
   removeFavoriteRecipe: (recipe: ReturnType<typeof parseRecipes>[0]) => void
   selectedMeal: 'breakfast' | 'lunch' | 'dinner' | null
   setSelectedMeal: (meal: 'breakfast' | 'lunch' | 'dinner' | null) => void
+  favoriteProducts: FoodItemProps[]
+  addFavoriteProduct: (product: FoodItemProps) => void
+  removeFavoriteProduct: (product: FoodItemProps) => void
 }
 
 export const useAppStore = create<AppState>()(
@@ -43,6 +46,7 @@ export const useAppStore = create<AppState>()(
     parsedRecipes: [],
     favoriteRecipes: [],
     selectedMeal: null,
+    favoriteProducts: [],
     setCookPlateItems: (items) => set({ cookPlateItems: items }, false, 'setCookPlateItems'),
     setShowResults: (show) => set({ showResults: show }, false, 'setShowResults'),
     setMinCalories: (v) => set({ minCalories: v }, false, 'setMinCalories'),
@@ -73,6 +77,13 @@ export const useAppStore = create<AppState>()(
       set({ favoriteRecipes: get().favoriteRecipes.filter(r => r.full !== recipe.full) }, false, 'removeFavoriteRecipe')
     },
     setSelectedMeal: (meal) => set({ selectedMeal: meal }, false, 'setSelectedMeal'),
+    addFavoriteProduct: (product) => {
+      const exists = get().favoriteProducts.some(p => p.id === product.id)
+      if (!exists) set({ favoriteProducts: [...get().favoriteProducts, product] }, false, 'addFavoriteProduct')
+    },
+    removeFavoriteProduct: (product) => {
+      set({ favoriteProducts: get().favoriteProducts.filter(p => p.id !== product.id) }, false, 'removeFavoriteProduct')
+    },
   }), { name: 'AppStore' })
 )
 
@@ -91,6 +102,7 @@ if (typeof window !== 'undefined') {
     if (parsed.parsedRecipes !== undefined) store.setState({ parsedRecipes: parsed.parsedRecipes })
     if (parsed.favoriteRecipes !== undefined) store.setState({ favoriteRecipes: parsed.favoriteRecipes })
     if (parsed.selectedMeal !== undefined) store.setState({ selectedMeal: parsed.selectedMeal })
+    if (parsed.favoriteProducts !== undefined) store.setState({ favoriteProducts: parsed.favoriteProducts })
   }
   // Подписка на изменения
   store.subscribe((state) => {
@@ -103,6 +115,7 @@ if (typeof window !== 'undefined') {
       parsedRecipes: state.parsedRecipes,
       favoriteRecipes: state.favoriteRecipes,
       selectedMeal: state.selectedMeal,
+      favoriteProducts: state.favoriteProducts,
     }))
   })
 } 

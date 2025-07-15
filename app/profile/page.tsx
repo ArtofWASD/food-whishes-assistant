@@ -4,11 +4,13 @@ import { ThemeSwitcher } from "@/src/ui/theme-switcher"
 import { useRouter } from "next/navigation"
 import { useAppStore } from "@/src/store/appStore"
 import { useState } from "react"
+import { IconButton } from "@/src/ui/icon-button"
+import { Button } from "@/src/ui/button"
 
 export default function ProfilePage() {
   const router = useRouter()
-  const { favoriteRecipes, removeFavoriteRecipe } = useAppStore()
-  const [tab, setTab] = useState<'profile' | 'favorites'>('profile')
+  const { favoriteRecipes, removeFavoriteRecipe, favoriteProducts, removeFavoriteProduct } = useAppStore()
+  const [tab, setTab] = useState<'profile' | 'favorites' | 'products'>('profile')
   const [modal, setModal] = useState<{ open: boolean, content: string }>({ open: false, content: "" })
   const userMock = {
     name: "Иван Иванов",
@@ -24,12 +26,12 @@ export default function ProfilePage() {
       <div className="absolute top-4 left-0 w-full flex flex-row justify-between items-center px-2 z-10">
         <ThemeSwitcher />
         <div className="flex flex-row items-center gap-2">
-          <button className="group" aria-label="Настройки профиля">
+          <IconButton className="group" aria-label="Настройки профиля">
             <Image src="/settings.png" alt="Настройки" width={36} height={36} className="transition-transform group-hover:scale-110" />
-          </button>
-          <button className="group" aria-label="Выйти из профиля" onClick={() => router.push("/") }>
+          </IconButton>
+          <IconButton className="group" aria-label="Выйти из профиля" onClick={() => router.push("/") }>
             <Image src="/previous.png" alt="Выйти" width={36} height={36} className="transition-transform group-hover:scale-110" />
-          </button>
+          </IconButton>
         </div>
       </div>
       {/* Аватар и имя — всегда на одной строке, выравнивание по нижней линии */}
@@ -39,14 +41,18 @@ export default function ProfilePage() {
       </div>
       {/* Вкладки */}
       <div className="flex flex-row gap-2 mb-6 w-full max-w-xl px-4">
-        <button
+        <Button
           className={`px-4 py-2 rounded-t-lg font-semibold border-b-2 transition-colors ${tab === 'profile' ? 'border-blue-500 text-blue-700 dark:text-blue-300 bg-white dark:bg-slate-800' : 'border-transparent text-gray-500 bg-gray-100 dark:bg-slate-700'}`}
           onClick={() => setTab('profile')}
-        >Профиль</button>
-        <button
+        >Профиль</Button>
+        <Button
           className={`px-4 py-2 rounded-t-lg font-semibold border-b-2 transition-colors ${tab === 'favorites' ? 'border-blue-500 text-blue-700 dark:text-blue-300 bg-white dark:bg-slate-800' : 'border-transparent text-gray-500 bg-gray-100 dark:bg-slate-700'}`}
           onClick={() => setTab('favorites')}
-        >Избранное</button>
+        >Избранное</Button>
+        <Button
+          className={`px-4 py-2 rounded-t-lg font-semibold border-b-2 transition-colors ${tab === 'products' ? 'border-blue-500 text-blue-700 dark:text-blue-300 bg-white dark:bg-slate-800' : 'border-transparent text-gray-500 bg-gray-100 dark:bg-slate-700'}`}
+          onClick={() => setTab('products')}
+        >Продукты</Button>
       </div>
       {/* Контент вкладки */}
       {tab === 'profile' && (
@@ -75,27 +81,51 @@ export default function ProfilePage() {
                 <span className="hidden md:block">{r.name || 'Без названия'}</span>
               </span>
               <div className="flex items-center gap-2">
-                <button
+                <IconButton
                   className="focus:outline-none"
                   aria-label="Удалить из избранного"
                   onClick={() => removeFavoriteRecipe(r)}
                 >
                   <Image src="/favorite.png" alt="Удалить из избранного" width={28} height={28} />
-                </button>
+                </IconButton>
                 {/* Мобильная версия: иконка-лупа, десктоп: кнопка */}
-                <button
+                <IconButton
                   className="ml-2 rounded-lg bg-transparent shadow-none text-white font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green-300 block md:hidden"
                   aria-label="Подробнее"
                   onClick={() => setModal({ open: true, content: r.full })}
                 >
                   <Image src="/loupe.png" alt="Подробнее" width={24} height={24} />
-                </button>
-                <button
+                </IconButton>
+                <Button
                   className="ml-2 px-3 py-1 rounded-lg bg-gradient-to-r from-green-400 to-green-600 shadow text-white font-semibold hover:from-green-500 hover:to-green-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green-300 hidden md:block"
                   onClick={() => setModal({ open: true, content: r.full })}
                 >
                   Подробнее
-                </button>
+                </Button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+      {tab === 'products' && (
+        <div className="w-full max-w-xl px-4 flex flex-col gap-2">
+          {favoriteProducts.length === 0 && (
+            <div className="text-gray-500 text-center py-8">Нет избранных продуктов</div>
+          )}
+          {favoriteProducts.map((p, i) => (
+            <div key={p.id} className="flex items-center justify-between bg-white/80 dark:bg-slate-800/80 rounded-lg px-2 py-2 shadow text-base">
+              <span className="truncate font-semibold max-w-[60%] text-sm md:text-base flex items-center gap-2">
+                <Image src={p.imgUrl} alt={p.name} width={32} height={32} className="rounded-full border border-gray-200 dark:border-gray-700" />
+                <span>{p.name}</span>
+              </span>
+              <div className="flex items-center gap-2">
+                <IconButton
+                  className="focus:outline-none"
+                  aria-label="Удалить из избранного"
+                  onClick={() => removeFavoriteProduct(p)}
+                >
+                  <Image src="/favorite.png" alt="Удалить из избранного" width={28} height={28} />
+                </IconButton>
               </div>
             </div>
           ))}
@@ -106,13 +136,13 @@ export default function ProfilePage() {
         <div className="fixed inset-0 z-50 flex items-center justify-center">
           <div className="fixed inset-0 bg-black/40" onClick={() => setModal({ open: false, content: "" })} />
           <div className="bg-white dark:bg-gray-900 px-4 py-6 w-full max-w-xl relative flex flex-col overflow-y-auto max-h-[80vh] z-10 animate-fade-in-up">
-            <button
+            <IconButton
               className="absolute top-3 right-3 text-gray-500 hover:text-gray-800 dark:hover:text-white z-10"
               onClick={() => setModal({ open: false, content: "" })}
               aria-label="Закрыть"
             >
               <svg width="28" height="28" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 6L14 14M14 6L6 14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
-            </button>
+            </IconButton>
             <div className="whitespace-pre-line text-base min-h-12 flex items-center justify-center py-6">
               {modal.content.replace(/===([A-ZА-ЯЁ\s]+?)===/g, (_match, p1) => `${p1.trim().charAt(0).toUpperCase() + p1.trim().slice(1).toLowerCase()}:`)}
             </div>

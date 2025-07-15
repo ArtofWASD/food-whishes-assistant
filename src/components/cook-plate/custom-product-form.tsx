@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
 import { Button } from "@/src/ui/button"
+import { IconButton } from "@/src/ui/icon-button"
 import { XMarkIcon } from '@heroicons/react/24/solid'
 
 const schema = yup.object({
@@ -43,8 +44,8 @@ const CustomProductForm: React.FC<Props> = ({ onAdd, onCancel, showLabels, style
   })
 
   // Автофокус на первом поле
-  const nameRef = useRef<HTMLInputElement>(null)
-  useEffect(() => {
+  const nameRef = React.useRef<HTMLInputElement>(null)
+  React.useEffect(() => {
     nameRef.current?.focus()
   }, [])
 
@@ -61,14 +62,14 @@ const CustomProductForm: React.FC<Props> = ({ onAdd, onCancel, showLabels, style
       style={style}
     >
       {/* Кнопка закрытия в правом верхнем углу */}
-      <button
+      <IconButton
         type="button"
         className="absolute top-3 right-3 text-gray-500 hover:text-gray-800 dark:hover:text-white z-10"
         onClick={onCancel}
         aria-label="Закрыть форму"
       >
         <XMarkIcon className="w-7 h-7" />
-      </button>
+      </IconButton>
       <div className="flex flex-col w-full">
         <input
           type="text"
@@ -147,14 +148,14 @@ const CustomProductForm: React.FC<Props> = ({ onAdd, onCancel, showLabels, style
         <Button
           type="submit"
           disabled={isSubmitting}
-          className="h-8 px-3 py-1 text-xs bg-gradient-to-r from-green-400 to-green-600 text-white shadow-md hover:from-green-500 hover:to-green-700 focus:ring-2 focus:ring-green-300"
+          className="h-8 px-3 py-1 text-xs bg-green-400/90 text-gray-800 dark:text-white hover:bg-green-400/100 hover:shadow-lg"
         >
           Добавить
         </Button>
         <Button
           type="button"
           onClick={onCancel}
-          className="h-8 px-3 py-1 text-xs bg-gray-200 text-gray-800 hover:bg-gray-300"
+          className="h-8 px-3 py-1 text-xs bg-gray-300/90 text-gray-800 dark:text-white hover:bg-gray-300/100 hover:shadow-lg"
         >
           Отмена
         </Button>

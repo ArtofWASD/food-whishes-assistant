@@ -5,6 +5,8 @@ import type { parseRecipes } from "@/src/handlers/parseRecipes"
 import { motion, AnimatePresence } from "framer-motion"
 import { XMarkIcon } from '@heroicons/react/24/solid'
 import Image from 'next/image'
+import { IconButton } from "@/src/ui/icon-button"
+import { Button } from "@/src/ui/button"
 
 const loadingMessages = [
   "Ищем рецепты...",
@@ -102,7 +104,7 @@ const OutputResults: React.FC = () => {
                     <span className="hidden md:block">{name}</span>
                   </span>
                   <div className="flex items-center gap-2">
-                    <button
+                    <IconButton
                       className="focus:outline-none"
                       aria-label={favoriteRecipes.some(f => f.full === r.full) ? 'Удалить из избранного' : 'Добавить в избранное'}
                       onClick={() => {
@@ -120,32 +122,32 @@ const OutputResults: React.FC = () => {
                         height={28}
                         className="transition-transform duration-150 hover:scale-110"
                       />
-                    </button>
+                    </IconButton>
                     {/* Мобильная версия: иконка-лупа, десктоп: кнопка */}
-                    <button
+                    <IconButton
                       className="ml-2 rounded-lg bg-transparent shadow-none text-white font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green-300 block md:hidden"
                       aria-label="Подробнее"
                       onClick={() => setModal({ open: true, content: r.full })}
                     >
                       <Image src="/loupe.png" alt="Подробнее" width={24} height={24} />
-                    </button>
-                    <button
-                      className="ml-2 px-3 py-1 rounded-lg bg-gradient-to-r from-green-400 to-green-600 shadow text-white font-semibold hover:from-green-500 hover:to-green-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green-300 hidden md:block"
+                    </IconButton>
+                    <Button
+                      className="ml-2 px-3 py-1 rounded-lg bg-green-400/90 text-gray-800 dark:text-white hover:bg-green-400/100 hover:shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green-300 hidden md:block"
                       onClick={() => setModal({ open: true, content: r.full })}
                     >
                       Подробнее
-                    </button>
+                    </Button>
                   </div>
                 </div>
               )
             })}
           </div>
-          <button
-            className="mt-6 mx-auto block px-6 py-2 rounded-lg bg-gradient-to-r from-red-400 to-red-600 shadow text-white font-semibold hover:from-red-500 hover:to-red-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-red-300"
+          <Button
+            className="mt-6 mx-auto block px-6 py-2 rounded-lg bg-[#EF3E36]/90 text-white hover:bg-[#EF3E36]/100 hover:shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-pink-300"
             onClick={resetRecipes}
           >
             Удалить всё
-          </button>
+          </Button>
         </>
       )}
       {/* Модальное окно */}
@@ -155,13 +157,13 @@ const OutputResults: React.FC = () => {
           <div className="fixed inset-0 bg-black/40" onClick={() => setModal({ open: false, content: "" })} />
           {/* Модальное окно */}
           <div className="bg-white dark:bg-gray-900 px-4 py-6 w-full max-w-xl relative flex flex-col overflow-y-auto max-h-[80vh] z-10 animate-fade-in-up">
-            <button
+            <IconButton
               className="absolute top-3 right-3 text-gray-500 hover:text-gray-800 dark:hover:text-white z-10"
               onClick={() => setModal({ open: false, content: "" })}
               aria-label="Закрыть"
             >
               <XMarkIcon className="w-7 h-7" />
-            </button>
+            </IconButton>
             <div className="whitespace-pre-line text-base min-h-12 flex items-center justify-center py-6">
               {modal.content.replace(/===([A-ZА-ЯЁ\s]+?)===/g, (_match, p1) => `${p1.trim().charAt(0).toUpperCase() + p1.trim().slice(1).toLowerCase()}:`)}
             </div>
