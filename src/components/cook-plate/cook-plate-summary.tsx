@@ -25,7 +25,7 @@ const CookPlateSummary: React.FC<Props> = ({ items }) => {
     <div
       className="
         md:absolute md:right-4 md:top-4
-        bg-white/80 dark:bg-slate-800/80 rounded-full px-4 py-2 shadow-md flex flex-nowrap gap-4 text-sm md:text-md font-semibold z-10 overflow-x-auto whitespace-nowrap
+        bg-white/80 dark:bg-slate-800/80 rounded-xl px-4 py-2 shadow-md flex flex-nowrap gap-4 text-sm md:text-md font-semibold z-10 overflow-x-auto whitespace-nowrap
         sm:mx-auto sm:flex sm:justify-center sm:w-full md:w-auto md:mx-0
         justify-center mb-4
       ">

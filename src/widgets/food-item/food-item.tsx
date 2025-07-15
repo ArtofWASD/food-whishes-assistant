@@ -7,7 +7,7 @@ import { IconButton } from "@/src/ui/icon-button"
 
 // Выделяем стили в отдельные константы
 const CONTAINER_STYLES =
-  "flex flex-col border-gray-600 border-2 px-2 py-2 rounded-lg cursor-pointer relative min-h-[120px]"
+  "flex flex-col border-gray-600 border-2 px-2 py-2 rounded-xl cursor-pointer relative min-h-[120px]"
 
 interface FoodItemExtraProps {
   showDeleteButton?: boolean;

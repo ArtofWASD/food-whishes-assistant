@@ -40,7 +40,7 @@ const CookPlate = ({ className }: { className?: string }) => {
 
   return (
     // Корневой контейнер CookPlate
-    <div className={`relative p-4 rounded-lg min-h-[400px] transition-colors ${className || ""} flex flex-col bg-[var(--pastel-green)] bg-opacity-35 dark:bg-[var(--pastel-blue)] dark:text-white`}>
+    <div className={`relative p-4 rounded-xl min-h-[400px] transition-colors ${className || ""} flex flex-col bg-[var(--pastel-green)] bg-opacity-35 dark:bg-[var(--pastel-blue)] dark:text-white`}>
       <div className="flex flex-col md:flex-row items-center justify-between w-full gap-4 mb-2">
         {/* Блок кнопок добавления продуктов */}
         <div className="flex flex-col md:flex-row gap-2 items-center order-1 self-start w-full md:w-auto">
