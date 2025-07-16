@@ -1,4 +1,3 @@
-"use client";
 import localFont from "next/font/local";
 import "./globals.css";
 import SettingsBar from "@/src/components/settings-bar/settings-bar";
@@ -14,6 +13,11 @@ const geistMono = localFont({
   variable: "--font-geist-mono",
   weight: "100 900",
 });
+
+export const metadata = {
+  title: "Food Wishes Assistant",
+  description: "Современный помощник для подбора блюд",
+};
 
 export default function RootLayout({
   children,
