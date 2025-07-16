@@ -47,7 +47,7 @@ function FoodItem(props: FoodItemProps & FoodItemExtraProps & { className?: stri
       {/* Кнопка удаления в правом верхнем углу */}
       {showDeleteButton && (
         <IconButton
-          className="absolute top-1 right-1 w-8 h-8 flex items-center justify-center z-20"
+          className="absolute top-1 right-1 w-11 h-11 flex items-center justify-center z-20"
           onClick={(e) => {
             e.stopPropagation()
             onDelete?.()
@@ -70,7 +70,7 @@ function FoodItem(props: FoodItemProps & FoodItemExtraProps & { className?: stri
       </div>
       {/* Кнопка добавить в избранное */}
       <IconButton
-        className="absolute right-2 bottom-2 w-9 h-9 z-20 bg-white/80 dark:bg-gray-700/80 shadow hover:shadow-lg"
+        className="absolute right-2 bottom-2 w-9 h-9 z-20 bg-white/80 dark:bg-gray-700/80"
         aria-label={isFavorite ? 'Удалить из избранного' : 'Добавить в избранное'}
         onClick={e => {
           e.stopPropagation()

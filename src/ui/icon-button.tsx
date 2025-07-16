@@ -10,7 +10,7 @@ export function IconButton({
 }: React.ButtonHTMLAttributes<HTMLButtonElement>) {
   return (
     <button
-      className={`flex items-center justify-center rounded-full p-2 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-300 bg-transparent ${className}`}
+      className={`flex items-center justify-center rounded-full p-2 transition-colors focus:outline-none bg-transparent ${className}`}
       {...rest}
     >
       {children}

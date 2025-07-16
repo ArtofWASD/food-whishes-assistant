@@ -1,6 +1,8 @@
-import type { Metadata } from "next";
+"use client";
 import localFont from "next/font/local";
 import "./globals.css";
+import SettingsBar from "@/src/components/settings-bar/settings-bar";
+import Footer from "@/src/components/footer/footer";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -13,11 +15,6 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
-export const metadata: Metadata = {
-  title: "Food-whishes-assistant",
-  description: "Проект для быстрого и удобного подбора блюд по продуктам. Наслаждайтесь готовкой!",
-};
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -26,9 +23,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen`}
       >
-        {children}
+        <SettingsBar />
+        <main className="flex-1">
+          {children}
+        </main>
+        <Footer />
       </body>
     </html>
   );

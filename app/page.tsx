@@ -18,21 +18,16 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-[var(--background)]">
-      {/* Header */}
-      <header className="py-2">
-        <h1 className="text-3xl font-bold text-center">Из чего?</h1>
-      </header>
-      {/* Settings */}
-      <div className="p-2">
-        <SettingsBar />
-      </div>
-      <div className="p-2">
+      <div className="py-2">
         <CookPlate />
       </div>
       {/* Output Results */}
-      <div className="p-2" ref={outputRef}>
+      <div className="" ref={outputRef}>
         {showResults && <OutputResults />}
       </div>
+      <footer>
+        {/* Здесь может быть футер */}
+      </footer>
     </main>
   )
 }

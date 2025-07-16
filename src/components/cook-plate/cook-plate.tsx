@@ -25,25 +25,12 @@ const CookPlate = ({ className }: { className?: string }) => {
   // Получаем список продуктов из базы
   const foods = (fakeFoods.foods || [])
 
-  // Добавление продукта из базы
-  // Удаляю: const handleAddProduct = () => {
-  // Удаляю:   if (selectedId == null) return
-  // Удаляю:   const product = foods.find(f => f.id === selectedId)
-  // Удаляю:   if (!product) return
-  // Удаляю:   if (cookPlateItems.some(i => i.id === product.id)) return
-  // Удаляю:   setCookPlateItems([
-  // Удаляю:     ...cookPlateItems,
-  // Удаляю:     product as FoodItemProps // Приведение типа для строгой типизации
-  // Удаляю:   ])
-  // Удаляю:   setSelectedId(null)
-  // Удаляю: }
-
   return (
     // Корневой контейнер CookPlate
-    <div className={`relative p-4 rounded-xl min-h-[400px] transition-colors ${className || ""} flex flex-col bg-[var(--pastel-green)] bg-opacity-35 dark:bg-[var(--pastel-blue)] dark:text-white`}>
+    <div className={`relative min-h-[400px] transition-colors ${className || ""} flex flex-col bg-[var(--pastel-green)] bg-opacity-35 dark:bg-[var(--pastel-blue)] dark:text-white`}>
       <div className="flex flex-col md:flex-row items-center justify-between w-full gap-4 mb-2">
         {/* Блок кнопок добавления продуктов */}
-        <div className="flex flex-col md:flex-row gap-2 items-center order-1 self-start w-full md:w-auto">
+        <div className="flex flex-col md:flex-row gap-2 items-center order-1 self-start w-full md:w-auto pt-4 pl-4">
           {/* <select ...> ... </select> удалено */}
           <Button
             onClick={() => setShowProductModal(true)}
@@ -59,7 +46,7 @@ const CookPlate = ({ className }: { className?: string }) => {
           </Button>
         </div>
         {/* Блок с подсчётом калорий */}
-        <div className="order-2 self-end w-full md:w-auto flex justify-end">
+        <div className="order-2 self-end w-full md:w-auto flex justify-center lg:justify-end">
           <CookPlateSummary items={cookPlateItems} />
         </div>
       </div>
@@ -163,7 +150,7 @@ const CookPlate = ({ className }: { className?: string }) => {
           ))}
         </div>
         {/* Кнопки действий: mobile под списком, md+ справа */}
-        <div className="flex flex-row gap-2 mt-3 md:mt-0 order-2 md:order-2 md:justify-end justify-center">
+        <div className="flex flex-row gap-2 mt-3 md:mt-0 order-2 md:order-2 md:justify-end justify-center pr-4 pb-4">
           {cookPlateItems.length >= 2 && (
             <Button
               onClick={() => setCookPlateItems([])}

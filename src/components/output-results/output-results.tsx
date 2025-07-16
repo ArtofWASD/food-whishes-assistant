@@ -65,7 +65,7 @@ const OutputResults: React.FC = () => {
   const title = recipes.length > 0 ? recipes[0].name : null
 
   return (
-    <div className="p-4 rounded-lg bg-[var(--pastel-green)] bg-opacity-35 min-h-72 dark:bg-[var(--pastel-blue)] dark:text-white overflow-y-auto relative">
+    <div className="bg-[var(--pastel-green)] bg-opacity-35 min-h-72 dark:bg-[var(--pastel-blue)] dark:text-white overflow-y-auto relative">
       {/* Лоадер теперь в основном компоненте */}
       {aiLoading && (
         <div className="flex flex-col items-center justify-center gap-2 mt-8">
@@ -92,7 +92,7 @@ const OutputResults: React.FC = () => {
       {/* Список рецептов только с названием и кнопкой */}
       {!aiLoading && recipes.length > 0 && (
         <>
-          <div className="mt-4 flex flex-col gap-2">
+          <div className="mt-4 flex flex-col gap-2 px-2 md:px-4">
             {recipes.map((r: ReturnType<typeof parseRecipes>[0], i: number) => {
               const name = r.name || 'Без названия';
               return (
@@ -132,7 +132,7 @@ const OutputResults: React.FC = () => {
                       <Image src="/loupe.png" alt="Подробнее" width={24} height={24} />
                     </IconButton>
                     <Button
-                      className="ml-2 px-3 py-1 rounded-lg bg-green-400/90 text-gray-800 dark:text-white hover:bg-green-400/100 hover:shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green-300 hidden md:block"
+                      className="ml-2 px-3 py-1 rounded-lg bg-[#08A045]/90 text-white hover:bg-[#08A045]/100 hover:shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green-300 hidden md:block"
                       onClick={() => setModal({ open: true, content: r.full })}
                     >
                       Подробнее

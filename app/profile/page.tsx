@@ -1,6 +1,5 @@
 "use client"
 import Image from "next/image"
-import { ThemeSwitcher } from "@/src/ui/theme-switcher"
 import { useRouter } from "next/navigation"
 import { useAppStore } from "@/src/store/appStore"
 import { useState } from "react"
@@ -22,18 +21,6 @@ export default function ProfilePage() {
   }
   return (
     <div className="relative min-h-[20vh] py-4 flex flex-col items-center justify-center">
-      {/* Верхняя панель */}
-      <div className="absolute top-4 left-0 w-full flex flex-row justify-between items-center px-2 z-10">
-        <ThemeSwitcher />
-        <div className="flex flex-row items-center gap-2">
-          <IconButton className="group" aria-label="Настройки профиля">
-            <Image src="/settings.png" alt="Настройки" width={36} height={36} className="transition-transform group-hover:scale-110" />
-          </IconButton>
-          <IconButton className="group" aria-label="Выйти из профиля" onClick={() => router.push("/") }>
-            <Image src="/previous.png" alt="Выйти" width={36} height={36} className="transition-transform group-hover:scale-110" />
-          </IconButton>
-        </div>
-      </div>
       {/* Аватар и имя — всегда на одной строке, выравнивание по нижней линии */}
       <div className="flex flex-row items-end gap-6 mt-24 mb-6 w-full max-w-xl px-4 justify-start">
         <Image src="/avatar.png" alt="Аватар" width={96} height={96} className="rounded-full border-2 border-blue-400" />

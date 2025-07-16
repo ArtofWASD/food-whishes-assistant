@@ -29,7 +29,7 @@ const ThemeSwitcher = () => {
 
   return (
     <button
-      className="rounded-full m-2 flex items-center justify-center border-2 border-black dark:border-white bg-gradient-to-r from-blue-400 to-blue-600 shadow-lg hover:from-blue-500 hover:to-blue-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-300"
+      className="rounded-full my-2 flex items-center justify-center border-2 border-black dark:border-white bg-gradient-to-r from-blue-400 to-blue-600 shadow-lg hover:from-blue-500 hover:to-blue-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-300"
       onClick={toggleTheme}
       aria-label="Переключить тему"
       style={{ width: 56, height: 34, overflow: 'hidden' }}
