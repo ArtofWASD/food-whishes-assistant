@@ -1,13 +1,11 @@
 "use client"
 import Image from "next/image"
-import { useRouter } from "next/navigation"
 import { useAppStore } from "@/src/store/appStore"
 import { useState } from "react"
 import { IconButton } from "@/src/ui/icon-button"
 import { Button } from "@/src/ui/button"
 
 export default function ProfilePage() {
-  const router = useRouter()
   const { favoriteRecipes, removeFavoriteRecipe, favoriteProducts, removeFavoriteProduct } = useAppStore()
   const [tab, setTab] = useState<'profile' | 'favorites' | 'products'>('profile')
   const [modal, setModal] = useState<{ open: boolean, content: string }>({ open: false, content: "" })

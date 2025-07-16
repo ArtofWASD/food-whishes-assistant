@@ -2,7 +2,6 @@
 
 import React, { useRef, useEffect } from 'react'
 import OutputResults from "@/src/components/output-results/output-results"
-import SettingsBar from "@/src/components/settings-bar/settings-bar"
 import { useAppStore } from '@/src/store/appStore'
 import CookPlate from "@/src/components/cook-plate/cook-plate"
 
