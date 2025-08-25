@@ -1,12 +1,7 @@
 "use client"
 import { motion } from "motion/react"
 import React from "react"
-
-interface TogglerProps {
-  label: string;
-  value: boolean;
-  onChange: (value: boolean) => void;
-}
+import { TogglerProps } from "@/src/types"
 
 const Toggler: React.FC<TogglerProps> = ({ label, value, onChange }) => {
   const handleToggle = () => {

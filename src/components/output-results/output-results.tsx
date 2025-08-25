@@ -1,7 +1,6 @@
 import React from "react"
 import { useAppStore } from "@/src/store/appStore"
-import { FoodItemProps } from "@/src/api/types/foods"
-import type { parseRecipes } from "@/src/handlers/parseRecipes"
+import { FoodItemProps, ParsedRecipe, ParsedRecipes, ModalState } from "@/src/types"
 import { motion, AnimatePresence } from "framer-motion"
 import { XMarkIcon } from '@heroicons/react/24/solid'
 import Image from 'next/image'
@@ -24,13 +23,14 @@ const OutputResults: React.FC = () => {
     aiResult: string
     aiLoading: boolean
     aiError: string
-    parsedRecipes: ReturnType<typeof parseRecipes>
+    parsedRecipes: ParsedRecipes
     resetRecipes: () => void
-    favoriteRecipes: ReturnType<typeof parseRecipes>
-    addFavoriteRecipe: (recipe: ReturnType<typeof parseRecipes>[0]) => void
-    removeFavoriteRecipe: (recipe: ReturnType<typeof parseRecipes>[0]) => void
+    favoriteRecipes: ParsedRecipes
+    addFavoriteRecipe: (recipe: ParsedRecipe) => void
+    removeFavoriteRecipe: (recipe: ParsedRecipe) => void
   }
-  const [modal, setModal] = React.useState<{ open: boolean, content: string }>({ open: false, content: "" })
+  // Изменено: content теперь объект ParsedRecipe, а не строка
+  const [modal, setModal] = React.useState<ModalState<ParsedRecipe>>({ open: false, content: null })
   const [loadingIdx, setLoadingIdx] = React.useState(0)
   const loadingTimer = React.useRef<NodeJS.Timeout | null>(null)
   const loadingStart = React.useRef<number | null>(null)
@@ -56,7 +56,7 @@ const OutputResults: React.FC = () => {
 
   React.useEffect(() => {
     if (cookPlateItems.length === 0) {
-      setModal({ open: false, content: "" })
+      setModal({ open: false, content: null })
       return
     }
   }, [cookPlateItems.length])
@@ -93,7 +93,7 @@ const OutputResults: React.FC = () => {
       {!aiLoading && recipes.length > 0 && (
         <>
           <div className="mt-4 flex flex-col gap-2 px-2 md:px-4">
-            {recipes.map((r: ReturnType<typeof parseRecipes>[0], i: number) => {
+            {recipes.map((r: ParsedRecipe, i: number) => {
               const name = r.name || 'Без названия';
               return (
                 <div key={i} className="flex items-center justify-between bg-white/80 dark:bg-slate-800/80 rounded-lg px-2 py-2 shadow text-base">
@@ -106,9 +106,9 @@ const OutputResults: React.FC = () => {
                   <div className="flex items-center gap-2">
                     <IconButton
                       className="focus:outline-none"
-                      aria-label={favoriteRecipes.some(f => f.full === r.full) ? 'Удалить из избранного' : 'Добавить в избранное'}
+                      aria-label={favoriteRecipes.some((f: ParsedRecipe) => f.full === r.full) ? 'Удалить из избранного' : 'Добавить в избранное'}
                       onClick={() => {
-                        if (favoriteRecipes.some(f => f.full === r.full)) {
+                        if (favoriteRecipes.some((f: ParsedRecipe) => f.full === r.full)) {
                           removeFavoriteRecipe(r)
                         } else {
                           addFavoriteRecipe(r)
@@ -116,7 +116,7 @@ const OutputResults: React.FC = () => {
                       }}
                     >
                       <Image
-                        src={favoriteRecipes.some(f => f.full === r.full) ? '/favorite.png' : '/favorite-gray.png'}
+                        src={favoriteRecipes.some((f: ParsedRecipe) => f.full === r.full) ? '/favorite.png' : '/favorite-gray.png'}
                         alt="Избранное"
                         width={28}
                         height={28}
@@ -127,13 +127,13 @@ const OutputResults: React.FC = () => {
                     <IconButton
                       className="ml-2 rounded-lg bg-transparent shadow-none text-white font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green-300 block md:hidden"
                       aria-label="Подробнее"
-                      onClick={() => setModal({ open: true, content: r.full })}
+                      onClick={() => setModal({ open: true, content: r })} // Передаем объект рецепта
                     >
                       <Image src="/loupe.png" alt="Подробнее" width={24} height={24} />
                     </IconButton>
                     <Button
                       className="ml-2 px-3 py-1 rounded-lg bg-[#08A045]/90 text-white hover:bg-[#08A045]/100 hover:shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green-300 hidden md:block"
-                      onClick={() => setModal({ open: true, content: r.full })}
+                      onClick={() => setModal({ open: true, content: r })} // Передаем объект рецепта
                     >
                       Подробнее
                     </Button>
@@ -151,21 +151,65 @@ const OutputResults: React.FC = () => {
         </>
       )}
       {/* Модальное окно */}
-      {modal.open && (
+      {modal.open && modal.content && (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
           {/* Полупрозрачный фон */}
-          <div className="fixed inset-0 bg-black/40" onClick={() => setModal({ open: false, content: "" })} />
+          <div className="fixed inset-0 bg-black/40" onClick={() => setModal({ open: false, content: null })} />
           {/* Модальное окно */}
           <div className="bg-white dark:bg-gray-900 px-4 py-6 w-full max-w-xl relative flex flex-col overflow-y-auto max-h-[80vh] z-10 animate-fade-in-up">
             <IconButton
               className="absolute top-3 right-3 text-gray-500 hover:text-gray-800 dark:hover:text-white z-10"
-              onClick={() => setModal({ open: false, content: "" })}
+              onClick={() => setModal({ open: false, content: null })}
               aria-label="Закрыть"
             >
               <XMarkIcon className="w-7 h-7" />
             </IconButton>
-            <div className="whitespace-pre-line text-base min-h-12 flex items-center justify-center py-6">
-              {modal.content.replace(/===([A-ZА-ЯЁ\s]+?)===/g, (_match, p1) => `${p1.trim().charAt(0).toUpperCase() + p1.trim().slice(1).toLowerCase()}:`)}
+            {/* Изменено: структурированный вывод рецепта */}
+            <div className="text-base min-h-12 py-2">
+              {/* Название рецепта */}
+              {modal.content.name && (
+                <h2 className="text-2xl font-bold mb-4 text-center">{modal.content.name}</h2>
+              )}
+
+              {/* Описание */}
+              {modal.content.description && (
+                <div className="mb-4">
+                  <h3 className="text-lg font-semibold mb-1">Описание:</h3>
+                  <p className="whitespace-pre-line">{modal.content.description}</p>
+                </div>
+              )}
+
+              {/* БЖУ */}
+              {modal.content.bju && (
+                <div className="mb-4">
+                  <h3 className="text-lg font-semibold mb-1">Пищевая ценность (на порцию):</h3>
+                  <p className="whitespace-pre-line">{modal.content.bju}</p>
+                </div>
+              )}
+
+              {/* Ингредиенты */}
+              {modal.content.ingredients && (
+                <div className="mb-4">
+                  <h3 className="text-lg font-semibold mb-1">Ингредиенты:</h3>
+                  <ul className="list-disc pl-5 whitespace-pre-line">
+                    {modal.content.ingredients.split('\n').filter((line: string) => line.trim() !== '').map((ingredient: string, idx: number) => (
+                      <li key={idx} className="mb-1">{ingredient.trim()}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {/* Инструкция */}
+              {modal.content.instruction && (
+                <div className="mb-4">
+                  <h3 className="text-lg font-semibold mb-1">Инструкция по приготовлению:</h3>
+                  <ol className="list-decimal pl-5 whitespace-pre-line">
+                    {modal.content.instruction.split('\n').filter((line: string) => line.trim() !== '').map((step: string, idx: number) => (
+                      <li key={idx} className="mb-2">{step.trim()}</li>
+                    ))}
+                  </ol>
+                </div>
+              )}
             </div>
           </div>
         </div>

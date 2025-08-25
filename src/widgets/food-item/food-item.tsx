@@ -1,5 +1,5 @@
 "use client"
-import type { FoodItemProps } from "@/src/api/types/foods"
+import { FoodItemComponentProps, TypeIconsMap, FoodItemProps } from "@/src/types"
 import { useAppStore } from "@/src/store/appStore"
 import Image from "next/image"
 import { IconButton } from "@/src/ui/icon-button"
@@ -9,14 +9,7 @@ import { IconButton } from "@/src/ui/icon-button"
 const CONTAINER_STYLES =
   "flex flex-col border-gray-600 border-2 px-2 py-2 rounded-xl cursor-pointer relative min-h-[120px]"
 
-interface FoodItemExtraProps {
-  showDeleteButton?: boolean;
-  onDelete?: () => void;
-  showNutrition?: boolean;
-  onToggleNutrition?: () => void;
-}
-
-const TYPE_ICONS: Record<string, string> = {
+const TYPE_ICONS: TypeIconsMap = {
   meat: "/meat.png",
   milk: "/milk.png",
   vegetable: "/vegetable.png",
@@ -26,10 +19,10 @@ const TYPE_ICONS: Record<string, string> = {
 
 // Компонент FoodItem отображает продукт с возможностью раскрытия информации о питательных веществах и удаления
 // TODO: Добавить тесты для UI, событий удаления и раскрытия NutritionInfo
-function FoodItem(props: FoodItemProps & FoodItemExtraProps & { className?: string }) {
+function FoodItem(props: FoodItemComponentProps) {
   const { id, name, callory, proteins, fats, carbs, showDeleteButton, onDelete, type, className } = props
   const { favoriteProducts, addFavoriteProduct, removeFavoriteProduct } = useAppStore()
-  const isFavorite = favoriteProducts.some(p => p.id === id)
+  const isFavorite = favoriteProducts.some((p: FoodItemProps) => p.id === id)
 
   return (
     <div

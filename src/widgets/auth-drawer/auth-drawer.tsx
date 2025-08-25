@@ -6,22 +6,7 @@ import * as yup from "yup"
 import { useRouter } from "next/navigation"
 import { IconButton } from "@/src/ui/icon-button"
 import { Button } from "@/src/ui/button"
-
-interface AuthDrawerProps {
-  open: boolean
-  onClose: () => void
-}
-
-interface LoginForm {
-  email: string;
-  password: string;
-}
-
-interface RegisterForm {
-  email: string;
-  password: string;
-  confirm: string;
-}
+import { AuthDrawerProps, LoginForm, RegisterForm, AuthMode } from "@/src/types"
 
 const loginSchema = yup.object({
   email: yup.string().email("Некорректный email").required("Email обязателен"),
@@ -38,7 +23,7 @@ const MOCK_EMAIL = "test@example.com"
 const MOCK_PASSWORD = "test12345"
 
 export default function AuthDrawer({ open, onClose }: AuthDrawerProps) {
-  const [mode, setMode] = useState<'login' | 'register'>('login')
+  const [mode, setMode] = useState<AuthMode>('login')
   const router = useRouter()
 
   // Login form

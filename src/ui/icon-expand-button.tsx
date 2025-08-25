@@ -1,15 +1,6 @@
 import React from "react"
 import { motion, AnimatePresence } from "framer-motion"
-
-interface IconExpandButtonProps {
-  icon: React.ReactNode
-  children: React.ReactNode
-  expanded: boolean
-  onClick: () => void
-  className?: string
-  onMouseEnter?: () => void
-  onMouseLeave?: () => void
-}
+import { IconExpandButtonProps } from "@/src/types"
 
 export const IconExpandButton: React.FC<IconExpandButtonProps> = ({
   icon,
