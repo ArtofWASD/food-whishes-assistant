@@ -1,4 +1,4 @@
-import { FoodItemProps } from "@/src/api/types/foods"
+import { FoodItemProps } from "@/src/types"
 import { useAppStore } from "@/src/store/appStore"
 
 const OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"

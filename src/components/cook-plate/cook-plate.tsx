@@ -7,6 +7,7 @@ import CookPlateSummary from "@/src/components/cook-plate/cook-plate-summary"
 import { Button } from "@/src/ui/button"
 import CustomProductForm from "./custom-product-form"
 import { XMarkIcon } from '@heroicons/react/24/solid'
+import { FoodItemProps } from '@/src/types'
 
 const CookPlate = ({ className }: { className?: string }) => {
   // Получаем состояние из глобального стора
@@ -89,7 +90,7 @@ const CookPlate = ({ className }: { className?: string }) => {
               onClick={() => {
                 const newProducts = foods
                   .filter(f => selectedProducts.includes(f.id) && !cookPlateItems.some(i => i.id === f.id))
-                  .map(f => ({ ...f, type: f.type as import('@/src/api/types/foods').FoodItemProps['type'] }))
+                  .map(f => ({ ...f, type: f.type as FoodItemProps['type'] }))
                 setCookPlateItems([...cookPlateItems, ...newProducts])
                 setShowProductModal(false)
                 setSelectedProducts([])
@@ -113,7 +114,7 @@ const CookPlate = ({ className }: { className?: string }) => {
               <XMarkIcon className="w-7 h-7" /> 
             </button>
             <CustomProductForm
-              onAdd={(product: import('@/src/api/types/foods').FoodItemProps) => {
+              onAdd={(product: FoodItemProps) => {
                 setCookPlateItems([...cookPlateItems, product])
                 setShowCustomForm(false)
               }}

@@ -1,7 +1,7 @@
 "use client"
 import React from "react"
 import { motion } from "framer-motion"
-import { NutritionInfoProps } from "@/src/api/types/NutritionInfo"
+import { NutritionInfoProps } from "@/src/types"
 
 const ANIMATION_VARIANTS = {
   hidden: { opacity: 0, height: 0 },

@@ -1,14 +1,11 @@
 import React from "react"
 import { useAppStore } from "@/src/store/appStore"
-import { FoodItemProps } from "@/src/api/types/foods"
-import type { parseRecipes } from "@/src/handlers/parseRecipes"
+import { FoodItemProps, ParsedRecipe, ParsedRecipes, ModalState } from "@/src/types"
 import { motion, AnimatePresence } from "framer-motion"
 import { XMarkIcon } from '@heroicons/react/24/solid'
 import Image from 'next/image'
 import { IconButton } from "@/src/ui/icon-button"
 import { Button } from "@/src/ui/button"
-
-type RecipeType = ReturnType<typeof parseRecipes>[0];
 
 const loadingMessages = [
   "Ищем рецепты...",
@@ -26,14 +23,14 @@ const OutputResults: React.FC = () => {
     aiResult: string
     aiLoading: boolean
     aiError: string
-    parsedRecipes: ReturnType<typeof parseRecipes>
+    parsedRecipes: ParsedRecipes
     resetRecipes: () => void
-    favoriteRecipes: ReturnType<typeof parseRecipes>
-    addFavoriteRecipe: (recipe: ReturnType<typeof parseRecipes>[0]) => void
-    removeFavoriteRecipe: (recipe: ReturnType<typeof parseRecipes>[0]) => void
+    favoriteRecipes: ParsedRecipes
+    addFavoriteRecipe: (recipe: ParsedRecipe) => void
+    removeFavoriteRecipe: (recipe: ParsedRecipe) => void
   }
-  // Изменено: content теперь объект RecipeType, а не строка
-  const [modal, setModal] = React.useState<{ open: boolean, content: RecipeType | null }>({ open: false, content: null })
+  // Изменено: content теперь объект ParsedRecipe, а не строка
+  const [modal, setModal] = React.useState<ModalState<ParsedRecipe>>({ open: false, content: null })
   const [loadingIdx, setLoadingIdx] = React.useState(0)
   const loadingTimer = React.useRef<NodeJS.Timeout | null>(null)
   const loadingStart = React.useRef<number | null>(null)
@@ -96,7 +93,7 @@ const OutputResults: React.FC = () => {
       {!aiLoading && recipes.length > 0 && (
         <>
           <div className="mt-4 flex flex-col gap-2 px-2 md:px-4">
-            {recipes.map((r: RecipeType, i: number) => {
+            {recipes.map((r: ParsedRecipe, i: number) => {
               const name = r.name || 'Без названия';
               return (
                 <div key={i} className="flex items-center justify-between bg-white/80 dark:bg-slate-800/80 rounded-lg px-2 py-2 shadow text-base">
@@ -109,9 +106,9 @@ const OutputResults: React.FC = () => {
                   <div className="flex items-center gap-2">
                     <IconButton
                       className="focus:outline-none"
-                      aria-label={favoriteRecipes.some(f => f.full === r.full) ? 'Удалить из избранного' : 'Добавить в избранное'}
+                      aria-label={favoriteRecipes.some((f: ParsedRecipe) => f.full === r.full) ? 'Удалить из избранного' : 'Добавить в избранное'}
                       onClick={() => {
-                        if (favoriteRecipes.some(f => f.full === r.full)) {
+                        if (favoriteRecipes.some((f: ParsedRecipe) => f.full === r.full)) {
                           removeFavoriteRecipe(r)
                         } else {
                           addFavoriteRecipe(r)
@@ -119,7 +116,7 @@ const OutputResults: React.FC = () => {
                       }}
                     >
                       <Image
-                        src={favoriteRecipes.some(f => f.full === r.full) ? '/favorite.png' : '/favorite-gray.png'}
+                        src={favoriteRecipes.some((f: ParsedRecipe) => f.full === r.full) ? '/favorite.png' : '/favorite-gray.png'}
                         alt="Избранное"
                         width={28}
                         height={28}
@@ -195,7 +192,7 @@ const OutputResults: React.FC = () => {
                 <div className="mb-4">
                   <h3 className="text-lg font-semibold mb-1">Ингредиенты:</h3>
                   <ul className="list-disc pl-5 whitespace-pre-line">
-                    {modal.content.ingredients.split('\n').filter(line => line.trim() !== '').map((ingredient, idx) => (
+                    {modal.content.ingredients.split('\n').filter((line: string) => line.trim() !== '').map((ingredient: string, idx: number) => (
                       <li key={idx} className="mb-1">{ingredient.trim()}</li>
                     ))}
                   </ul>
@@ -207,7 +204,7 @@ const OutputResults: React.FC = () => {
                 <div className="mb-4">
                   <h3 className="text-lg font-semibold mb-1">Инструкция по приготовлению:</h3>
                   <ol className="list-decimal pl-5 whitespace-pre-line">
-                    {modal.content.instruction.split('\n').filter(line => line.trim() !== '').map((step, idx) => (
+                    {modal.content.instruction.split('\n').filter((line: string) => line.trim() !== '').map((step: string, idx: number) => (
                       <li key={idx} className="mb-2">{step.trim()}</li>
                     ))}
                   </ol>

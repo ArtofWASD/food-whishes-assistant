@@ -1,14 +1,10 @@
 import React from "react"
-import type { FoodItemProps } from "@/src/api/types/foods"
+import { NutritionSummaryProps } from "@/src/types"
 
-type Props = {
-  items: Array<Pick<FoodItemProps, "callory" | "proteins" | "fats" | "carbs">>
-}
-
-const CookPlateSummary: React.FC<Props> = ({ items }) => {
+const CookPlateSummary: React.FC<NutritionSummaryProps> = ({ items }) => {
   if (!items.length) return null
   const total = items.reduce(
-    (acc, item) => {
+    (acc: { callory: number; proteins: number; fats: number; carbs: number }, item: any) => {
       acc.callory += item.callory || 0
       acc.proteins += item.proteins || 0
       acc.fats += item.fats || 0

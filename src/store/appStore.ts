@@ -2,36 +2,9 @@
 // TODO: Добавить тесты для логики состояния и асинхронных экшенов
 import { create } from 'zustand'
 import { devtools } from 'zustand/middleware'
-import { FoodItemProps } from '@/src/api/types/foods'
+import { FoodItemProps, AppState, AppStorageData, ParsedRecipe, MealType } from '@/src/types'
 import { fetchAIRecipe } from '@/src/api/fetchAIRecipe'
 import { parseRecipes } from '@/src/handlers/parseRecipes'
-
-interface AppState {
-  cookPlateItems: FoodItemProps[]
-  showResults: boolean
-  minCalories: boolean
-  onlyVegetables: boolean
-  bestMacros: boolean
-  setCookPlateItems: (items: FoodItemProps[]) => void
-  setShowResults: (show: boolean) => void
-  setMinCalories: (v: boolean) => void
-  setOnlyVegetables: (v: boolean) => void
-  setBestMacros: (v: boolean) => void
-  aiResult: string
-  aiLoading: boolean
-  aiError: string
-  parsedRecipes: ReturnType<typeof parseRecipes>
-  fetchAIRecipeToStore: () => Promise<void>
-  resetRecipes: () => void
-  favoriteRecipes: ReturnType<typeof parseRecipes>
-  addFavoriteRecipe: (recipe: ReturnType<typeof parseRecipes>[0]) => void
-  removeFavoriteRecipe: (recipe: ReturnType<typeof parseRecipes>[0]) => void
-  selectedMeal: 'breakfast' | 'lunch' | 'dinner' | null
-  setSelectedMeal: (meal: 'breakfast' | 'lunch' | 'dinner' | null) => void
-  favoriteProducts: FoodItemProps[]
-  addFavoriteProduct: (product: FoodItemProps) => void
-  removeFavoriteProduct: (product: FoodItemProps) => void
-}
 
 export const useAppStore = create<AppState>()(
   devtools((set, get) => ({
@@ -47,11 +20,11 @@ export const useAppStore = create<AppState>()(
     favoriteRecipes: [],
     selectedMeal: null,
     favoriteProducts: [],
-    setCookPlateItems: (items) => set({ cookPlateItems: items }, false, 'setCookPlateItems'),
-    setShowResults: (show) => set({ showResults: show }, false, 'setShowResults'),
-    setMinCalories: (v) => set({ minCalories: v }, false, 'setMinCalories'),
-    setOnlyVegetables: (v) => set({ onlyVegetables: v }, false, 'setOnlyVegetables'),
-    setBestMacros: (v) => set({ bestMacros: v }, false, 'setBestMacros'),
+    setCookPlateItems: (items: FoodItemProps[]) => set({ cookPlateItems: items }, false, 'setCookPlateItems'),
+    setShowResults: (show: boolean) => set({ showResults: show }, false, 'setShowResults'),
+    setMinCalories: (v: boolean) => set({ minCalories: v }, false, 'setMinCalories'),
+    setOnlyVegetables: (v: boolean) => set({ onlyVegetables: v }, false, 'setOnlyVegetables'),
+    setBestMacros: (v: boolean) => set({ bestMacros: v }, false, 'setBestMacros'),
     fetchAIRecipeToStore: async () => {
       set({ aiLoading: true, aiError: '', aiResult: '', parsedRecipes: [] }, false, 'fetchAIRecipeToStore_start')
       try {
@@ -69,20 +42,20 @@ export const useAppStore = create<AppState>()(
     },
     // Новый метод для сброса рецептов
     resetRecipes: () => set({ aiResult: '', parsedRecipes: [] }, false, 'resetRecipes'),
-    addFavoriteRecipe: (recipe) => {
-      const exists = get().favoriteRecipes.some(r => r.full === recipe.full)
+    addFavoriteRecipe: (recipe: ParsedRecipe) => {
+      const exists = get().favoriteRecipes.some((r: ParsedRecipe) => r.full === recipe.full)
       if (!exists) set({ favoriteRecipes: [...get().favoriteRecipes, recipe] }, false, 'addFavoriteRecipe')
     },
-    removeFavoriteRecipe: (recipe) => {
-      set({ favoriteRecipes: get().favoriteRecipes.filter(r => r.full !== recipe.full) }, false, 'removeFavoriteRecipe')
+    removeFavoriteRecipe: (recipe: ParsedRecipe) => {
+      set({ favoriteRecipes: get().favoriteRecipes.filter((r: ParsedRecipe) => r.full !== recipe.full) }, false, 'removeFavoriteRecipe')
     },
-    setSelectedMeal: (meal) => set({ selectedMeal: meal }, false, 'setSelectedMeal'),
-    addFavoriteProduct: (product) => {
-      const exists = get().favoriteProducts.some(p => p.id === product.id)
+    setSelectedMeal: (meal: MealType | null) => set({ selectedMeal: meal }, false, 'setSelectedMeal'),
+    addFavoriteProduct: (product: FoodItemProps) => {
+      const exists = get().favoriteProducts.some((p: FoodItemProps) => p.id === product.id)
       if (!exists) set({ favoriteProducts: [...get().favoriteProducts, product] }, false, 'addFavoriteProduct')
     },
-    removeFavoriteProduct: (product) => {
-      set({ favoriteProducts: get().favoriteProducts.filter(p => p.id !== product.id) }, false, 'removeFavoriteProduct')
+    removeFavoriteProduct: (product: FoodItemProps) => {
+      set({ favoriteProducts: get().favoriteProducts.filter((p: FoodItemProps) => p.id !== product.id) }, false, 'removeFavoriteProduct')
     },
   }), { name: 'AppStore' })
 )
@@ -93,7 +66,7 @@ if (typeof window !== 'undefined') {
   // Восстановление при инициализации
   const saved = sessionStorage.getItem('appStore')
   if (saved) {
-    const parsed = JSON.parse(saved)
+    const parsed: AppStorageData = JSON.parse(saved)
     if (parsed.cookPlateItems) store.setState({ cookPlateItems: parsed.cookPlateItems })
     if (parsed.minCalories !== undefined) store.setState({ minCalories: parsed.minCalories })
     if (parsed.onlyVegetables !== undefined) store.setState({ onlyVegetables: parsed.onlyVegetables })
@@ -106,7 +79,7 @@ if (typeof window !== 'undefined') {
   }
   // Подписка на изменения
   store.subscribe((state) => {
-    sessionStorage.setItem('appStore', JSON.stringify({
+    const storageData: AppStorageData = {
       cookPlateItems: state.cookPlateItems,
       minCalories: state.minCalories,
       onlyVegetables: state.onlyVegetables,
@@ -116,6 +89,7 @@ if (typeof window !== 'undefined') {
       favoriteRecipes: state.favoriteRecipes,
       selectedMeal: state.selectedMeal,
       favoriteProducts: state.favoriteProducts,
-    }))
+    }
+    sessionStorage.setItem('appStore', JSON.stringify(storageData))
   })
 } 

@@ -5,6 +5,7 @@ import * as yup from "yup"
 import { Button } from "@/src/ui/button"
 import { IconButton } from "@/src/ui/icon-button"
 import { XMarkIcon } from '@heroicons/react/24/solid'
+import { CustomProductFormValues, CustomProductFormProps, FoodType } from "@/src/types"
 
 const schema = yup.object({
   name: yup.string().required("Название обязательно"),
@@ -12,32 +13,16 @@ const schema = yup.object({
   proteins: yup.number().typeError("Введите число").min(0, "Не может быть меньше 0").required("Обязательно"),
   fats: yup.number().typeError("Введите число").min(0, "Не может быть меньше 0").required("Обязательно"),
   carbs: yup.number().typeError("Введите число").min(0, "Не может быть меньше 0").required("Обязательно"),
-  type: yup.mixed<'meat' | 'milk' | 'vegetable' | 'grain' | 'fruit'>().oneOf(['meat', 'milk', 'vegetable', 'grain', 'fruit']).required('Тип обязателен'),
+  type: yup.mixed<FoodType>().oneOf(['meat', 'milk', 'vegetable', 'grain', 'fruit']).required('Тип обязателен'),
 })
 
-type FormValues = {
-  name: string
-  callory: number
-  proteins: number
-  fats: number
-  carbs: number
-  type: 'meat' | 'milk' | 'vegetable' | 'grain' | 'fruit'
-}
-
-type Props = {
-  onAdd: (product: FormValues & { id: number; imgUrl: string }) => void
-  onCancel: () => void
-  showLabels?: boolean
-  style?: React.CSSProperties
-}
-
-const CustomProductForm: React.FC<Props> = ({ onAdd, onCancel, showLabels, style }) => {
+const CustomProductForm: React.FC<CustomProductFormProps> = ({ onAdd, onCancel, showLabels, style }) => {
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
-  } = useForm<FormValues>({
+  } = useForm<CustomProductFormValues>({
     resolver: yupResolver(schema),
     defaultValues: { name: "", callory: 0, proteins: 0, fats: 0, carbs: 0, type: undefined },
     mode: "onChange",
@@ -49,7 +34,7 @@ const CustomProductForm: React.FC<Props> = ({ onAdd, onCancel, showLabels, style
     nameRef.current?.focus()
   }, [])
 
-  const onSubmit = (data: FormValues) => {
+  const onSubmit = (data: CustomProductFormValues) => {
     onAdd({ ...data, id: Date.now(), imgUrl: "" })
     reset()
   }
