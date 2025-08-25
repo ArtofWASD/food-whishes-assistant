@@ -27,7 +27,8 @@ export type {
   ModalState,
   RecipeDisplayProps,
   ThemeSwitcherProps,
-  TogglerPropsType
+  TogglerPropsType,
+  ProductSelectionModalProps
 } from './components.js'
 
 // Form types

@@ -6,6 +6,7 @@ import fakeFoods from "@/src/api/fake_foods/fake_food_api.json"
 import CookPlateSummary from "@/src/components/cook-plate/cook-plate-summary"
 import { Button } from "@/src/ui/button"
 import CustomProductForm from "./custom-product-form"
+import ProductSelectionModal from "./product-selection-modal"
 import { XMarkIcon } from '@heroicons/react/24/solid'
 import { FoodItemProps } from '@/src/types'
 
@@ -51,57 +52,18 @@ const CookPlate = ({ className }: { className?: string }) => {
           <CookPlateSummary items={cookPlateItems} />
         </div>
       </div>
-      {/* Модальное окно выбора продуктов */}
-      {showProductModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm animate-fade-in px-2">
-          <div className="bg-white dark:bg-gray-900 rounded-xl shadow-lg w-full max-w-md p-6 relative animate-fade-in-up flex flex-col">
-            <button
-              className="absolute top-3 right-3 text-gray-500 hover:text-gray-800 dark:hover:text-white"
-              onClick={() => setShowProductModal(false)}
-              aria-label="Закрыть"
-            >
-              <XMarkIcon className="w-7 h-7" />
-            </button>
-            <h2 className="text-lg font-bold mb-4">Выберите продукты</h2>
-            <div className="flex flex-col gap-2 max-h-64 overflow-y-auto mb-4">
-              {foods.map(f => (
-                <label
-                  key={f.id}
-                  className="flex items-center justify-between gap-2 px-3 py-2 rounded-lg bg-gray-100 dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-slate-700 transition-colors border-b border-gray-200 dark:border-slate-700 cursor-pointer"
-                >
-                  <span className="text-gray-800 dark:text-gray-100 text-sm font-medium truncate w-4/5 text-left">{f.name}</span>
-                  <input
-                    type="checkbox"
-                    className="form-checkbox w-5 h-5 accent-blue-500"
-                    checked={selectedProducts.includes(f.id)}
-                    onChange={e => {
-                      setSelectedProducts(prev =>
-                        e.target.checked
-                          ? [...prev, f.id]
-                          : prev.filter(id => id !== f.id)
-                      )
-                    }}
-                  />
-                </label>
-              ))}
-            </div>
-            <Button
-              className="w-full bg-[#08A045]/90 text-white hover:bg-[#08A045]/100 hover:shadow-lg mt-2"
-              onClick={() => {
-                const newProducts = foods
-                  .filter(f => selectedProducts.includes(f.id) && !cookPlateItems.some(i => i.id === f.id))
-                  .map(f => ({ ...f, type: f.type as FoodItemProps['type'] }))
-                setCookPlateItems([...cookPlateItems, ...newProducts])
-                setShowProductModal(false)
-                setSelectedProducts([])
-              }}
-              disabled={selectedProducts.length === 0}
-            >
-              Добавить
-            </Button>
-          </div>
-        </div>
-      )}
+      {/* Product Selection Modal */}
+      <ProductSelectionModal
+        isOpen={showProductModal}
+        onClose={() => setShowProductModal(false)}
+        foods={foods}
+        selectedProducts={selectedProducts}
+        onSelectedProductsChange={setSelectedProducts}
+        onAdd={(newProducts) => {
+          setCookPlateItems([...cookPlateItems, ...newProducts as FoodItemProps[]])
+        }}
+        cookPlateItems={cookPlateItems}
+      />
       {/* Форма для пользовательского продукта */}
       {showCustomForm && (
         <div className="fixed inset-0 px-4 z-50 flex items-center justify-center bg-black/60 animate-fade-in">
