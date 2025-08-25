@@ -55,119 +55,209 @@ const CustomProductForm: React.FC<Props> = ({ onAdd, onCancel, showLabels, style
   }
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col gap-2 p-8 rounded-lg bg-yellow-50 dark:bg-yellow-900 border border-yellow-200 dark:border-yellow-800 w-full max-w-2xl relative h-full"
-      autoComplete="off"
-      style={style}
-    >
-      {/* Кнопка закрытия в правом верхнем углу */}
-      <IconButton
-        type="button"
-        className="absolute top-3 right-3 text-gray-500 hover:text-gray-800 dark:hover:text-white z-10"
-        onClick={onCancel}
-        aria-label="Закрыть форму"
+    <div className="relative w-full max-w-2xl mx-auto">
+      {/* Красивый фон с градиентом */}
+      <div className="absolute inset-0 bg-gradient-to-br from-yellow-100 via-orange-50 to-red-50 dark:from-yellow-900/30 dark:via-orange-900/20 dark:to-red-900/10 rounded-2xl blur-sm"></div>
+      
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="relative bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl shadow-2xl border border-white/20 dark:border-gray-700/30 p-6 md:p-8 space-y-6"
+        autoComplete="off"
+        style={style}
       >
-        <XMarkIcon className="w-7 h-7" />
-      </IconButton>
-      <div className="flex flex-col w-full">
-        <input
-          type="text"
-          placeholder="Название"
-          {...register("name")}
-          ref={e => {
-            register("name").ref(e)
-            nameRef.current = e
-          }}
-          className={`border rounded-md px-2 py-1 mt-4 text-sm focus:ring-2 focus:ring-yellow-400 outline-none ${errors.name ? "border-red-400" : "border-gray-300"}`}
-          aria-invalid={!!errors.name}
-        />
-        {errors.name && <span className="text-xs text-red-500 mt-0.5" role="alert">{errors.name.message}</span>}
-      </div>
-      <div className="flex flex-col w-full mt-2">
-        <label htmlFor="type" className="text-xs text-gray-600 dark:text-gray-300 mb-1">Тип продукта</label>
-        <select
-          id="type"
-          {...register("type")}
-          className={`border rounded-md px-2 py-1 text-sm focus:ring-2 focus:ring-yellow-400 outline-none ${errors.type ? "border-red-400" : "border-gray-300"}`}
-          aria-invalid={!!errors.type}
-        >
-          <option value="">Выберите тип</option>
-          <option value="meat">Мясо</option>
-          <option value="milk">Молоко/яйцо/сыр</option>
-          <option value="vegetable">Овощи</option>
-          <option value="grain">Злаки/крупы/макароны</option>
-          <option value="fruit">Фрукты/ягоды</option>
-        </select>
-        {errors.type && <span className="text-xs text-red-500 mt-0.5" role="alert">{errors.type.message}</span>}
-      </div>
-      {showLabels && (
-        <div className="flex gap-2 w-full justify-between text-xs text-gray-600 dark:text-gray-300 mb-1">
-          
+        {/* Заголовок формы */}
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="text-xl font-bold text-gray-800 dark:text-white flex items-center gap-2">
+            🥗 Добавить продукт
+          </h3>
+          <IconButton
+            type="button"
+            className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full p-1"
+            onClick={onCancel}
+            aria-label="Закрыть форму"
+          >
+            <XMarkIcon className="w-6 h-6" />
+          </IconButton>
         </div>
-      )}
-      <div className="flex flex-wrap gap-2 justify-start md:justify-center w-full items-center">
-      <span className="text-center">Ккал:</span>
-        <input
-          type="number"
-          placeholder="Ккал"
-          {...register("callory")}
-          className={`border rounded-md px-2 py-1 text-sm w-10 text-center focus:ring-2 focus:ring-yellow-400 outline-none font-semibold ${errors.callory ? "border-red-400" : "border-gray-300"} max-[425px]:w-14 max-[425px]:text-xs max-[425px]:font-semibold`}
-          aria-invalid={!!errors.callory}
-          min={0}
-        />
-        <span className="text-center">Б:</span>
-        <input
-          type="number"
-          placeholder="Б"
-          {...register("proteins")}
-          className={`border rounded-md px-2 py-1 text-sm w-10 text-center focus:ring-2 focus:ring-yellow-400 outline-none font-semibold ${errors.proteins ? "border-red-400" : "border-gray-300"} max-[425px]:w-12 max-[425px]:text-xs max-[425px]:font-semibold`}
-          aria-invalid={!!errors.proteins}
-          min={0}
-        />
-        <span className="ext-center">Ж:</span>
-        <input
-          type="number"
-          placeholder="Ж"
-          {...register("fats")}
-          className={`border rounded-md px-2 py-1 text-sm w-10 text-center focus:ring-2 focus:ring-yellow-400 outline-none font-semibold ${errors.fats ? "border-red-400" : "border-gray-300"} max-[425px]:w-12 max-[425px]:text-xs max-[425px]:font-semibold`}
-          aria-invalid={!!errors.fats}
-          min={0}
-        />
-        <span className="text-center">У:</span>
-        <input
-          type="number"
-          placeholder="У"
-          {...register("carbs")}
-          className={`border rounded-md px-2 py-1 text-sm w-10 text-center focus:ring-2 focus:ring-yellow-400 outline-none font-semibold ${errors.carbs ? "border-red-400" : "border-gray-300"} max-[425px]:w-12 max-[425px]:text-xs max-[425px]:font-semibold`}
-          aria-invalid={!!errors.carbs}
-          min={0}
-        />
-      </div>
-      <div className="absolute right-4 bottom-4 flex flex-row-reverse gap-2">
-        <Button
-          type="submit"
-          disabled={isSubmitting}
-          className="h-8 px-3 py-1 text-xs bg-green-400/90 text-gray-800 dark:text-white hover:bg-green-400/100 hover:shadow-lg"
-        >
-          Добавить
-        </Button>
-        <Button
-          type="button"
-          onClick={onCancel}
-          className="h-8 px-3 py-1 text-xs bg-gray-300/90 text-gray-800 dark:text-white hover:bg-gray-300/100 hover:shadow-lg"
-        >
-          Отмена
-        </Button>
-      </div>
-      {/* Компактные ошибки для числовых полей */}
-      <div className="flex flex-col md:flex-row md:items-center gap-1 md:gap-2 w-full">
-        {errors.callory && <span className="text-xs text-red-500" role="alert">Ккал: {errors.callory.message}</span>}
-        {errors.proteins && <span className="text-xs text-red-500" role="alert">Б: {errors.proteins.message}</span>}
-        {errors.fats && <span className="text-xs text-red-500" role="alert">Ж: {errors.fats.message}</span>}
-        {errors.carbs && <span className="text-xs text-red-500" role="alert">У: {errors.carbs.message}</span>}
-      </div>
-    </form>
+
+        {/* Поле названия */}
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+            Название продукта
+          </label>
+          <input
+            type="text"
+            placeholder="Введите название продукта..."
+            {...register("name")}
+            ref={e => {
+              register("name").ref(e)
+              nameRef.current = e
+            }}
+            className={`w-full px-4 py-3 rounded-xl border-2 transition-all duration-200 focus:ring-4 focus:ring-yellow-400/20 focus:border-yellow-400 outline-none text-gray-800 dark:text-white bg-white dark:bg-gray-700 placeholder-gray-400 dark:placeholder-gray-500 ${
+              errors.name ? "border-red-400 bg-red-50 dark:bg-red-900/20" : "border-gray-200 dark:border-gray-600 hover:border-yellow-300 dark:hover:border-yellow-500"
+            }`}
+            aria-invalid={!!errors.name}
+          />
+          {errors.name && (
+            <div className="flex items-center gap-1 text-red-500 text-sm">
+              <span>⚠️</span>
+              <span>{errors.name.message}</span>
+            </div>
+          )}
+        </div>
+
+        {/* Поле типа продукта */}
+        <div className="space-y-2">
+          <label htmlFor="type" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+            Тип продукта
+          </label>
+          <select
+            id="type"
+            {...register("type")}
+            className={`w-full px-4 py-3 rounded-xl border-2 transition-all duration-200 focus:ring-4 focus:ring-yellow-400/20 focus:border-yellow-400 outline-none text-gray-800 dark:text-white bg-white dark:bg-gray-700 ${
+              errors.type ? "border-red-400 bg-red-50 dark:bg-red-900/20" : "border-gray-200 dark:border-gray-600 hover:border-yellow-300 dark:hover:border-yellow-500"
+            }`}
+            aria-invalid={!!errors.type}
+          >
+            <option value="">Выберите категорию...</option>
+            <option value="meat">🥩 Мясо</option>
+            <option value="milk">🥛 Молочные продукты</option>
+            <option value="vegetable">🥕 Овощи</option>
+            <option value="grain">🌾 Злаки и крупы</option>
+            <option value="fruit">🍎 Фрукты и ягоды</option>
+          </select>
+          {errors.type && (
+            <div className="flex items-center gap-1 text-red-500 text-sm">
+              <span>⚠️</span>
+              <span>{errors.type.message}</span>
+            </div>
+          )}
+        </div>
+
+        {/* Пищевая ценность */}
+        <div className="space-y-4">
+          <h4 className="text-lg font-semibold text-gray-800 dark:text-white">
+            Пищевая ценность (на 100г)
+          </h4>
+          
+          <div className="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-2">
+            {/* Калории */}
+            <div className="flex items-center gap-1">
+              <label className="text-xs font-medium text-gray-600 dark:text-gray-400 whitespace-nowrap">
+                Ккал:
+              </label>
+              <input
+                type="number"
+                placeholder="0"
+                {...register("callory")}
+                className={`w-16 px-2 py-1.5 rounded-lg border-2 text-center text-sm font-semibold transition-all duration-200 focus:ring-2 focus:ring-yellow-400/20 focus:border-yellow-400 outline-none text-gray-800 dark:text-white bg-white dark:bg-gray-700 ${
+                  errors.callory ? "border-red-400 bg-red-50 dark:bg-red-900/20" : "border-gray-200 dark:border-gray-600 hover:border-yellow-300 dark:hover:border-yellow-500"
+                }`}
+                aria-invalid={!!errors.callory}
+                min={0}
+              />
+            </div>
+            
+            {/* Белки */}
+            <div className="flex items-center gap-1">
+              <label className="text-xs font-medium text-gray-600 dark:text-gray-400 whitespace-nowrap">
+                Белки:
+              </label>
+              <input
+                type="number"
+                placeholder="0"
+                {...register("proteins")}
+                className={`w-16 px-2 py-1.5 rounded-lg border-2 text-center text-sm font-semibold transition-all duration-200 focus:ring-2 focus:ring-blue-400/20 focus:border-blue-400 outline-none text-gray-800 dark:text-white bg-white dark:bg-gray-700 ${
+                  errors.proteins ? "border-red-400 bg-red-50 dark:bg-red-900/20" : "border-gray-200 dark:border-gray-600 hover:border-blue-300 dark:hover:border-blue-500"
+                }`}
+                aria-invalid={!!errors.proteins}
+                min={0}
+              />
+            </div>
+            
+            {/* Жиры */}
+            <div className="flex items-center gap-1">
+              <label className="text-xs font-medium text-gray-600 dark:text-gray-400 whitespace-nowrap">
+                Жиры:
+              </label>
+              <input
+                type="number"
+                placeholder="0"
+                {...register("fats")}
+                className={`w-16 px-2 py-1.5 rounded-lg border-2 text-center text-sm font-semibold transition-all duration-200 focus:ring-2 focus:ring-green-400/20 focus:border-green-400 outline-none text-gray-800 dark:text-white bg-white dark:bg-gray-700 ${
+                  errors.fats ? "border-red-400 bg-red-50 dark:bg-red-900/20" : "border-gray-200 dark:border-gray-600 hover:border-green-300 dark:hover:border-green-500"
+                }`}
+                aria-invalid={!!errors.fats}
+                min={0}
+              />
+            </div>
+            
+            {/* Углеводы */}
+            <div className="flex items-center gap-1">
+              <label className="text-xs font-medium text-gray-600 dark:text-gray-400 whitespace-nowrap">
+                Углеводы:
+              </label>
+              <input
+                type="number"
+                placeholder="0"
+                {...register("carbs")}
+                className={`w-16 px-2 py-1.5 rounded-lg border-2 text-center text-sm font-semibold transition-all duration-200 focus:ring-2 focus:ring-orange-400/20 focus:border-orange-400 outline-none text-gray-800 dark:text-white bg-white dark:bg-gray-700 ${
+                  errors.carbs ? "border-red-400 bg-red-50 dark:bg-red-900/20" : "border-gray-200 dark:border-gray-600 hover:border-orange-300 dark:hover:border-orange-500"
+                }`}
+                aria-invalid={!!errors.carbs}
+                min={0}
+              />
+            </div>
+          </div>
+          
+          {/* Ошибки для пищевой ценности */}
+          <div className="space-y-1">
+            {errors.callory && (
+              <div className="flex items-center gap-1 text-red-500 text-sm">
+                <span>⚠️</span>
+                <span>Калории: {errors.callory.message}</span>
+              </div>
+            )}
+            {errors.proteins && (
+              <div className="flex items-center gap-1 text-red-500 text-sm">
+                <span>⚠️</span>
+                <span>Белки: {errors.proteins.message}</span>
+              </div>
+            )}
+            {errors.fats && (
+              <div className="flex items-center gap-1 text-red-500 text-sm">
+                <span>⚠️</span>
+                <span>Жиры: {errors.fats.message}</span>
+              </div>
+            )}
+            {errors.carbs && (
+              <div className="flex items-center gap-1 text-red-500 text-sm">
+                <span>⚠️</span>
+                <span>Углеводы: {errors.carbs.message}</span>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Кнопки действий */}
+        <div className="flex gap-3 pt-4">
+          <Button
+            type="button"
+            onClick={onCancel}
+            className="flex-1 py-3 px-6 rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-medium transition-all duration-200 hover:shadow-md"
+          >
+            ❌ Отмена
+          </Button>
+          <Button
+            type="submit"
+            disabled={isSubmitting}
+            className="flex-1 py-3 px-6 rounded-xl bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white font-medium transition-all duration-200 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isSubmitting ? "⏳ Добавляю..." : "✅ Добавить продукт"}
+          </Button>
+        </div>
+      </form>
+    </div>
   )
 }
 
