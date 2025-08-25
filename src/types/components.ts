@@ -53,6 +53,43 @@ export interface ThemeSwitcherProps {
   className?: string
 }
 
+// Product selection modal types
+export interface ProductSelectionModalProps {
+  isOpen: boolean
+  onClose: () => void
+  foods: Array<{
+    id: number
+    name: string
+    imgUrl?: string
+    callory?: number
+    proteins?: number
+    fats?: number
+    carbs?: number
+    type: string
+  }>
+  selectedProducts: number[]
+  onSelectedProductsChange: (products: number[]) => void
+  onAdd: (products: Array<{
+    id: number
+    name: string
+    imgUrl: string
+    callory: number
+    proteins: number
+    fats: number
+    carbs: number
+    type: string
+  }>) => void
+  cookPlateItems: Array<{
+    id: number
+    name: string
+    callory?: number
+    proteins?: number
+    fats?: number
+    carbs?: number
+    type: string
+  }>
+}
+
 // Legacy toggler props (to be deprecated)
 export interface TogglerPropsType {
   props: {
