@@ -4,7 +4,7 @@ import { NutritionSummaryProps } from "@/src/types"
 const CookPlateSummary: React.FC<NutritionSummaryProps> = ({ items }) => {
   if (!items.length) return null
   const total = items.reduce(
-    (acc: { callory: number; proteins: number; fats: number; carbs: number }, item: any) => {
+    (acc: { callory: number; proteins: number; fats: number; carbs: number }, item: Pick<import('@/src/types').FoodItemProps, "callory" | "proteins" | "fats" | "carbs">) => {
       acc.callory += item.callory || 0
       acc.proteins += item.proteins || 0
       acc.fats += item.fats || 0

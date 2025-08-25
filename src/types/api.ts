@@ -56,5 +56,5 @@ export interface FakeApiData {
 export interface ApiError {
   message: string
   code?: string | number
-  details?: any
+  details?: Record<string, unknown>
 }

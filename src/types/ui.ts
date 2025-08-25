@@ -1,4 +1,4 @@
-import { FoodItemProps, CustomProductFormValues, TogglerProps } from "@/src/types"/**
+/**
  * UI-specific types for styling, animations, and interactions
  */
 

@@ -16,7 +16,7 @@ const schema = yup.object({
   type: yup.mixed<FoodType>().oneOf(['meat', 'milk', 'vegetable', 'grain', 'fruit']).required('Тип обязателен'),
 })
 
-const CustomProductForm: React.FC<CustomProductFormProps> = ({ onAdd, onCancel, showLabels, style }) => {
+const CustomProductForm: React.FC<CustomProductFormProps> = ({ onAdd, onCancel, style }) => {
   const {
     register,
     handleSubmit,
