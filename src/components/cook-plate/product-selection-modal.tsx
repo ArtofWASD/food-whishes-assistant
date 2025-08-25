@@ -1,4 +1,3 @@
-import React, { useState } from "react"
 import { Button } from "@/src/ui/button"
 import { IconButton } from "@/src/ui/icon-button"
 import { XMarkIcon } from '@heroicons/react/24/solid'
