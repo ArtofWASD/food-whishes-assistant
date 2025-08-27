@@ -60,3 +60,59 @@ export interface ColorScheme {
 // Spacing system
 export type SpacingSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'
 export type SpacingValue = number | SpacingSize
+
+// Modal animation types
+export type ModalAnimationType = 'fade' | 'slide-up' | 'slide-down' | 'slide-left' | 'slide-right' | 'scale' | 'none'
+
+// Modal size types
+export type ModalSize = 'sm' | 'md' | 'lg' | 'xl' | 'full'
+
+// Modal backdrop behavior
+export type ModalBackdropBehavior = 'close' | 'none' | 'blur'
+
+// Universal Modal component props
+export interface ModalProps {
+  // Core modal state
+  isOpen: boolean
+  onClose: () => void
+  
+  // Content and presentation
+  title?: string
+  children: React.ReactNode
+  size?: ModalSize
+  
+  // Styling and appearance
+  className?: string
+  contentClassName?: string
+  overlayClassName?: string
+  showCloseButton?: boolean
+  closeButtonClassName?: string
+  
+  // Background and backdrop
+  gradientBackground?: string
+  backdrop?: ModalBackdropBehavior
+  
+  // Animation
+  animation?: ModalAnimationType
+  animationDuration?: number
+  
+  // Behavior
+  closeOnBackdropClick?: boolean
+  closeOnEscape?: boolean
+  preventScroll?: boolean
+  
+  // Accessibility
+  'aria-labelledby'?: string
+  'aria-describedby'?: string
+  role?: string
+  
+  // Event handlers
+  onOpen?: () => void
+  onClosed?: () => void
+}
+
+// Modal state management interface
+export interface ModalState<T = any> {
+  open: boolean
+  content: T | null
+}

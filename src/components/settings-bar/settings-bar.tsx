@@ -9,6 +9,7 @@ import AuthDrawer from "../../widgets/auth-drawer/auth-drawer"
 import { IconButton } from "@/src/ui/icon-button"
 import { ThemeSwitcher } from '@/src/ui/theme-switcher'
 import { IconExpandButton } from '@/src/ui/icon-expand-button'
+import Modal from '@/src/ui/modal'
 import { useRouter, usePathname } from 'next/navigation'
 
 const SettingsBar = () => {
@@ -82,106 +83,69 @@ const SettingsBar = () => {
           </IconButton>
         </div>
       </div>
-      {/* Модальное окно с тогглерами */}
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
-            <motion.div
-              className="bg-white dark:bg-gray-900 rounded-xl shadow-lg w-full max-w-xs p-6 relative flex flex-col gap-4"
-              initial={{ scale: 0.9, y: 40, opacity: 0 }}
-              animate={{ scale: 1, y: 0, opacity: 1 }}
-              exit={{ scale: 0.9, y: 40, opacity: 0 }}
-              transition={{ type: 'spring', stiffness: 200, damping: 22 }}
-            >
+      {/* Universal Modal for mobile menu */}
+      <Modal
+        isOpen={open}
+        onClose={() => setOpen(false)}
+        size="sm"
+        animation="scale"
+        gradientBackground=""
+        className="md:hidden"
+      >
+        <div className="flex flex-col gap-4">
+          {/* Кнопка навигации */}
+          {!isMain && (
+            isIconOnlyBack ? (
               <IconButton
-                className="absolute top-3 right-3 text-gray-500 hover:text-gray-800 dark:hover:text-white"
-                onClick={() => setOpen(false)}
-                aria-label="Закрыть меню"
+                onClick={() => { setOpen(false); router.push('/') }}
+                aria-label="На главную"
               >
-                <XMarkIcon className="w-7 h-7" />
+                <Image src="/previous.png" alt="Назад" width={28} height={28} />
               </IconButton>
-              {/* Кнопка навигации */}
-              {!isMain && (
-                isIconOnlyBack ? (
-                  <IconButton
-                    onClick={() => { setOpen(false); router.push('/') }}
-                    aria-label="На главную"
-                  >
-                    <Image src="/previous.png" alt="Назад" width={28} height={28} />
-                  </IconButton>
-                ) : (
-                  <IconExpandButton
-                    icon={<Image src="/previous.png" alt="Назад" width={28} height={28} />}
-                    expanded={open || aboutExpanded}
-                    onClick={() => { setOpen(false); router.push('/') }}
-                    onMouseEnter={() => setAboutExpanded(true)}
-                    onMouseLeave={() => setAboutExpanded(false)}
-                  >
-                    На главную
-                  </IconExpandButton>
-                )
-              )}
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-      {/* Выдвижная панель настроек */}
-      <AnimatePresence>
-        {settingsOpen && (
-          <motion.div
-            className="fixed inset-0 z-50 flex bg-black/40"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setSettingsOpen(false)}
-          >
-            <motion.div
-              className="bg-white dark:bg-gray-900 shadow-lg w-80 h-full p-6 flex flex-col gap-4 overflow-y-auto"
-              initial={{ x: '-100%' }}
-              animate={{ x: 0 }}
-              exit={{ x: '-100%' }}
-              transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Настройки</h3>
-                <IconButton
-                  className="text-gray-500 hover:text-gray-800 dark:hover:text-white"
-                  onClick={() => setSettingsOpen(false)}
-                  aria-label="Закрыть настройки"
-                >
-                  <XMarkIcon className="w-6 h-6" />
-                </IconButton>
-              </div>
-              
-              {/* Тогглеры для выбора приёма пищи */}
-              <div className="flex flex-col gap-3">
-                <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300">Приём пищи</h4>
-                <div className="flex flex-col gap-2">
-                  <Toggler label="Завтрак" value={selectedMeal === 'breakfast'} onChange={() => setSelectedMeal(selectedMeal === 'breakfast' ? null : 'breakfast')} />
-                  <Toggler label="Обед" value={selectedMeal === 'lunch'} onChange={() => setSelectedMeal(selectedMeal === 'lunch' ? null : 'lunch')} />
-                  <Toggler label="Ужин" value={selectedMeal === 'dinner'} onChange={() => setSelectedMeal(selectedMeal === 'dinner' ? null : 'dinner')} />
-                </div>
-              </div>
-              
-              {/* Тогглеры для выбора минимального БЖУ */}
-              <div className="flex flex-col gap-3">
-                <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300">Минимальное содержание</h4>
-                <div className="flex flex-col gap-2">
-                  <Toggler label="Минимум белков" value={lowestMacro === 'protein'} onChange={() => setLowestMacro(lowestMacro === 'protein' ? null : 'protein')} />
-                  <Toggler label="Минимум жиров" value={lowestMacro === 'fat'} onChange={() => setLowestMacro(lowestMacro === 'fat' ? null : 'fat')} />
-                  <Toggler label="Минимум углеводов" value={lowestMacro === 'carbs'} onChange={() => setLowestMacro(lowestMacro === 'carbs' ? null : 'carbs')} />
-                </div>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            ) : (
+              <IconExpandButton
+                icon={<Image src="/previous.png" alt="Назад" width={28} height={28} />}
+                expanded={open || aboutExpanded}
+                onClick={() => { setOpen(false); router.push('/') }}
+                onMouseEnter={() => setAboutExpanded(true)}
+                onMouseLeave={() => setAboutExpanded(false)}
+              >
+                На главную
+              </IconExpandButton>
+            )
+          )}
+        </div>
+      </Modal>
+      
+      {/* Universal Modal for settings panel (slide-left animation) */}
+      <Modal
+        isOpen={settingsOpen}
+        onClose={() => setSettingsOpen(false)}
+        title="Настройки"
+        animation="slide-left"
+        closeOnBackdropClick={true}
+        gradientBackground=""
+      >
+        {/* Тогглеры для выбора приёма пищи */}
+        <div className="flex flex-col gap-3">
+          <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300">Приём пищи</h4>
+          <div className="flex flex-col gap-2">
+            <Toggler label="Завтрак" value={selectedMeal === 'breakfast'} onChange={() => setSelectedMeal(selectedMeal === 'breakfast' ? null : 'breakfast')} />
+            <Toggler label="Обед" value={selectedMeal === 'lunch'} onChange={() => setSelectedMeal(selectedMeal === 'lunch' ? null : 'lunch')} />
+            <Toggler label="Ужин" value={selectedMeal === 'dinner'} onChange={() => setSelectedMeal(selectedMeal === 'dinner' ? null : 'dinner')} />
+          </div>
+        </div>
+        
+        {/* Тогглеры для выбора минимального БЖУ */}
+        <div className="flex flex-col gap-3">
+          <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300">Минимальное содержание</h4>
+          <div className="flex flex-col gap-2">
+            <Toggler label="Минимум белков" value={lowestMacro === 'protein'} onChange={() => setLowestMacro(lowestMacro === 'protein' ? null : 'protein')} />
+            <Toggler label="Минимум жиров" value={lowestMacro === 'fat'} onChange={() => setLowestMacro(lowestMacro === 'fat' ? null : 'fat')} />
+            <Toggler label="Минимум углеводов" value={lowestMacro === 'carbs'} onChange={() => setLowestMacro(lowestMacro === 'carbs' ? null : 'carbs')} />
+          </div>
+        </div>
+      </Modal>
       {/* Sllide секция для авторизации */}
       <AuthDrawer open={authOpen} onClose={() => setAuthOpen(false)} />
     </div>
