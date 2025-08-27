@@ -2,9 +2,8 @@
 import React, { useState } from 'react'
 import Image from 'next/image'
 import Toggler from '../../widgets/toggler/toggler'
-import { motion, AnimatePresence } from 'framer-motion'
 import { useAppStore } from '@/src/store/appStore'
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/solid'
+import { Bars3Icon } from '@heroicons/react/24/solid'
 import AuthDrawer from "../../widgets/auth-drawer/auth-drawer"
 import { IconButton } from "@/src/ui/icon-button"
 import { ThemeSwitcher } from '@/src/ui/theme-switcher'

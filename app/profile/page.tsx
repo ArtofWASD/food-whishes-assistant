@@ -8,7 +8,7 @@ import Modal from "@/src/ui/modal"
 import { ParsedRecipe, ModalState } from "@/src/types"
 
 export default function ProfilePage() {
-  const { favoriteRecipes, removeFavoriteRecipe, favoriteProducts, removeFavoriteProduct, addFavoriteRecipe } = useAppStore()
+  const { favoriteRecipes, removeFavoriteRecipe, favoriteProducts, removeFavoriteProduct } = useAppStore()
   const [tab, setTab] = useState<'profile' | 'favorites' | 'products'>('profile')
   const [modal, setModal] = useState<ModalState<ParsedRecipe>>({ open: false, content: null })
   const userMock = {

@@ -112,7 +112,7 @@ export interface ModalProps {
 }
 
 // Modal state management interface
-export interface ModalState<T = any> {
+export interface ModalState<T = unknown> {
   open: boolean
   content: T | null
 }

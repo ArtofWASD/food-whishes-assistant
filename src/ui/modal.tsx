@@ -1,6 +1,6 @@
 "use client"
 import React, { useEffect } from 'react'
-import { motion, AnimatePresence, TargetAndTransition } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { XMarkIcon } from '@heroicons/react/24/solid'
 import { IconButton } from './icon-button'
 import { ModalProps, ModalAnimationType, ModalSize } from '@/src/types'
