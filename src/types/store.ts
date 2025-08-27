@@ -23,9 +23,11 @@ export interface AppState {
   minCalories: boolean
   onlyVegetables: boolean
   bestMacros: boolean
+  lowestMacro: 'protein' | 'fat' | 'carbs' | null
   setMinCalories: (v: boolean) => void
   setOnlyVegetables: (v: boolean) => void
   setBestMacros: (v: boolean) => void
+  setLowestMacro: (macro: 'protein' | 'fat' | 'carbs' | null) => void
   
   // AI recipe generation
   aiResult: string
@@ -56,6 +58,7 @@ export interface AppStorageData {
   minCalories?: boolean
   onlyVegetables?: boolean
   bestMacros?: boolean
+  lowestMacro?: 'protein' | 'fat' | 'carbs' | null
   aiResult?: string
   parsedRecipes?: ParsedRecipes
   favoriteRecipes?: ParsedRecipes

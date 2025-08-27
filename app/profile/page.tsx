@@ -4,11 +4,13 @@ import { useAppStore } from "@/src/store/appStore"
 import { useState } from "react"
 import { IconButton } from "@/src/ui/icon-button"
 import { Button } from "@/src/ui/button"
+import Modal from "@/src/ui/modal"
+import { ParsedRecipe, ModalState } from "@/src/types"
 
 export default function ProfilePage() {
   const { favoriteRecipes, removeFavoriteRecipe, favoriteProducts, removeFavoriteProduct } = useAppStore()
   const [tab, setTab] = useState<'profile' | 'favorites' | 'products'>('profile')
-  const [modal, setModal] = useState<{ open: boolean, content: string }>({ open: false, content: "" })
+  const [modal, setModal] = useState<ModalState<ParsedRecipe>>({ open: false, content: null })
   const userMock = {
     name: "Иван Иванов",
     email: "ivan.ivanov@example.com",
@@ -77,13 +79,13 @@ export default function ProfilePage() {
                 <IconButton
                   className="ml-2 rounded-lg bg-transparent shadow-none text-white font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green-300 block md:hidden"
                   aria-label="Подробнее"
-                  onClick={() => setModal({ open: true, content: r.full })}
+                  onClick={() => setModal({ open: true, content: r })}
                 >
                   <Image src="/loupe.png" alt="Подробнее" width={24} height={24} />
                 </IconButton>
                 <Button
                   className="ml-2 px-3 py-1 rounded-lg bg-gradient-to-r from-green-400 to-green-600 shadow text-white font-semibold hover:from-green-500 hover:to-green-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green-300 hidden md:block"
-                  onClick={() => setModal({ open: true, content: r.full })}
+                  onClick={() => setModal({ open: true, content: r })}
                 >
                   Подробнее
                 </Button>
@@ -116,24 +118,96 @@ export default function ProfilePage() {
           ))}
         </div>
       )}
-      {/* Модалка для подробного рецепта */}
-      {modal.open && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
-          <div className="fixed inset-0 bg-black/40" onClick={() => setModal({ open: false, content: "" })} />
-          <div className="bg-white dark:bg-gray-900 px-4 py-6 w-full max-w-xl relative flex flex-col overflow-y-auto max-h-[80vh] z-10 animate-fade-in-up">
-            <IconButton
-              className="absolute top-3 right-3 text-gray-500 hover:text-gray-800 dark:hover:text-white z-10"
-              onClick={() => setModal({ open: false, content: "" })}
-              aria-label="Закрыть"
-            >
-              <svg width="28" height="28" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 6L14 14M14 6L6 14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
-            </IconButton>
-            <div className="whitespace-pre-line text-base min-h-12 flex items-center justify-center py-6">
-              {modal.content.replace(/===([A-ZА-ЯЁ\s]+?)===/g, (_match, p1) => `${p1.trim().charAt(0).toUpperCase() + p1.trim().slice(1).toLowerCase()}:`)}
+      {/* Universal Modal for recipe details */}
+      <Modal
+        isOpen={modal.open}
+        onClose={() => setModal({ open: false, content: null })}
+        title={`🍽️ ${modal.content?.name || 'Рецепт'}`}
+        size="lg"
+        gradientBackground="blue"
+        animation="slide-up"
+      >
+        {modal.content && (
+          <div className="space-y-6">
+            {/* Описание */}
+            {modal.content.description && (
+              <div className="space-y-2">
+                <h3 className="text-lg font-semibold text-gray-800 dark:text-white">📋 Описание</h3>
+                <div className="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4 border border-gray-200 dark:border-gray-600">
+                  <p className="text-gray-700 dark:text-gray-300 whitespace-pre-line leading-relaxed">{modal.content.description}</p>
+                </div>
+              </div>
+            )}
+
+            {/* БЖУ */}
+            {modal.content.bju && (
+              <div className="space-y-2">
+                <h3 className="text-lg font-semibold text-gray-800 dark:text-white">⚖️ Пищевая ценность (на порцию)</h3>
+                <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-xl p-4 border border-green-200 dark:border-green-700">
+                  <p className="text-gray-700 dark:text-gray-300 whitespace-pre-line leading-relaxed font-medium">{modal.content.bju}</p>
+                </div>
+              </div>
+            )}
+
+            {/* Ингредиенты */}
+            {modal.content.ingredients && (
+              <div className="space-y-2">
+                <h3 className="text-lg font-semibold text-gray-800 dark:text-white">🥘 Ингредиенты</h3>
+                <div className="bg-gradient-to-r from-yellow-50 to-orange-50 dark:from-yellow-900/20 dark:to-orange-900/20 rounded-xl p-4 border border-yellow-200 dark:border-yellow-700">
+                  <ul className="space-y-2">
+                    {modal.content.ingredients.split('\n').filter((line: string) => line.trim() !== '').map((ingredient: string, idx: number) => (
+                      <li key={idx} className="flex items-start gap-2 text-gray-700 dark:text-gray-300">
+                        <span className="text-orange-500 font-bold mt-1">•</span>
+                        <span className="leading-relaxed">{ingredient.trim()}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            )}
+
+            {/* Инструкция */}
+            {modal.content.instruction && (
+              <div className="space-y-2">
+                <h3 className="text-lg font-semibold text-gray-800 dark:text-white">👨‍🍳 Инструкция по приготовлению</h3>
+                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl p-4 border border-blue-200 dark:border-blue-700">
+                  <ol className="space-y-3">
+                    {modal.content.instruction.split('\n').filter((line: string) => line.trim() !== '').map((step: string, idx: number) => (
+                      <li key={idx} className="flex items-start gap-3 text-gray-700 dark:text-gray-300">
+                        <span className="bg-blue-500 text-white text-sm font-bold rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0 mt-0.5">
+                          {idx + 1}
+                        </span>
+                        <span className="leading-relaxed">{step.trim()}</span>
+                      </li>
+                    ))}
+                  </ol>
+                </div>
+              </div>
+            )}
+
+            {/* Кнопки действий */}
+            <div className="flex flex-col sm:flex-row gap-3 pt-4">
+              <Button
+                type="button"
+                onClick={() => setModal({ open: false, content: null })}
+                className="flex-1 py-3 px-6 rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-medium transition-all duration-200 hover:shadow-md"
+              >
+                ❌ Закрыть
+              </Button>
+              <Button
+                type="button"
+                onClick={() => {
+                  removeFavoriteRecipe(modal.content!)
+                  setModal({ open: false, content: null })
+                }}
+                className="flex-1 py-3 px-6 rounded-xl bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white font-medium transition-all duration-200 hover:shadow-lg"
+              >
+                💔 Удалить из избранного
+              </Button>
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </Modal>
     </div>
   )
 } 
