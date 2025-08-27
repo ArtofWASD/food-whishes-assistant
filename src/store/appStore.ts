@@ -13,6 +13,7 @@ export const useAppStore = create<AppState>()(
     minCalories: false,
     onlyVegetables: false,
     bestMacros: false,
+    lowestMacro: null as 'protein' | 'fat' | 'carbs' | null,
     aiResult: '',
     aiLoading: false,
     aiError: '',
@@ -25,6 +26,7 @@ export const useAppStore = create<AppState>()(
     setMinCalories: (v: boolean) => set({ minCalories: v }, false, 'setMinCalories'),
     setOnlyVegetables: (v: boolean) => set({ onlyVegetables: v }, false, 'setOnlyVegetables'),
     setBestMacros: (v: boolean) => set({ bestMacros: v }, false, 'setBestMacros'),
+    setLowestMacro: (macro: 'protein' | 'fat' | 'carbs' | null) => set({ lowestMacro: macro }, false, 'setLowestMacro'),
     fetchAIRecipeToStore: async () => {
       set({ aiLoading: true, aiError: '', aiResult: '', parsedRecipes: [] }, false, 'fetchAIRecipeToStore_start')
       try {
@@ -71,6 +73,7 @@ if (typeof window !== 'undefined') {
     if (parsed.minCalories !== undefined) store.setState({ minCalories: parsed.minCalories })
     if (parsed.onlyVegetables !== undefined) store.setState({ onlyVegetables: parsed.onlyVegetables })
     if (parsed.bestMacros !== undefined) store.setState({ bestMacros: parsed.bestMacros })
+    if (parsed.lowestMacro !== undefined) store.setState({ lowestMacro: parsed.lowestMacro })
     if (parsed.aiResult !== undefined) store.setState({ aiResult: parsed.aiResult })
     if (parsed.parsedRecipes !== undefined) store.setState({ parsedRecipes: parsed.parsedRecipes })
     if (parsed.favoriteRecipes !== undefined) store.setState({ favoriteRecipes: parsed.favoriteRecipes })
@@ -84,6 +87,7 @@ if (typeof window !== 'undefined') {
       minCalories: state.minCalories,
       onlyVegetables: state.onlyVegetables,
       bestMacros: state.bestMacros,
+      lowestMacro: state.lowestMacro,
       aiResult: state.aiResult,
       parsedRecipes: state.parsedRecipes,
       favoriteRecipes: state.favoriteRecipes,

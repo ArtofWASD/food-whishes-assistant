@@ -106,13 +106,13 @@ const ProductSelectionModal: React.FC<ProductSelectionModalProps> = ({
                         <div className="flex items-center gap-1 md:gap-2">
                           {/* Calories */}
                           <div className="flex items-center gap-1">
-                            <span className="text-xs font-medium text-gray-600 dark:text-gray-400">
-                              Ккал:
+                            <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                              Калории:
                             </span>
-                            <span className={`text-sm font-bold px-1.5 py-0.5 rounded ${
+                            <span className={`text-xs font-bold ${
                               isInFridge
-                                ? "bg-gray-100 dark:bg-gray-600 text-gray-500 dark:text-gray-400"
-                                : "bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-200"
+                                ? "text-gray-500 dark:text-gray-400"
+                                : "text-gray-800 dark:text-gray-200"
                             }`}>
                               {round(food.callory || 0)}
                             </span>
@@ -120,43 +120,43 @@ const ProductSelectionModal: React.FC<ProductSelectionModalProps> = ({
                           
                           {/* Proteins */}
                           <div className="flex items-center gap-1">
-                            <span className="text-xs font-medium text-gray-600 dark:text-gray-400">
-                              Б:
+                            <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                              Белки:
                             </span>
-                            <span className={`text-sm font-bold px-1.5 py-0.5 rounded ${
+                            <span className={`text-xs font-bold ${
                               isInFridge
-                                ? "bg-gray-100 dark:bg-gray-600 text-gray-500 dark:text-gray-400"
-                                : "bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200"
+                                ? "text-gray-500 dark:text-gray-400"
+                                : "text-gray-800 dark:text-gray-200"
                             }`}>
-                              {round(food.proteins || 0)}г
+                              {round(food.proteins || 0)}г.
                             </span>
                           </div>
                           
                           {/* Fats */}
                           <div className="flex items-center gap-1">
-                            <span className="text-xs font-medium text-gray-600 dark:text-gray-400">
-                              Ж:
+                            <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                              Жиры:
                             </span>
-                            <span className={`text-sm font-bold px-1.5 py-0.5 rounded ${
+                            <span className={`text-xs font-bold ${
                               isInFridge
-                                ? "bg-gray-100 dark:bg-gray-600 text-gray-500 dark:text-gray-400"
-                                : "bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-200"
+                                ? "text-gray-500 dark:text-gray-400"
+                                : "text-gray-800 dark:text-gray-200"
                             }`}>
-                              {round(food.fats || 0)}г
+                              {round(food.fats || 0)}г.
                             </span>
                           </div>
                           
                           {/* Carbs */}
                           <div className="flex items-center gap-1">
-                            <span className="text-xs font-medium text-gray-600 dark:text-gray-400">
-                              У:
+                            <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                              Углеводы:
                             </span>
-                            <span className={`text-sm font-bold px-1.5 py-0.5 rounded ${
+                            <span className={`text-xs font-bold ${
                               isInFridge
-                                ? "bg-gray-100 dark:bg-gray-600 text-gray-500 dark:text-gray-400"
-                                : "bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-200"
+                                ? "text-gray-500 dark:text-gray-400"
+                                : "text-gray-800 dark:text-gray-200"
                             }`}>
-                              {round(food.carbs || 0)}г
+                              {round(food.carbs || 0)}г.
                             </span>
                           </div>
                         </div>

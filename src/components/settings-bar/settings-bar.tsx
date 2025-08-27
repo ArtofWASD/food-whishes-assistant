@@ -14,9 +14,11 @@ import { useRouter, usePathname } from 'next/navigation'
 const SettingsBar = () => {
   const {
     selectedMeal, setSelectedMeal,
+    lowestMacro, setLowestMacro,
   } = useAppStore()
   const [open, setOpen] = useState(false)
   const [authOpen, setAuthOpen] = useState(false)
+  const [settingsOpen, setSettingsOpen] = useState(false)
   const [aboutExpanded, setAboutExpanded] = useState(false)
   const router = useRouter()
   const pathname = usePathname()
@@ -26,17 +28,19 @@ const SettingsBar = () => {
   return (
     <div className="bg-[var(--pastel-blue)] bg-opacity-35 flex flex-col gap-2 shadow-[0_4px_16px_0_rgba(0,0,0,0.10)]">
       <div className="flex flex-row justify-between items-center w-full relative min-h-12 h-12">
-        {/* Левая часть: toggler'ы или кнопка "На главную" */}
+        {/* Левая часть: кнопка настроек и кнопка "На главную" */}
         <div className="flex flex-row gap-4">
-          {isMain ? (
-            <>
-              <div className="hidden md:flex flex-row gap-4">
-                <Toggler label="Завтрак" value={selectedMeal === 'breakfast'} onChange={() => setSelectedMeal('breakfast')} />
-                <Toggler label="Обед" value={selectedMeal === 'lunch'} onChange={() => setSelectedMeal('lunch')} />
-                <Toggler label="Ужин" value={selectedMeal === 'dinner'} onChange={() => setSelectedMeal('dinner')} />
-              </div>
-            </>
-          ) : (
+          {/* Кнопка настроек */}
+          {isMain && (
+            <IconButton
+              className="flex items-center group"
+              aria-label="Настройки"
+              onClick={() => setSettingsOpen(true)}
+            >
+              <Image src="/settings.png" alt="Настройки" width={32} height={32} className="w-8 h-8 transition-transform group-hover:scale-110" />
+            </IconButton>
+          )}
+          {!isMain && (
             isIconOnlyBack ? (
               <IconButton
                 onClick={() => router.push('/')}
@@ -101,14 +105,8 @@ const SettingsBar = () => {
               >
                 <XMarkIcon className="w-7 h-7" />
               </IconButton>
-              {/* Тогглеры для выбора приёма пищи */}
-              {isMain ? (
-                <>
-                  <Toggler label="Завтрак" value={selectedMeal === 'breakfast'} onChange={() => setSelectedMeal('breakfast')} />
-                  <Toggler label="Обед" value={selectedMeal === 'lunch'} onChange={() => setSelectedMeal('lunch')} />
-                  <Toggler label="Ужин" value={selectedMeal === 'dinner'} onChange={() => setSelectedMeal('dinner')} />
-                </>
-              ) : (
+              {/* Кнопка навигации */}
+              {!isMain && (
                 isIconOnlyBack ? (
                   <IconButton
                     onClick={() => { setOpen(false); router.push('/') }}
@@ -128,6 +126,58 @@ const SettingsBar = () => {
                   </IconExpandButton>
                 )
               )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+      {/* Выдвижная панель настроек */}
+      <AnimatePresence>
+        {settingsOpen && (
+          <motion.div
+            className="fixed inset-0 z-50 flex bg-black/40"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSettingsOpen(false)}
+          >
+            <motion.div
+              className="bg-white dark:bg-gray-900 shadow-lg w-80 h-full p-6 flex flex-col gap-4 overflow-y-auto"
+              initial={{ x: '-100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '-100%' }}
+              transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex items-center justify-between">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Настройки</h3>
+                <IconButton
+                  className="text-gray-500 hover:text-gray-800 dark:hover:text-white"
+                  onClick={() => setSettingsOpen(false)}
+                  aria-label="Закрыть настройки"
+                >
+                  <XMarkIcon className="w-6 h-6" />
+                </IconButton>
+              </div>
+              
+              {/* Тогглеры для выбора приёма пищи */}
+              <div className="flex flex-col gap-3">
+                <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300">Приём пищи</h4>
+                <div className="flex flex-col gap-2">
+                  <Toggler label="Завтрак" value={selectedMeal === 'breakfast'} onChange={() => setSelectedMeal(selectedMeal === 'breakfast' ? null : 'breakfast')} />
+                  <Toggler label="Обед" value={selectedMeal === 'lunch'} onChange={() => setSelectedMeal(selectedMeal === 'lunch' ? null : 'lunch')} />
+                  <Toggler label="Ужин" value={selectedMeal === 'dinner'} onChange={() => setSelectedMeal(selectedMeal === 'dinner' ? null : 'dinner')} />
+                </div>
+              </div>
+              
+              {/* Тогглеры для выбора минимального БЖУ */}
+              <div className="flex flex-col gap-3">
+                <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300">Минимальное содержание</h4>
+                <div className="flex flex-col gap-2">
+                  <Toggler label="Минимум белков" value={lowestMacro === 'protein'} onChange={() => setLowestMacro(lowestMacro === 'protein' ? null : 'protein')} />
+                  <Toggler label="Минимум жиров" value={lowestMacro === 'fat'} onChange={() => setLowestMacro(lowestMacro === 'fat' ? null : 'fat')} />
+                  <Toggler label="Минимум углеводов" value={lowestMacro === 'carbs'} onChange={() => setLowestMacro(lowestMacro === 'carbs' ? null : 'carbs')} />
+                </div>
+              </div>
             </motion.div>
           </motion.div>
         )}
