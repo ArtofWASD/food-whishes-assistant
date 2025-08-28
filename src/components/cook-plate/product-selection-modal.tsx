@@ -52,7 +52,7 @@ const ProductSelectionModal: React.FC<ProductSelectionModalProps> = ({
       contentClassName="max-h-[80vh] flex flex-col"
     >
       {/* Products list */}
-      <div className="flex-1 overflow-y-auto mb-6 space-y-3 max-h-96">
+      <div className="flex-1 overflow-y-auto mb-4 sm:mb-6 space-y-2 sm:space-y-3 max-h-96">
         {foods.map((food) => {
           const isSelected = selectedProducts.includes(food.id)
           const isInFridge = isProductInFridge(food.id)
@@ -60,7 +60,7 @@ const ProductSelectionModal: React.FC<ProductSelectionModalProps> = ({
           return (
             <div
               key={food.id}
-              className={`relative p-4 rounded-xl border-2 transition-all duration-200 cursor-pointer ${
+              className={`relative p-2 sm:p-4 rounded-lg sm:rounded-xl border-2 transition-all duration-200 cursor-pointer ${
                 isInFridge 
                   ? "border-gray-300 bg-gray-50 dark:bg-gray-700/50 dark:border-gray-600 opacity-60 cursor-not-allowed"
                   : isSelected
@@ -71,33 +71,33 @@ const ProductSelectionModal: React.FC<ProductSelectionModalProps> = ({
             >
               <div className="flex items-center justify-between">
                 <div className="flex-1">
-                  {/* Product name and nutritional information on same line */}
-                  <div className="flex items-center gap-4 flex-wrap">
-                    <h3 className={`text-lg font-semibold ${
+                  {/* Product name and nutritional information */}
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+                    <h3 className={`text-base sm:text-lg font-semibold ${
                       isInFridge 
                         ? "text-gray-400 dark:text-gray-500" 
-                        : "text-gray-800 dark:text-white"
+                        : "text-gray-800 dark:text-gray-100"
                     }`}>
                       {food.name}
                     </h3>
                     
                     {isInFridge && (
-                      <span className="text-xs px-2 py-1 bg-gray-200 dark:bg-gray-600 text-gray-600 dark:text-gray-400 rounded-full">
+                      <span className="text-xs px-2 py-1 bg-gray-200 dark:bg-gray-600 text-gray-600 dark:text-gray-400 rounded-full whitespace-nowrap">
                         Уже добавлен
                       </span>
                     )}
                     
-                    {/* Nutritional information - compact inline layout */}
-                    <div className="flex items-center gap-1 md:gap-2">
+                    {/* Nutritional information - mobile optimized layout */}
+                    <div className="grid grid-cols-2 gap-1 sm:flex sm:items-center sm:gap-2 text-xs sm:text-sm">
                       {/* Calories */}
                       <div className="flex items-center gap-1">
-                        <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                          Калории:
+                        <span className="font-medium text-gray-600 dark:text-gray-300 text-xs sm:text-sm">
+                          Кал:
                         </span>
-                        <span className={`text-xs font-bold ${
+                        <span className={`font-bold text-xs ${
                           isInFridge
                             ? "text-gray-500 dark:text-gray-400"
-                            : "text-gray-800 dark:text-gray-200"
+                            : "text-gray-800 dark:text-gray-100"
                         }`}>
                           {round(food.callory || 0)}
                         </span>
@@ -105,13 +105,13 @@ const ProductSelectionModal: React.FC<ProductSelectionModalProps> = ({
                       
                       {/* Proteins */}
                       <div className="flex items-center gap-1">
-                        <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                          Белки:
+                        <span className="font-medium text-gray-600 dark:text-gray-300 text-xs sm:text-sm">
+                          Б:
                         </span>
-                        <span className={`text-xs font-bold ${
+                        <span className={`font-bold text-xs ${
                           isInFridge
                             ? "text-gray-500 dark:text-gray-400"
-                            : "text-gray-800 dark:text-gray-200"
+                            : "text-gray-800 dark:text-gray-100"
                         }`}>
                           {round(food.proteins || 0)}г.
                         </span>
@@ -119,13 +119,13 @@ const ProductSelectionModal: React.FC<ProductSelectionModalProps> = ({
                       
                       {/* Fats */}
                       <div className="flex items-center gap-1">
-                        <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                          Жиры:
+                        <span className="font-medium text-gray-600 dark:text-gray-300 text-xs sm:text-sm">
+                          Ж:
                         </span>
-                        <span className={`text-xs font-bold ${
+                        <span className={`font-bold text-xs ${
                           isInFridge
                             ? "text-gray-500 dark:text-gray-400"
-                            : "text-gray-800 dark:text-gray-200"
+                            : "text-gray-800 dark:text-gray-100"
                         }`}>
                           {round(food.fats || 0)}г.
                         </span>
@@ -133,13 +133,13 @@ const ProductSelectionModal: React.FC<ProductSelectionModalProps> = ({
                       
                       {/* Carbs */}
                       <div className="flex items-center gap-1">
-                        <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                          Углеводы:
+                        <span className="font-medium text-gray-600 dark:text-gray-300 text-xs sm:text-sm">
+                          У:
                         </span>
-                        <span className={`text-xs font-bold ${
+                        <span className={`font-bold text-xs ${
                           isInFridge
                             ? "text-gray-500 dark:text-gray-400"
-                            : "text-gray-800 dark:text-gray-200"
+                            : "text-gray-800 dark:text-gray-100"
                         }`}>
                           {round(food.carbs || 0)}г.
                         </span>
@@ -149,10 +149,10 @@ const ProductSelectionModal: React.FC<ProductSelectionModalProps> = ({
                 </div>
                 
                 {/* Checkbox */}
-                <div className="ml-4">
+                <div className="ml-2 sm:ml-4 flex-shrink-0">
                   <input
                     type="checkbox"
-                    className={`w-5 h-5 rounded border-2 transition-all duration-200 ${
+                    className={`w-4 h-4 sm:w-5 sm:h-5 rounded border-2 transition-all duration-200 ${
                       isInFridge
                         ? "opacity-50 cursor-not-allowed"
                         : "accent-blue-500 focus:ring-2 focus:ring-blue-400/20"
@@ -169,18 +169,18 @@ const ProductSelectionModal: React.FC<ProductSelectionModalProps> = ({
       </div>
 
       {/* Action buttons */}
-      <div className="flex gap-3 pt-4 border-t border-gray-200 dark:border-gray-600">
+      <div className="flex gap-2 sm:gap-3 pt-3 sm:pt-4 border-t border-gray-200 dark:border-gray-600">
         <Button
           type="button"
           onClick={onClose}
-          className="flex-1 py-3 px-6 rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-medium transition-all duration-200 hover:shadow-md"
+          className="flex-1 py-2 sm:py-3 px-3 sm:px-6 rounded-lg sm:rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-medium transition-all duration-200 hover:shadow-md text-sm sm:text-base"
         >
           Отмена
         </Button>
         <Button
           onClick={handleAdd}
           disabled={selectedProducts.length === 0}
-          className="flex-1 py-3 px-6 rounded-xl bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-medium transition-all duration-200 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:from-gray-400 disabled:to-gray-500"
+          className="flex-1 py-2 sm:py-3 px-3 sm:px-6 rounded-lg sm:rounded-xl bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-medium transition-all duration-200 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:from-gray-400 disabled:to-gray-500 text-sm sm:text-base"
         >
           {selectedProducts.length === 0 
             ? "Выберите продукты" 

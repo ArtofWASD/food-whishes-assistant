@@ -59,6 +59,18 @@ const getSizeClasses = (size: ModalSize = 'md') => {
   return sizes[size]
 }
 
+// Mobile-specific size classes for screens under 425px
+const getMobileSizeClasses = (size: ModalSize = 'md') => {
+  const mobileSizes = {
+    sm: 'max-w-[95vw]',
+    md: 'max-w-[95vw]',
+    lg: 'max-w-[95vw]',
+    xl: 'max-w-[95vw]',
+    full: 'max-w-full w-full h-full'
+  }
+  return mobileSizes[size]
+}
+
 // Default gradient backgrounds based on analyzed patterns
 const getGradientBackground = (gradientType?: string) => {
   const gradients = {
@@ -169,7 +181,7 @@ export const Modal: React.FC<ModalProps> = ({
             >
               {/* Settings panel header */}
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
                   {title}
                 </h3>
                 {showCloseButton && (
@@ -195,7 +207,7 @@ export const Modal: React.FC<ModalProps> = ({
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          className={`fixed inset-0 z-50 flex items-center justify-center ${animation === 'slide-up' ? 'p-4' : 'p-2'} ${overlayClassName}`}
+          className={`fixed inset-0 z-50 flex items-center justify-center ${animation === 'slide-up' ? 'p-2 sm:p-4' : 'p-1 sm:p-2'} ${overlayClassName}`}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -209,7 +221,7 @@ export const Modal: React.FC<ModalProps> = ({
           
           {/* Modal content container */}
           <motion.div
-            className={`relative w-full ${sizeClasses} mx-auto ${size === 'full' ? '' : 'max-h-[85vh]'} ${className}`}
+            className={`relative w-full ${getMobileSizeClasses(size)} sm:${sizeClasses} mx-auto ${size === 'full' ? '' : 'max-h-[90vh] sm:max-h-[85vh]'} ${className}`}
             initial={animationConfig.initial}
             animate={animationConfig.animate}
             exit={animationConfig.exit}
@@ -228,12 +240,12 @@ export const Modal: React.FC<ModalProps> = ({
             )}
             
             {/* Modal content */}
-            <div className={`relative bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl shadow-2xl border border-white/20 dark:border-gray-700/30 p-6 md:p-8 ${size === 'full' ? 'h-full' : 'overflow-y-auto'} ${contentClassName}`}>
+            <div className={`relative bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-xl sm:rounded-2xl shadow-2xl border border-white/20 dark:border-gray-700/30 p-3 sm:p-6 md:p-8 ${size === 'full' ? 'h-full' : 'overflow-y-auto'} ${contentClassName}`}>
               {/* Header with title and close button */}
               {(title || showCloseButton) && (
-                <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center justify-between mb-3 sm:mb-6">
                   {title && (
-                    <h2 className="text-xl md:text-2xl font-bold text-gray-800 dark:text-white flex items-center gap-2">
+                    <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-800 dark:text-gray-100 flex items-center gap-1 sm:gap-2">
                       {title}
                     </h2>
                   )}
@@ -244,14 +256,14 @@ export const Modal: React.FC<ModalProps> = ({
                       onClick={onClose}
                       aria-label="Закрыть модальное окно"
                     >
-                      <XMarkIcon className="w-6 h-6" />
+                      <XMarkIcon className="w-5 h-5 sm:w-6 sm:h-6" />
                     </IconButton>
                   )}
                 </div>
               )}
               
               {/* Modal body */}
-              <div className={title || showCloseButton ? 'space-y-6' : ''}>
+              <div className={title || showCloseButton ? 'space-y-3 sm:space-y-6' : ''}>
                 {children}
               </div>
             </div>

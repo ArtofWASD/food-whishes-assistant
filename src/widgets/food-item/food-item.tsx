@@ -35,7 +35,7 @@ function FoodItem(props: FoodItemComponentProps) {
       <div className="flex items-end absolute lg:static top-3 left-4 right-12 gap-2 z-10">
         <Image src={TYPE_ICONS[type] || "/file.svg"} alt={type} width={24} height={24} className="block md:hidden" />
         <Image src={TYPE_ICONS[type] || "/file.svg"} alt={type} width={36} height={36} className="hidden md:block" />
-        <span className="text-[24px] md:text-[36px] font-bold text-gray-800 dark:text-white leading-none truncate max-w-[120px] md:max-w-[220px]">{name}</span>
+        <span className="text-[24px] md:text-[36px] font-bold text-gray-800 dark:text-gray-100 leading-none truncate max-w-[120px] md:max-w-[220px]">{name}</span>
       </div>
       {/* Кнопка удаления в правом верхнем углу */}
       {showDeleteButton && (
@@ -53,7 +53,7 @@ function FoodItem(props: FoodItemComponentProps) {
         </IconButton>
       )}
       {/* Калории и БЖУ внизу карточки */}
-      <div className="absolute lg:static left-4 right-4 bottom-3 flex flex-col gap-0.5 text-sm text-gray-700 dark:text-gray-200">
+      <div className="absolute lg:static left-4 right-4 bottom-3 flex flex-col gap-0.5 text-sm text-gray-700 dark:text-gray-100">
         <div>
           <span className="font-bold">Калории:</span> {callory} ккал. <span className="font-bold">Белки:</span> {proteins} г.
         </div>

@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import Image from 'next/image'
 import Toggler from '../../widgets/toggler/toggler'
 import { useAppStore } from '@/src/store/appStore'
-import { Bars3Icon } from '@heroicons/react/24/solid'
+
 import AuthDrawer from "../../widgets/auth-drawer/auth-drawer"
 import { IconButton } from "@/src/ui/icon-button"
 import { ThemeSwitcher } from '@/src/ui/theme-switcher'
@@ -16,7 +16,7 @@ const SettingsBar = () => {
     selectedMeal, setSelectedMeal,
     lowestMacro, setLowestMacro,
   } = useAppStore()
-  const [open, setOpen] = useState(false)
+
   const [authOpen, setAuthOpen] = useState(false)
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [aboutExpanded, setAboutExpanded] = useState(false)
@@ -51,7 +51,7 @@ const SettingsBar = () => {
             ) : (
               <IconExpandButton
                 icon={<Image src="/previous.png" alt="Назад" width={28} height={28} />}
-                expanded={open || aboutExpanded}
+                expanded={aboutExpanded}
                 onClick={() => router.push('/')}
                 onMouseEnter={() => setAboutExpanded(true)}
                 onMouseLeave={() => setAboutExpanded(false)}
@@ -61,14 +61,7 @@ const SettingsBar = () => {
             )
           )}
         </div>
-        {/* Menu icon for mobile */}
-        <IconButton
-          className="md:hidden absolute left-2 top-1/2 -translate-y-1/2 p-1"
-          onClick={() => setOpen(true)}
-          aria-label="Открыть меню настроек"
-        >
-          <Bars3Icon className="w-7 h-7 text-blue-700" />
-        </IconButton>
+
         {/* Кнопки справа */}
         <div className="flex flex-row items-center gap-2 absolute right-2 top-1/2 -translate-y-1/2 md:static md:translate-y-0">
           <ThemeSwitcher />
@@ -82,39 +75,7 @@ const SettingsBar = () => {
           </IconButton>
         </div>
       </div>
-      {/* Universal Modal for mobile menu */}
-      <Modal
-        isOpen={open}
-        onClose={() => setOpen(false)}
-        size="sm"
-        animation="scale"
-        gradientBackground=""
-        className="md:hidden"
-      >
-        <div className="flex flex-col gap-4">
-          {/* Кнопка навигации */}
-          {!isMain && (
-            isIconOnlyBack ? (
-              <IconButton
-                onClick={() => { setOpen(false); router.push('/') }}
-                aria-label="На главную"
-              >
-                <Image src="/previous.png" alt="Назад" width={28} height={28} />
-              </IconButton>
-            ) : (
-              <IconExpandButton
-                icon={<Image src="/previous.png" alt="Назад" width={28} height={28} />}
-                expanded={open || aboutExpanded}
-                onClick={() => { setOpen(false); router.push('/') }}
-                onMouseEnter={() => setAboutExpanded(true)}
-                onMouseLeave={() => setAboutExpanded(false)}
-              >
-                На главную
-              </IconExpandButton>
-            )
-          )}
-        </div>
-      </Modal>
+
       
       {/* Universal Modal for settings panel (slide-left animation) */}
       <Modal
@@ -127,7 +88,7 @@ const SettingsBar = () => {
       >
         {/* Тогглеры для выбора приёма пищи */}
         <div className="flex flex-col gap-3">
-          <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300">Приём пищи</h4>
+          <h4 className="text-sm font-medium text-gray-700 dark:text-gray-200">Приём пищи</h4>
           <div className="flex flex-col gap-2">
             <Toggler label="Завтрак" value={selectedMeal === 'breakfast'} onChange={() => setSelectedMeal(selectedMeal === 'breakfast' ? null : 'breakfast')} />
             <Toggler label="Обед" value={selectedMeal === 'lunch'} onChange={() => setSelectedMeal(selectedMeal === 'lunch' ? null : 'lunch')} />
@@ -137,7 +98,7 @@ const SettingsBar = () => {
         
         {/* Тогглеры для выбора минимального БЖУ */}
         <div className="flex flex-col gap-3">
-          <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300">Минимальное содержание</h4>
+          <h4 className="text-sm font-medium text-gray-700 dark:text-gray-200">Минимальное содержание</h4>
           <div className="flex flex-col gap-2">
             <Toggler label="Минимум белков" value={lowestMacro === 'protein'} onChange={() => setLowestMacro(lowestMacro === 'protein' ? null : 'protein')} />
             <Toggler label="Минимум жиров" value={lowestMacro === 'fat'} onChange={() => setLowestMacro(lowestMacro === 'fat' ? null : 'fat')} />

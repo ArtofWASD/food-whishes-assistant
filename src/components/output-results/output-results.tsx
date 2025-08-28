@@ -164,9 +164,9 @@ const OutputResults: React.FC = () => {
             {/* Описание */}
             {modal.content.description && (
               <div className="space-y-2">
-                <h3 className="text-lg font-semibold text-gray-800 dark:text-white">📋 Описание</h3>
+                <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100">📋 Описание</h3>
                 <div className="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4 border border-gray-200 dark:border-gray-600">
-                  <p className="text-gray-700 dark:text-gray-300 whitespace-pre-line leading-relaxed">{modal.content.description}</p>
+                  <p className="text-gray-700 dark:text-gray-200 whitespace-pre-line leading-relaxed">{modal.content.description}</p>
                 </div>
               </div>
             )}
@@ -174,9 +174,9 @@ const OutputResults: React.FC = () => {
             {/* БЖУ */}
             {modal.content.bju && (
               <div className="space-y-2">
-                <h3 className="text-lg font-semibold text-gray-800 dark:text-white">⚖️ Пищевая ценность (на порцию)</h3>
+                <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100">⚖️ Пищевая ценность (на порцию)</h3>
                 <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-xl p-4 border border-green-200 dark:border-green-700">
-                  <p className="text-gray-700 dark:text-gray-300 whitespace-pre-line leading-relaxed font-medium">{modal.content.bju}</p>
+                  <p className="text-gray-700 dark:text-gray-200 whitespace-pre-line leading-relaxed font-medium">{modal.content.bju}</p>
                 </div>
               </div>
             )}
@@ -184,11 +184,11 @@ const OutputResults: React.FC = () => {
             {/* Ингредиенты */}
             {modal.content.ingredients && (
               <div className="space-y-2">
-                <h3 className="text-lg font-semibold text-gray-800 dark:text-white">🥘 Ингредиенты</h3>
+                <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100">🥘 Ингредиенты</h3>
                 <div className="bg-gradient-to-r from-yellow-50 to-orange-50 dark:from-yellow-900/20 dark:to-orange-900/20 rounded-xl p-4 border border-yellow-200 dark:border-yellow-700">
                   <ul className="space-y-2">
                     {modal.content.ingredients.split('\n').filter((line: string) => line.trim() !== '').map((ingredient: string, idx: number) => (
-                      <li key={idx} className="flex items-start gap-2 text-gray-700 dark:text-gray-300">
+                      <li key={idx} className="flex items-start gap-2 text-gray-700 dark:text-gray-200">
                         <span className="text-orange-500 font-bold mt-1">•</span>
                         <span className="leading-relaxed">{ingredient.trim()}</span>
                       </li>
@@ -201,11 +201,11 @@ const OutputResults: React.FC = () => {
             {/* Инструкция */}
             {modal.content.instruction && (
               <div className="space-y-2">
-                <h3 className="text-lg font-semibold text-gray-800 dark:text-white">👨‍🍳 Инструкция по приготовлению</h3>
+                <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100">👨‍🍳 Инструкция по приготовлению</h3>
                 <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl p-4 border border-blue-200 dark:border-blue-700">
                   <ol className="space-y-3">
                     {modal.content.instruction.split('\n').filter((line: string) => line.trim() !== '').map((step: string, idx: number) => (
-                      <li key={idx} className="flex items-start gap-3 text-gray-700 dark:text-gray-300">
+                      <li key={idx} className="flex items-start gap-3 text-gray-700 dark:text-gray-200">
                         <span className="bg-blue-500 text-white text-sm font-bold rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0 mt-0.5">
                           {idx + 1}
                         </span>
